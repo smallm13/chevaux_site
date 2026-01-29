@@ -1,0 +1,844 @@
+:root {
+  --primary: #8b4513;
+  --light-bg: #f4f4f4;
+  --white: #ffffff;
+  --text-dark: #333;
+  --accent: #d2691e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--light-bg);
+  color: var(--text-dark);
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 280px;
+  height: 620px;
+  background-color: var(--primary);
+  color: var(--white);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  border-radius: 2rem;
+  margin-top: 1rem; 
+  margin-left: 1rem;
+  text-align: center;
+  transform: translateX(0);
+  opacity: 1;
+ position: fixed;
+  z-index: 10;
+}
+
+
+.sidebar.collapsed {
+  width: 70px;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.toggle-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.nav-links a {
+  display: block;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--white);
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.nav-links a:hover {
+  background: var(--accent);
+  transform: translateX(5px);
+}
+
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+    margin-left: 320px;
+  transition: margin-left 0.3s ease;
+  color: #8b4513;
+}
+
+.main-header {
+  margin-bottom: 2rem;
+}
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  background: var(--white);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 6rem;
+  gap: 0.5rem;
+}
+
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--white);
+  transition: transform 0.3s ease;
+}
+
+.profile-pic:hover {
+  transform: scale(1.05);
+}
+
+.admin-name {
+  font-weight: bold;
+  font-size: 0.95rem;
+  color: var(--white);
+}
+.logout-section {
+  margin-top: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #c0392b;
+}
+.sidebar.hidden {
+  transform: translateX(-100%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.container.without-sidebar .main-content {
+  margin-left: 0;
+}
+#user-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  margin-top: 2rem;
+}
+
+#user-table thead {
+  background: linear-gradient(90deg, #4b6cb7, #182848);
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#user-table th, #user-table td {
+  padding: 12px 20px;
+  text-align: left;
+}
+
+#user-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
+}
+
+#user-table tbody tr:nth-child(even) {
+  background-color: #f9fafc;
+}
+
+#user-table tbody tr:hover {
+  background-color: #e6f0ff;
+}
+
+.edit-btn, .delete-btn, .add-btn {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  margin-right: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.edit-btn {
+  background-color: #2f80ed;
+}
+
+.edit-btn:hover {
+  background-color: #1366d6;
+}
+
+.delete-btn {
+  background-color: #eb5757;
+}
+
+.delete-btn:hover {
+  background-color: #c33c3c;
+}
+.add-btn {
+  background-color: #faf44d;
+}
+
+.add-btn:hover {
+  background-color: #f7ef0c;
+}
+/* Section contenant les cartes */
+/* Conteneur des cartes statistiques */
+.stats-cards {
+    display: flex;
+    flex-wrap: wrap;      /* permet de passer à la ligne si l’écran est trop petit */
+    gap: 1rem;            /* espace entre les cartes */
+    justify-content: flex-start; /* alignement à gauche */
+    margin-top: 1rem;
+}
+
+/* Chaque carte */
+.stats-cards .card {
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s ease;
+    flex: 1 1 200px;      /* prend de l’espace disponible, largeur min 200px */
+    max-width: 250px;     /* largeur maximale */
+}
+
+.stats-cards .card:hover {
+    transform: translateY(-5px);
+}
+
+.stats-cards .card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.stats-cards .card p {
+    margin-top: 0.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Table Chevaux */
+#horse-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+  margin-top: 2rem;
+}
+
+#horse-table thead {
+  background: linear-gradient(90deg, #8b4513, #d2691e); /* marron / accent */
+  color: #fff;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+#horse-table th, 
+#horse-table td {
+  padding: 12px 20px;
+  text-align: left;
+}
+
+#horse-table tbody tr {
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.3s ease;
+}
+
+#horse-table tbody tr:nth-child(even) {
+  background-color: #f9fafc;
+}
+
+#horse-table tbody tr:hover {
+  background-color: #fff3e0; /* léger beige rappelant le cheval */
+}
+
+.horse-edit-btn, 
+.horse-delete-btn {
+  padding: 6px 14px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  color: #fff;
+  margin-right: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  display: inline-flex; /* ou inline-flex */
+ 
+}
+
+
+.horse-edit-btn {
+  background-color: #2f80ed;
+}
+
+.horse-edit-btn:hover {
+  background-color: #1366d6;
+}
+
+.horse-delete-btn {
+  background-color: #eb5757;
+}
+
+.horse-delete-btn:hover {
+  background-color: #c33c3c;
+}
+/* Conteneur */
+.container {
+    display: flex;
+}
+
+
+
+.sidebar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar .profile-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.sidebar .nav-links a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 10px 0;
+}
+
+.sidebar .logout-btn {
+    background: #c0392b;
+    border: none;
+    color: white;
+    padding: 8px;
+    width: 100%;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Main content */
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Sections */
+#user-section, #horse-section, #stats-section {
+    margin-top: 1rem;
+    display: none; /* affichage via JS */
+}
+
+/* Tables */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Bouton Ajouter Cheval */
+.horse-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#add-horse-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* Modal */
+/* Modal - Version compacte */
+#add-horse-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.2s ease;
+}
+
+#add-horse-modal .modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    padding: 24px;
+    border-radius: 12px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    transform: translateY(-15px);
+    animation: slideUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    max-height: 500px;
+    height: auto;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #8B4513 #f5f1e8; /* Marron pour Firefox */
+}
+
+/* Titre en marron foncé */
+#add-horse-modal .modal-content h3 {
+    margin: 0 0 20px 0;
+    color: #5D4037; /* Marron foncé */
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #D7CCC8; /* Ligne séparatrice marron clair */
+}
+
+/* Labels en marron */
+#add-horse-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #6D4C41; /* Marron moyen */
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.2s ease;
+}
+
+/* Inputs avec texte marron */
+#add-horse-form input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #D7CCC8; /* Bordure marron clair */
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #5D4037; /* Texte marron foncé */
+    transition: all 0.2s ease;
+    background: #FFFFFF; /* Fond crème très clair */
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+}
+
+/* Placeholder en marron clair */
+#add-horse-form input::placeholder {
+    color: #A1887F; /* Marron clair pour placeholder */
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Focus avec accent marron */
+#add-horse-form input:focus {
+    border-color: #8D6E63; /* Marron moyen au focus */
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.15);
+    transform: translateY(-1px);
+    background: #FFFFFF;
+}
+
+#add-horse-form input:hover {
+    border-color: #A1887F; /* Marron clair au survol */
+    background: #FFF8F0;
+}
+
+/* Boutons avec thème marron */
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px; /* Réduit de 12px */
+    margin-top: 20px; /* Réduit de 24px */
+    padding-top: 16px; /* Réduit de 20px */
+    border-top: 1px solid #e9ecef;
+}
+
+.btn-cancel, .btn-submit {
+    padding: 10px 20px; /* Réduit de 14px 28px */
+    border-radius: 8px; /* Réduit de 12px */
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem; /* Réduit de 1rem */
+    transition: all 0.2s ease;
+    border: none;
+    outline: none;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+    letter-spacing: 0.3px; /* Réduit de 0.5px */
+}
+
+.btn-cancel {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.15); /* Réduit l'ombre */
+}
+
+.btn-cancel:hover {
+    transform: translateY(-2px); /* Réduit de -3px */
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2); /* Réduit l'ombre */
+}
+
+.btn-cancel:active {
+    transform: translateY(0);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+    color: white;
+    box-shadow: 0 3px 10px rgba(46, 204, 113, 0.15); /* Réduit l'ombre */
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px); /* Réduit de -3px */
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2); /* Réduit l'ombre */
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+/* Effet de vague au clic - plus petit */
+.btn-cancel::after, .btn-submit::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease; /* Animation plus rapide */
+}
+
+.btn-cancel:active::after, .btn-submit:active::after {
+    width: 150px; /* Réduit de 200px */
+    height: 150px; /* Réduit de 200px */
+}
+
+/* Scrollbar en marron */
+#add-horse-modal .modal-content::-webkit-scrollbar {
+    width: 5px;
+}
+
+#add-horse-modal .modal-content::-webkit-scrollbar-track {
+    background: #F5F1E8; /* Fond crème */
+    border-radius: 2px;
+    margin: 8px 0;
+}
+
+#add-horse-modal .modal-content::-webkit-scrollbar-thumb {
+    background: #BCAAA4; /* Marron rosé */
+    border-radius: 2px;
+    min-height: 30px;
+}
+
+#add-horse-modal .modal-content::-webkit-scrollbar-thumb:hover {
+    background: #A1887F; /* Marron plus foncé au survol */
+}
+
+/* Animation pour les labels au focus */
+#add-horse-form input:focus + label {
+    color: #8D6E63; /* Marron plus foncé quand l'input est focus */
+}
+
+/* Style pour les champs requis */
+#add-horse-form input:required + label::after {
+    content: " *";
+    color: #D84315; /* Rouge brique pour l'astérisque */
+}
+
+/* États de validation */
+#add-horse-form input.valid {
+    border-color: #689F38; /* Vert pour valide (contraste avec le marron) */
+    background-color: rgba(104, 159, 56, 0.05);
+}
+
+#add-horse-form input.invalid {
+    border-color: #D84315; /* Rouge brique pour invalide */
+    background-color: rgba(216, 67, 21, 0.05);
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+    #add-horse-modal .modal-content {
+        width: 92vw;
+        max-height: 85vh;
+        margin: 10px;
+        padding: 20px;
+    }
+    
+    #add-horse-modal .modal-content h3 {
+        color: #5D4037;
+        font-size: 1.3rem;
+    }
+    
+    #add-horse-form label {
+        color: #6D4C41;
+    }
+    
+    #add-horse-form input {
+        color: #5D4037;
+        background: #FFF8F0;
+    }
+    
+    #add-horse-form input::placeholder {
+        color: #A1887F;
+    }
+}
+
+/* Pour les petits écrans en hauteur */
+@media (max-height: 600px) {
+    #add-horse-modal .modal-content {
+        max-height: 90vh;
+    }
+    
+    #add-horse-form input {
+        background: #FFF8F0;
+    }
+}
+/* ============================= */
+/* BARRE DE RECHERCHE */
+/* ============================= */
+
+.search-box {
+    display: flex;
+    width: 250px;
+    height: 40px;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1.5px solid #D7CCC8;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #8b4513;
+    background: #FFFFFF;
+}
+
+.search-box input::placeholder {
+    color: #A1887F;
+}
+
+.search-box input:focus {
+    border-color: #8D6E63;
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.15);
+    outline: none;
+}
+
+.search-box button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    background: linear-gradient(135deg, #8b4513 0%, #8b4513 100%);
+    color: #fff;
+    transition: all 0.2s ease;
+}
+
+.search-box button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(109, 76, 65, 0.25);
+}
+/* =============================== */
+/* SWEETALERT FORM - USER */
+/* =============================== */
+
+.swal2-popup {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%) !important;
+    border-radius: 12px !important;
+    padding: 24px !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+    width: 420px !important;
+}
+
+/* Formulaire */
+#swal-user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+#swal-user-form label {
+    color: #6D4C41;
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+/* Inputs + Select */
+#swal-user-form input,
+#swal-user-form select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #D7CCC8;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #5D4037;
+    background: #FFFFFF;
+    margin-bottom: 16px;
+    transition: all 0.2s ease;
+}
+
+/* Focus */
+#swal-user-form input:focus,
+#swal-user-form select:focus {
+    border-color: #8D6E63;
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.15);
+    outline: none;
+}
+
+/* Select flèche */
+#swal-user-form select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg fill='%236D4C41' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+/* Boutons */
+.swal2-confirm {
+    background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+.swal2-cancel {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+}
+
+/* Conteneur principal */
+#swal-user-form.horse-form-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+/* Alignement Label + Input sur la même ligne */
+#swal-user-form.horse-form-horizontal .form-group {
+    display: flex;
+    align-items: center; /* Centre verticalement le label avec l'input */
+    text-align: left;
+}
+
+/* Largeur fixe pour les labels pour qu'ils soient alignés */
+#swal-user-form.horse-form-horizontal label {
+    flex: 0 0 100px; /* Largeur du label à gauche */
+    margin-bottom: 0; /* On retire la marge du bas */
+    font-size: 0.85rem;
+    color: #6D4C41;
+    font-weight: 600;
+}
+
+/* L'input prend le reste de la place */
+#swal-user-form.horse-form-horizontal input {
+    flex: 1;
+    margin-bottom: 0; /* On retire la marge du bas car le gap gère l'espacement */
+    padding: 8px 12px;
+}
+/* Conteneur pour l'alignement horizontal */
+#swal-user-form.horse-form-horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 10px;
+}
+
+#swal-user-form.horse-form-horizontal .form-group {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+/* Largeur fixe des labels pour l'alignement à gauche */
+#swal-user-form.horse-form-horizontal label {
+    flex: 0 0 100px; /* Ajustez cette valeur selon la longueur de vos textes */
+    margin-bottom: 0 !important;
+    font-size: 0.85rem;
+    color: #6D4C41;
+    font-weight: 600;
+}
+
+/* Les champs prennent tout le reste de l'espace */
+#swal-user-form.horse-form-horizontal input,
+#swal-user-form.horse-form-horizontal select {
+    flex: 1;
+    margin-bottom: 0 !important;
+}
