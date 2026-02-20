@@ -12,6 +12,64 @@ document.addEventListener('DOMContentLoaded', function () {
     const horsesGrid = document.getElementById('horses-grid');
     const loginMessage = document.getElementById('login-message');
 
+    function getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    }
+
+    function setCsrfToken(token) {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        if (meta && token) meta.setAttribute('content', token);
+    }
+
+    async function refreshCsrfToken() {
+        const response = await fetch('/csrf-token', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) {
+            throw new Error('Impossible de rafraichir le token CSRF');
+        }
+        const data = await response.json();
+        if (!data?.csrf_token) {
+            throw new Error('Token CSRF invalide');
+        }
+        setCsrfToken(data.csrf_token);
+        return data.csrf_token;
+    }
+
+    async function postWithCsrf(url, payload, retry = true) {
+        const token = getCsrfToken();
+        const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ ...payload, _token: token })
+        });
+
+        if (response.status === 419 && retry) {
+            const newToken = await refreshCsrfToken();
+            return fetch(url, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': newToken
+                },
+                body: JSON.stringify({ ...payload, _token: newToken })
+            });
+        }
+
+        return response;
+    }
+
     loginBtn.addEventListener('click', () => modal.style.display = 'block');
     closeBtn.addEventListener('click', () => {
         modal.style.display = 'none';
@@ -42,15 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ email, password })
-            });
+            const response = await postWithCsrf('/login', { email, password });
 
             const data = await response.json();
 
@@ -59,37 +109,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 loginMessage.classList.add('success');
                 loginMessage.style.display = 'block';
 
-                setTimeout(() => {
-                    window.location.href = data.redirect;
-                }, 1000);
-
-                const userGreeting = document.createElement('div');
-                userGreeting.className = 'user-greeting animate-pop';
-                document.body.prepend(userGreeting);
-
-                loginBtn.innerHTML = '<i class="fas fa-user"></i> Mon compte';
-                loginBtn.classList.remove('btn-login');
-                loginBtn.classList.add('btn-primary');
-
                 const logoutBtn = document.createElement('button');
                 logoutBtn.id = 'logout-btn';
                 logoutBtn.className = 'btn btn-logout';
                 logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
-                userControls.insertBefore(logoutBtn, loginBtn);
-                modal.style.display = 'none';
+                //userControls.insertBefore(logoutBtn, loginBtn);
+                //modal.style.display = 'none';
+                  setTimeout(() => {
+                    window.location.href = data.redirect;
+                }, 10);
+
 
                 // === Déconnexion ===
                 logoutBtn.addEventListener('click', async () => {
                     try {
-                        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-                        const res = await fetch('/logout', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                'X-CSRF-TOKEN': csrfToken
-                            }
-                        });
+                        const res = await postWithCsrf('/logout', {});
 
                         if (res.ok) {
                             document.querySelector('.user-greeting')?.remove();
@@ -120,7 +154,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 loginMessage.style.display = 'block';
             }
         } catch (error) {
-            loginMessage.textContent = error.message || 'Erreur';
+            loginMessage.textContent = (error?.message || '').includes('fetch')
+                ? 'Echec reseau. Verifiez que vous utilisez la meme URL (localhost ou 127.0.0.1) puis rechargez.'
+                : (error.message || 'Erreur');
             loginMessage.classList.add('error');
             loginMessage.style.display = 'block';
         }
@@ -153,7 +189,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateRequirement('req-length', password.length >= 8);
         updateRequirement('req-uppercase', /[A-Z]/.test(password));
         updateRequirement('req-number', /[0-9]/.test(password));
-        updateRequirement('req-special', /[!@#$%^&*(),.?":{}|<>]/.test(password));
     });
 
     function updateRequirement(id, isValid) {
@@ -179,6 +214,11 @@ document.addEventListener('DOMContentLoaded', function () {
             showSignupMessage('Veuillez remplir tous les champs.', 'error');
             return;
         }
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+        if (!emailRegex.test(email)) {
+            showSignupMessage('Veuillez entrer une adresse email valide.', 'error');
+            return;
+        }
         if (password !== password_confirmation) {
             showSignupMessage('Les mots de passe ne correspondent pas.', 'error');
             return;
@@ -191,8 +231,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const requirements = [
             password.length >= 8,
             /[A-Z]/.test(password),
-            /[0-9]/.test(password),
-            /[!@#$%^&*(),.?":{}|<>]/.test(password)
+            /[0-9]/.test(password)
         ];
 
         if (requirements.some(req => !req)) {
@@ -201,14 +240,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
-            const response = await fetch('/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                },
-                body: JSON.stringify({ nom, prenom, email, password, password_confirmation, role: 'user' })
+            const response = await postWithCsrf('/users', {
+                nom, prenom, email, password, password_confirmation, role: 'user'
             });
 
             const data = await response.json();
@@ -286,8 +319,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="detail-item"><span class="detail-label">Race</span><span class="detail-value">${highlightTerm(horse.breed)}</span></div>
                         <div class="detail-item"><span class="detail-label">Taille</span><span class="detail-value">${horse.height} m</span></div>
                         <div class="detail-item"><span class="detail-label">Robe</span><span class="detail-value">${highlightTerm(horse.coat)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Propriétaire</span><span class="detail-value">${highlightTerm(horse.owner)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Âge</span><span class="detail-value">${horse.age}</span></div>
+                        <div class="detail-item"><span class="detail-label">Annee de naissance</span><span class="detail-value">${horse.birth_year ?? '-'}</span></div>
                     </div>
                 </div>
             `;

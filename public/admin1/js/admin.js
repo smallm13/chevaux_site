@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+﻿document.addEventListener('DOMContentLoaded', () => {
 
     // ======== Variables =========
     const sidebar = document.getElementById('sidebar');
@@ -22,12 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.querySelector('.logout-btn');
 
     const addHorseBtn = document.getElementById('add-horse-btn');
+    const bulkSelectHorsesBtn = document.getElementById('bulk-select-horses-btn');
+    const bulkDeleteHorsesBtn = document.getElementById('bulk-delete-horses-btn');
     const modal = document.getElementById('add-horse-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
     const addHorseForm = document.getElementById('add-horse-form');
 
     const userSearch = document.getElementById('user-search');
     const horseSearch = document.getElementById('horse-search');
+    const horseSelectionHeader = document.querySelector('#horse-table thead .selection-col');
+
+    let horseSelectionMode = false;
+    let selectedHorseIds = new Set();
 
     // ======== Fonctions ========
     async function updateStats() {
@@ -40,18 +46,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const horsesData = await resHorses.json();
             horseCountEl.textContent = horsesData.count;
         } catch (err) {
-            console.error("Erreur lors de la récupération des stats :", err);
+            console.error("Erreur lors de la recuperation des stats :", err);
         }
     }
 
     async function loadUsers() {
         try {
-            const res = await fetch('/utilisateurs');
+            const res = await fetch('/admin/utilisateurs');
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+            const contentType = res.headers.get('content-type') || '';
+            if (!contentType.includes('application/json')) {
+                window.location.href = '/';
+                return;
+            }
             const utilisateurs = await res.json();
             userList.innerHTML = '';
 
             if (utilisateurs.length === 0) {
-                userList.innerHTML = `<tr><td colspan="6" style="text-align:center;">Aucun utilisateur trouvé.</td></tr>`;
+                userList.innerHTML = `<tr><td colspan="6" style="text-align:center;">Aucun utilisateur trouve.</td></tr>`;
                 userCountEl.textContent = 0;
                 return;
             }
@@ -67,25 +81,30 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${u.email}</td>
                     <td>${u.role}</td>
                     <td>
-                        <button class="edit-btn" onclick="editUser(${u.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteUser(${u.id})">Delete</button>
+                        <button class="edit-btn" onclick="editUser(${u.id})">Modifier</button>
+                        <button class="delete-btn" onclick="deleteUser(${u.id})">Supprimer</button>
                     </td>
                 `;
                 userList.appendChild(tr);
             });
         } catch (err) {
-            console.error('Erreur lors de la récupération des utilisateurs :', err);
+            console.error('Erreur lors de la recuperation des utilisateurs :', err);
         }
     }
 
     async function loadHorses() {
         try {
             const res = await fetch('/admin/chevaux/list');
+            const contentType = res.headers.get('content-type') || '';
+            if (!res.ok || !contentType.includes('application/json')) {
+                window.location.href = '/';
+                return;
+            }
             const chevaux = await res.json();
             horseList.innerHTML = '';
 
             if (chevaux.length === 0) {
-                horseList.innerHTML = `<tr><td colspan="8" style="text-align:center;">Aucun cheval trouvé.</td></tr>`;
+                horseList.innerHTML = `<tr><td colspan="8" style="text-align:center;">Aucun cheval trouve.</td></tr>`;
                 horseCountEl.textContent = 0;
                 return;
             }
@@ -95,26 +114,71 @@ document.addEventListener('DOMContentLoaded', () => {
             chevaux.forEach(c => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
+                    <td class="selection-col" style="${horseSelectionMode ? '' : 'display:none;'}">
+                        <input type="checkbox" class="horse-select-checkbox" data-id="${c.id}" ${selectedHorseIds.has(String(c.id)) ? 'checked' : ''}>
+                    </td>
                     <td>${c.id}</td>
                     <td>${c.nom}</td>
                     <td>${c.race ?? '-'}</td>
                     <td>${c.robe ?? '-'}</td>
-                    <td>${c.age ?? '-'}</td>
+                    <td>${c.annee_naissance ?? '-'}</td>
                     <td>${c.taille ?? '-'}</td>
-                    <td>${c.proprietaire ?? '-'}</td>
                     <td>
-                        <button class="edit-btn" onclick="editHorse(${c.id})">Edit</button>
-                        <button class="delete-btn" onclick="deleteHorse(${c.id})">Delete</button>
+                        <button class="edit-btn" onclick="editHorse(${c.id})">Modifier</button>
                     </td>
                 `;
                 horseList.appendChild(tr);
             });
+
+            horseList.querySelectorAll('.horse-select-checkbox').forEach((checkbox) => {
+                checkbox.addEventListener('change', (e) => {
+                    const horseId = e.target.dataset.id;
+                    if (e.target.checked) {
+                        selectedHorseIds.add(horseId);
+                    } else {
+                        selectedHorseIds.delete(horseId);
+                    }
+                    updateBulkDeleteButton();
+                });
+            });
         } catch (err) {
-            console.error('Erreur lors de la récupération des chevaux :', err);
+            console.error('Erreur lors de la recuperation des chevaux :', err);
         }
     }
 
-    // ======== Événements Sections ========
+    function updateBulkDeleteButton() {
+        if (!bulkDeleteHorsesBtn) return;
+        const count = selectedHorseIds.size;
+        bulkDeleteHorsesBtn.textContent = `Supprimer la selection (${count})`;
+        bulkDeleteHorsesBtn.disabled = count === 0;
+    }
+
+    function setHorseSelectionMode(enabled) {
+        horseSelectionMode = enabled;
+
+        if (!horseSelectionMode) {
+            selectedHorseIds.clear();
+        }
+
+        if (horseSelectionHeader) {
+            horseSelectionHeader.style.display = horseSelectionMode ? '' : 'none';
+        }
+
+        if (bulkDeleteHorsesBtn) {
+            bulkDeleteHorsesBtn.style.display = horseSelectionMode ? '' : 'none';
+        }
+
+        if (bulkSelectHorsesBtn) {
+            bulkSelectHorsesBtn.textContent = horseSelectionMode
+                ? 'Annuler suppression'
+                : 'Supprimer des chevaux';
+        }
+
+        updateBulkDeleteButton();
+        loadHorses();
+    }
+
+    // ======== Evenements Sections ========
     usersBtn.addEventListener('click', (e) => {
         e.preventDefault();
         userSection.style.display = 'block';
@@ -156,14 +220,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     Swal.fire({
-                        title: "Déconnexion réussie ✅",
-                        text: "Vous allez être redirigé.",
+                        title: "Deconnexion reussie ",
+                        text: "Vous allez etre redirige.",
                         icon: "success",
                         showConfirmButton: false,
                         timer: 1500
                     }).then(() => window.location.href = '/');
                 } else {
-                    Swal.fire("Erreur ❌", "Impossible de vous déconnecter.", "error");
+                    Swal.fire("Erreur ", "Impossible de vous deconnecter.", "error");
                 }
             } catch (err) {
                 console.error("Erreur logout :", err);
@@ -195,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Array.from(horseList.getElementsByTagName('tr')).forEach(row => {
                 const cells = row.getElementsByTagName('td');
                 let match = false;
-                for (let i = 1; i <= 6; i++) {
+                for (let i = 2; i <= 6; i++) {
                     if (cells[i] && cells[i].textContent.toLowerCase().includes(filter)) {
                         match = true; break;
                     }
@@ -205,15 +269,93 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ======== Modal Ajouter Cheval ========
+    // ======== Modal Ajouter / Modifier Cheval ========
     if (addHorseBtn && modal && closeModalBtn && addHorseForm) {
+        const modalTitle = modal.querySelector('.modal-content h3');
+        const submitBtn = addHorseForm.querySelector('.btn-submit');
+
+        const transpondeurSelect = addHorseForm.querySelector('select[name="transpondeur"]');
+        const numeroTranspondeurInput = addHorseForm.querySelector('input[name="numero_transpondeur"]');
+        const datePoseInput = addHorseForm.querySelector('input[name="date_pose_transpondeur"]');
+        const anneeNaissanceInput = addHorseForm.querySelector('input[name="annee_naissance"]');
+        const dateNaissanceInput = addHorseForm.querySelector('input[name="date_naissance"]');
+
+        function toggleTranspondeurFields() {
+            if (!transpondeurSelect || !numeroTranspondeurInput || !datePoseInput) return;
+            const enabled = transpondeurSelect.value === '1';
+            numeroTranspondeurInput.disabled = !enabled;
+            datePoseInput.disabled = !enabled;
+            if (!enabled) {
+                numeroTranspondeurInput.value = '';
+                datePoseInput.value = '';
+            }
+        }
+
+        function syncBirthYearFromDate() {
+            if (!anneeNaissanceInput || !dateNaissanceInput || !dateNaissanceInput.value) return;
+            anneeNaissanceInput.value = new Date(dateNaissanceInput.value).getFullYear();
+        }
+
+        function setFormModeCreate() {
+            addHorseForm.dataset.mode = 'create';
+            addHorseForm.dataset.horseId = '';
+            modalTitle.textContent = 'Ajouter un cheval';
+            submitBtn.textContent = 'Ajouter';
+            addHorseForm.reset();
+            toggleTranspondeurFields();
+        }
+
+        function setFormModeEdit(horseId, horseData) {
+            addHorseForm.dataset.mode = 'edit';
+            addHorseForm.dataset.horseId = String(horseId);
+            modalTitle.textContent = 'Modifier le cheval';
+            submitBtn.textContent = 'Enregistrer';
+
+            const setValue = (name, value) => {
+                const field = addHorseForm.querySelector(`[name="${name}"]`);
+                if (!field) return;
+                field.value = value ?? '';
+            };
+
+            [
+                'nom', 'race', 'sexe', 'robe', 'annee_naissance', 'date_naissance', 'lieu_naissance',
+                'sire_numero', 'ueln_numero', 'studbook_naissance', 'transpondeur',
+                'numero_transpondeur', 'date_pose_transpondeur', 'taille',
+                'pere_nom', 'pere_sire_numero', 'pere_ueln_numero', 'pere_date_naissance',
+                'pere_pays_naissance', 'pere_studbook',
+                'mere_nom', 'mere_sire_numero', 'mere_ueln_numero', 'mere_date_naissance',
+                'mere_pays_naissance', 'mere_studbook',
+                'naisseur_nom', 'naisseur_telephone', 'naisseur_adresse'
+            ].forEach((key) => setValue(key, horseData[key]));
+
+            toggleTranspondeurFields();
+        }
+
+        function openModal() {
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+        }
 
         addHorseBtn.addEventListener('click', () => {
-            modal.style.display = 'flex';
+            setFormModeCreate();
+            openModal();
         });
 
-        closeModalBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
+        closeModalBtn.addEventListener('click', closeModal);
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.style.display === 'flex') {
+                closeModal();
+            }
         });
 
         addHorseForm.addEventListener('submit', async (e) => {
@@ -221,10 +363,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(addHorseForm);
             const data = Object.fromEntries(formData.entries());
 
+            const mode = addHorseForm.dataset.mode || 'create';
+            const horseId = addHorseForm.dataset.horseId;
+            const isEdit = mode === 'edit' && horseId;
+            const url = isEdit ? `/admin/chevaux/${horseId}` : '/horses';
+            const method = isEdit ? 'PUT' : 'POST';
+
             try {
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                const response = await fetch('/horses', {
-                    method: 'POST',
+                const response = await fetch(url, {
+                    method,
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': token
@@ -233,199 +381,95 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    Swal.fire('Succès', 'Cheval ajouté avec succès !', 'success');
-                    modal.style.display = 'none';
-                    addHorseForm.reset();
-                    horsesBtn.click(); // recharge la liste
+                    Swal.fire(
+                        'Succes',
+                        isEdit ? 'Cheval modifie avec succes !' : 'Cheval ajoute avec succes !',
+                        'success'
+                    );
+                    closeModal();
+                    setFormModeCreate();
+                    loadHorses();
                 } else {
                     const errorData = await response.json();
-                    Swal.fire('Erreur', errorData.message || 'Erreur lors de l\'ajout', 'error');
+                    Swal.fire('Erreur', errorData.message || 'Erreur lors de l enregistrement', 'error');
                 }
             } catch (err) {
                 console.error(err);
                 Swal.fire('Erreur', 'Une erreur est survenue', 'error');
             }
         });
-    }
 
-});
-// Fermer le modal en cliquant en dehors - Version complète
-document.addEventListener('DOMContentLoaded', function() {
-    const modal = document.getElementById('add-horse-modal');
-    const modalContent = modal.querySelector('.modal-content');
-    
-    // Variable pour suivre si le modal est en train de se fermer
-    let isClosing = false;
-    
-    modal.addEventListener('click', function(event) {
-        // Empêcher les fermetures multiples
-        if (isClosing) return;
-        
-        // Vérifier si le clic est sur l'overlay (et non sur le contenu)
-        const isClickOnOverlay = event.target === modal;
-        const isClickOnCloseBtn = event.target.classList.contains('close-btn') || 
-                                   event.target.closest('.close-btn') ||
-                                   event.target.id === 'close-modal-btn';
-        
-        if (isClickOnOverlay || isClickOnCloseBtn) {
-            closeModal();
+        if (transpondeurSelect) {
+            transpondeurSelect.addEventListener('change', toggleTranspondeurFields);
+            toggleTranspondeurFields();
         }
-    });
-    
-    // Empêcher la fermeture quand on clique dans le formulaire
-    modalContent.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
-    
-    // Gestion de la touche Echap
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && modal.style.display === 'flex') {
-            closeModal();
+        if (dateNaissanceInput) {
+            dateNaissanceInput.addEventListener('change', syncBirthYearFromDate);
         }
-    });
-    
-    function closeModal() {
-        if (isClosing) return;
-        
-        isClosing = true;
-        modal.style.opacity = '0';
-        modal.style.transition = 'opacity 0.2s ease';
-        
-        setTimeout(() => {
-            modal.style.display = 'none';
-            modal.style.opacity = '1';
-            modal.style.transition = '';
-            document.getElementById('add-horse-form').reset();
-            isClosing = false;
-        }, 200);
-    }
-    
-    // Si vous avez un bouton pour ouvrir le modal, ajoutez cette fonction
-    document.getElementById('add-horse-btn').addEventListener('click', function() {
-        modal.style.display = 'flex';
-        // Petit délai pour l'animation
-        setTimeout(() => {
-            modal.style.opacity = '1';
-        }, 10);
-    });
-});
-window.deleteHorse = async function(id) {
-    const confirmation = await Swal.fire({
-        title: "Confirmer la suppression",
-        text: "Voulez-vous vraiment supprimer ce cheval ? Cette action est irréversible.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Oui, supprimer",
-        cancelButtonText: "Annuler"
-    });
 
-    if (!confirmation.isConfirmed) return;
-
-    try {
-        const token = document
-            .querySelector('meta[name="csrf-token"]')
-            .getAttribute('content');
-
-        const response = await fetch(`/admin/chevaux/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': token,
-                'Accept': 'application/json'
+        window.editHorse = async function (id) {
+            try {
+                const res = await fetch(`/admin/chevaux/${id}`);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const horse = await res.json();
+                setFormModeEdit(id, horse);
+                openModal();
+            } catch (e) {
+                Swal.fire('Erreur', 'Impossible de charger les informations du cheval', 'error');
             }
-        });
-
-        if (response.ok) {
-            Swal.fire("Supprimé", "Le cheval a été supprimé avec succès.", "success");
-
-            setTimeout(() => {
-                document.getElementById('horses-btn').click();
-            }, 400);
-
-        } else {
-            const error = await response.json();
-            Swal.fire("Erreur", error.message || "Impossible de supprimer le cheval.", "error");
-        }
-
-    } catch (err) {
-        console.error(err);
-        Swal.fire("Erreur", "Une erreur est survenue.", "error");
+        };
     }
-}
-window.editHorse = async function(id) {
-    try {
-        const res = await fetch(`/admin/chevaux/${id}`);
-        const cheval = await res.json();
 
-        const { value: formValues } = await Swal.fire({
-            title: 'Modifier le cheval',
-            html: `
-                <form id="swal-user-form" class="horse-form-horizontal">
-                    <div class="form-group">
-                        <label for="swal-nom">Nom</label>
-                        <input id="swal-nom" type="text" placeholder="Nom" value="${cheval.nom ?? ''}">
-                    </div>
-                    <div class="form-group">
-                        <label for="swal-race">Race</label>
-                        <input id="swal-race" type="text" placeholder="Race" value="${cheval.race ?? ''}">
-                    </div>
-                    <div class="form-group">
-                        <label for="swal-robe">Robe</label>
-                        <input id="swal-robe" type="text" placeholder="Couleur" value="${cheval.robe ?? ''}">
-                    </div>
-                    <div class="form-group">
-                        <label for="swal-age">Âge</label>
-                        <input id="swal-age" type="number" placeholder="Ans" value="${cheval.age ?? ''}">
-                    </div>
-                    <div class="form-group">
-                        <label for="swal-taille">Taille</label>
-                        <input id="swal-taille" type="number" placeholder="cm" value="${cheval.taille ?? ''}">
-                    </div>
-                    <div class="form-group">
-                        <label for="swal-prop">Propriétaire</label>
-                        <input id="swal-prop" type="text" placeholder="Nom" value="${cheval.proprietaire ?? ''}">
-                    </div>
-                </form>
-            `,
-            width: 450, // Légèrement élargi pour le confort
-            focusConfirm: false,
-            showCancelButton: true,
-            confirmButtonText: "Enregistrer",
-            cancelButtonText: "Annuler",
-            preConfirm: () => {
-                return {
-                    nom: document.getElementById('swal-nom').value,
-                    race: document.getElementById('swal-race').value,
-                    robe: document.getElementById('swal-robe').value,
-                    age: document.getElementById('swal-age').value,
-                    taille: document.getElementById('swal-taille').value,
-                    proprietaire: document.getElementById('swal-prop').value
+    if (bulkSelectHorsesBtn) {
+        bulkSelectHorsesBtn.addEventListener('click', () => {
+            setHorseSelectionMode(!horseSelectionMode);
+        });
+    }
+
+    if (bulkDeleteHorsesBtn) {
+        bulkDeleteHorsesBtn.addEventListener('click', async () => {
+            if (selectedHorseIds.size === 0) return;
+
+            const confirmation = await Swal.fire({
+                title: "Confirmer la suppression",
+                text: `Voulez-vous supprimer ${selectedHorseIds.size} cheval(aux) ? Cette action est irreversible.`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Oui, supprimer",
+                cancelButtonText: "Annuler"
+            });
+
+            if (!confirmation.isConfirmed) return;
+
+            try {
+                const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                const ids = Array.from(selectedHorseIds);
+                const results = await Promise.all(ids.map(async (horseId) => {
+                    const response = await fetch(`/admin/chevaux/${horseId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-TOKEN': token,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    return { horseId, ok: response.ok };
+                }));
+
+                const failed = results.filter(r => !r.ok).length;
+                if (failed === 0) {
+                    Swal.fire("Supprime", "Les chevaux selectionnes ont ete supprimes.", "success");
+                } else {
+                    Swal.fire("Partiel", `${results.length - failed} supprime(s), ${failed} echec(s).`, "warning");
                 }
+                setHorseSelectionMode(false);
+            } catch (err) {
+                console.error(err);
+                Swal.fire("Erreur", "Une erreur est survenue lors de la suppression groupee.", "error");
             }
         });
-
-        if (!formValues) return;
-
-        const token = document.querySelector('meta[name="csrf-token"]').content;
-        const update = await fetch(`/admin/chevaux/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': token
-            },
-            body: JSON.stringify(formValues)
-        });
-
-        if (update.ok) {
-            Swal.fire("Succès", "Cheval modifié avec succès", "success");
-            setTimeout(() => { document.getElementById('horses-btn').click(); }, 400);
-        } else {
-            const err = await update.json();
-            Swal.fire("Erreur", err.message || "Mise à jour impossible", "error");
-        }
-    } catch (e) {
-        Swal.fire("Erreur", "Impossible de charger les informations", "error");
     }
-}
+
+});
 function filterTable(inputId, tableId, columns) {
     const filter = document.getElementById(inputId).value.toLowerCase();
     const rows = document.querySelectorAll(`#${tableId} tr`);
@@ -453,22 +497,22 @@ document.getElementById('user-search').addEventListener('keyup', (e) => {
     }
 });
 document.getElementById('horse-search-btn').addEventListener('click', () => {
-    filterTable('horse-search', 'horse-list', [1, 2, 3, 4, 5, 6]);
+    filterTable('horse-search', 'horse-list', [2, 3, 4, 5, 6]);
 });
 
 document.getElementById('horse-search').addEventListener('keyup', (e) => {
     if (e.key === 'Enter') {
-        filterTable('horse-search', 'horse-list', [1, 2, 3, 4, 5, 6]);
+        filterTable('horse-search', 'horse-list', [2, 3, 4, 5, 6]);
     }
 });
 window.editUser = async function (id) {
     try {
-        // 1️⃣ Récupérer l'utilisateur
+        // 1Recuperer l'utilisateur
         const res = await fetch(`/admin/utilisateurs/${id}`);
         if (!res.ok) throw new Error();
         const user = await res.json();
 
-        // 2️⃣ Popup SweetAlert avec mise en page horizontale
+        // 2Popup SweetAlert avec mise en page horizontale
         const { value: formValues } = await Swal.fire({
             title: "Modifier l'utilisateur",
             html: `
@@ -479,8 +523,8 @@ window.editUser = async function (id) {
                     </div>
 
                     <div class="form-group">
-                        <label for="swal-prenom">Prénom</label>
-                        <input id="swal-prenom" type="text" placeholder="Prénom" value="${user.prenom ?? ''}">
+                        <label for="swal-prenom">Prenom</label>
+                        <input id="swal-prenom" type="text" placeholder="Prenom" value="${user.prenom ?? ''}">
                     </div>
 
                     <div class="form-group">
@@ -489,7 +533,7 @@ window.editUser = async function (id) {
                     </div>
 
                     <div class="form-group">
-                        <label for="swal-role">Rôle</label>
+                        <label for="swal-role">Role</label>
                         <select id="swal-role">
                             <option value="user" ${user.role === 'user' ? 'selected' : ''}>Utilisateur</option>
                             <option value="admin" ${user.role === 'admin' ? 'selected' : ''}>Administrateur</option>
@@ -512,7 +556,7 @@ window.editUser = async function (id) {
 
         if (!formValues) return;
 
-        // 3️⃣ Envoyer la mise à jour
+        // 3Envoyer la mise a jour
         const token = document.querySelector('meta[name="csrf-token"]').content;
         const update = await fetch(`/admin/utilisateurs/${id}`, {
             method: 'PUT',
@@ -525,8 +569,8 @@ window.editUser = async function (id) {
 
         if (update.ok) {
             Swal.fire({
-                title: "Succès",
-                text: "Utilisateur mis à jour",
+                title: "Succes",
+                text: "Utilisateur mis a jour",
                 icon: "success",
                 timer: 1500,
                 showConfirmButton: false
@@ -544,7 +588,7 @@ window.editUser = async function (id) {
 window.deleteUser = async function (id) {
     const confirm = await Swal.fire({
         title: "Confirmer la suppression",
-        text: "Cet utilisateur sera supprimé définitivement",
+        text: "Cet utilisateur sera supprime definitivement",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Oui, supprimer",
@@ -565,7 +609,7 @@ window.deleteUser = async function (id) {
         });
 
         if (res.ok) {
-            Swal.fire("Supprimé", "Utilisateur supprimé", "success");
+            Swal.fire("Supprime", "Utilisateur supprime", "success");
             document.getElementById('users-btn').click();
         } else {
             const err = await res.json();
@@ -576,3 +620,6 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
+
+
+

@@ -263,9 +263,6 @@
                         <div class="requirement" id="req-number">
                             <i class="fas fa-circle"></i> 1 chiffre
                         </div>
-                        <div class="requirement" id="req-special">
-                            <i class="fas fa-circle"></i> 1 caractère spécial
-                        </div>
                     </div>
                 </div>
 

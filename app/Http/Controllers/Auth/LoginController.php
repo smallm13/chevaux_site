@@ -10,7 +10,7 @@ class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login'); // Vue pour un login classique
+        return redirect('/'); // redirige vers la page d'accueil avec la modale login
     }
 
     public function login(Request $request)

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -15,8 +15,8 @@
         <!-- Sidebar -->
         <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
-                <h2>Écuries</h2>
-                <button id="sidebar-toggle" class="toggle-btn">☰</button>
+                <h2>Ecuries</h2>
+                <button id="sidebar-toggle" class="toggle-btn">&#9776;</button>
             </div>
             <div class="profile-section">
                 <img src="https://picsum.photos/100" alt="Admin" class="profile-pic" />
@@ -28,7 +28,7 @@
                 <a href="#" id="stats-btn">Statistiques</a>
             </nav>
             <div class="logout-section">
-                <button class="logout-btn">➜ Déconnexion</button>
+                <button class="logout-btn">-> Deconnexion</button>
             </div>
         </aside>
 
@@ -54,7 +54,7 @@
     <input
         type="text"
         id="user-search"
-        placeholder="Rechercher un utilisateur (nom, prénom, email...)">
+        placeholder="Rechercher un utilisateur (nom, prenom, email...)">
     <button id="user-search-btn">Rechercher</button>
 </div>
                 <h2>Liste des utilisateurs</h2>
@@ -64,7 +64,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
-                            <th>Prénom</th>
+                            <th>Prenom</th>
                             <th>Email</th>
                             <th>Role</th>
                             <th>Actions</th>
@@ -86,20 +86,26 @@
 </div>
                 <div class="horse-header">
                     <h2>Liste des chevaux</h2>
-                    <button id="add-horse-btn">+ Ajouter Cheval</button>
+                    <div class="horse-actions">
+                        <button id="add-horse-btn">+ Ajouter un cheval</button>
+                        <button id="bulk-select-horses-btn" class="bulk-btn">Supprimer des chevaux</button>
+                        <button id="bulk-delete-horses-btn" class="bulk-btn danger" style="display:none;" disabled>
+                            Supprimer la selection (0)
+                        </button>
+                    </div>
                 </div>
   
                 <table id="horse-table">
                     <thead>
                         <tr>
+                            <th class="selection-col" style="display:none;">Sel.</th>
                             <th>ID</th>
                             <th>Nom</th>
                             <th>Race</th>
                             <th>Robe</th>
-                            <th>Âge</th>
+                            <th>Annee de naissance</th>
                             <th>Taille</th>
-                            <th>Propriétaire</th>
-                            <th>Actions</th>
+<th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="horse-list"></tbody>
@@ -115,23 +121,153 @@
         <div class="modal-content">
             <h3>Ajouter un cheval</h3>
             <form id="add-horse-form">
-                <label>Nom :</label>
-                <input type="text" name="nom" required />
+                <div class="horse-form-section">
+                    <h4>Identite du cheval</h4>
+                    <div class="horse-form-grid">
+                        <div class="field">
+                            <label>Nom *</label>
+                            <input type="text" name="nom" required />
+                        </div>
+                        <div class="field">
+                            <label>Race</label>
+                            <input type="text" name="race" />
+                        </div>
+                        <div class="field">
+                            <label>Sexe</label>
+                            <select name="sexe">
+                                <option value="">-</option>
+                                <option value="Male">Male</option>
+                                <option value="Femelle">Femelle</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Robe</label>
+                            <input type="text" name="robe" />
+                        </div>
+                        <div class="field">
+                            <label>Annee de naissance</label>
+                            <input type="number" name="annee_naissance" min="1900" max="2100" />
+                        </div>
+                        <div class="field">
+                            <label>Date de naissance</label>
+                            <input type="date" name="date_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Taille (m)</label>
+                            <input type="number" name="taille" step="0.01" />
+                        </div>
+                        <div class="field">
+                            <label>Lieu de naissance</label>
+                            <input type="text" name="lieu_naissance" />
+                        </div>
+                    </div>
+                </div>
 
-                <label>Race :</label>
-                <input type="text" name="race" required />
+                <div class="horse-form-section">
+                    <h4>Identifiants officiels</h4>
+                    <div class="horse-form-grid">
+                        <div class="field">
+                            <label>Numero SIRE</label>
+                            <input type="text" name="sire_numero" />
+                        </div>
+                        <div class="field">
+                            <label>Numero UELN</label>
+                            <input type="text" name="ueln_numero" />
+                        </div>
+                        <div class="field">
+                            <label>Stud-book</label>
+                            <input type="text" name="studbook_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Transpondeur</label>
+                            <select name="transpondeur">
+                                <option value="">-</option>
+                                <option value="1">Oui</option>
+                                <option value="0">Non</option>
+                            </select>
+                        </div>
+                        <div class="field">
+                            <label>Numero transpondeur</label>
+                            <input type="text" name="numero_transpondeur" />
+                        </div>
+                        <div class="field">
+                            <label>Date pose transpondeur</label>
+                            <input type="date" name="date_pose_transpondeur" />
+                        </div>
+                    </div>
+                </div>
 
-                <label>Robe :</label>
-                <input type="text" name="robe" required />
+                <div class="horse-form-section">
+                    <h4>Pedigree</h4>
+                    <div class="horse-form-grid">
+                        <div class="field">
+                            <label>Nom pere</label>
+                            <input type="text" name="pere_nom" />
+                        </div>
+                        <div class="field">
+                            <label>SIRE pere</label>
+                            <input type="text" name="pere_sire_numero" />
+                        </div>
+                        <div class="field">
+                            <label>UELN pere</label>
+                            <input type="text" name="pere_ueln_numero" />
+                        </div>
+                        <div class="field">
+                            <label>Date naissance pere</label>
+                            <input type="date" name="pere_date_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Pays naissance pere</label>
+                            <input type="text" name="pere_pays_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Stud-book pere</label>
+                            <input type="text" name="pere_studbook" />
+                        </div>
+                        <div class="field">
+                            <label>Nom mere</label>
+                            <input type="text" name="mere_nom" />
+                        </div>
+                        <div class="field">
+                            <label>SIRE mere</label>
+                            <input type="text" name="mere_sire_numero" />
+                        </div>
+                        <div class="field">
+                            <label>UELN mere</label>
+                            <input type="text" name="mere_ueln_numero" />
+                        </div>
+                        <div class="field">
+                            <label>Date naissance mere</label>
+                            <input type="date" name="mere_date_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Pays naissance mere</label>
+                            <input type="text" name="mere_pays_naissance" />
+                        </div>
+                        <div class="field">
+                            <label>Stud-book mere</label>
+                            <input type="text" name="mere_studbook" />
+                        </div>
+                    </div>
+                </div>
 
-                <label>Âge :</label>
-                <input type="number" name="age" required />
-
-                <label>Taille :</label>
-                <input type="text" name="taille" required />
-
-                <label>Propriétaire :</label>
-                <input type="text" name="proprietaire" required />
+                <div class="horse-form-section">
+                    <h4>Naisseur</h4>
+                    <div class="horse-form-grid">
+                        <div class="field">
+                            <label>Nom naisseur</label>
+                            <input type="text" name="naisseur_nom" />
+                        </div>
+                        <div class="field">
+                            <label>Telephone</label>
+                            <input type="text" name="naisseur_telephone" />
+                        </div>
+                        <div class="field field-wide">
+                            <label>Adresse</label>
+                            <input type="text" name="naisseur_adresse" />
+                        </div>
+                    </div>
+                </div>
 
                 <div class="modal-buttons">
                     <button type="button" id="close-modal-btn" class="btn-cancel">Annuler</button>
@@ -145,3 +281,7 @@
 </body>
 
 </html>
+
+
+
+

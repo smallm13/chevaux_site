@@ -9,16 +9,24 @@ class Horse extends Model
 {
     use HasFactory;
 
-    // Nom de la table
-    protected $table = 'chevaux';
+    // Table source: base chevaux_complet
+    protected $table = 'chevaux_complet.chevaux';
 
-    // Colonnes modifiables (utile si tu fais des insert/update plus tard)
+    // Colonnes modifiables reelles de chevaux_complet.chevaux
     protected $fillable = [
         'nom',
         'race',
+        'sexe',
         'robe',
-        'age',
+        'annee_naissance',
+        'date_naissance',
         'taille',
-        'proprietaire'
+        'lieu_naissance',
+        'sire_numero',
+        'ueln_numero',
+        'studbook_naissance',
+        'transpondeur',
+        'numero_transpondeur',
+        'date_pose_transpondeur',
     ];
 }
