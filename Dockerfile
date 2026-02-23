@@ -80,8 +80,4 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-avail
 # Exposer le port imposé par Render
 EXPOSE 10000
 
-EXPOSE 80
-
-CMD php artisan config:clear && \
-    php artisan migrate --force && \
-    apache2-foreground
+CMD ["apache2-foreground"]
