@@ -83,4 +83,4 @@ RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-avail
 EXPOSE 10000
 
 # Commandes Laravel au demarrage (sans bloquer le boot sur la DB)
-CMD ["sh", "-lc", "php artisan config:clear && php artisan cache:clear && (php artisan migrate --force || true); apache2-foreground"]
+CMD ["sh", "-lc", "export SESSION_DRIVER=file; php artisan config:clear && php artisan cache:clear && (php artisan migrate --force || true); apache2-foreground"]
