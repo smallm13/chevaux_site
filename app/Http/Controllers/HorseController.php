@@ -167,7 +167,7 @@ class HorseController extends Controller
                     return;
                 }
 
-                DB::table('chevaux_complet.pedigrees')->updateOrInsert(
+                DB::table('pedigrees')->updateOrInsert(
                     ['cheval_id' => $horse->id, 'type' => $type],
                     [
                         'nom' => $nom,
@@ -188,13 +188,13 @@ class HorseController extends Controller
             $naisseurTelephone = $validated['naisseur_telephone'] ?? null;
 
             if ($naisseurNom || $naisseurAdresse || $naisseurTelephone) {
-                $naisseurId = DB::table('chevaux_complet.naisseurs')->insertGetId([
+                $naisseurId = DB::table('naisseurs')->insertGetId([
                     'nom' => $naisseurNom ?: 'Naisseur non renseigne',
                     'adresse' => $naisseurAdresse,
                     'telephone' => $naisseurTelephone,
                 ]);
 
-                DB::table('chevaux_complet.cheval_naisseur')->updateOrInsert(
+                DB::table('cheval_naisseur')->updateOrInsert(
                     ['cheval_id' => $horse->id, 'naisseur_id' => $naisseurId],
                     ['pourcentage' => 100]
                 );
@@ -220,18 +220,18 @@ class HorseController extends Controller
     {
         $horse = Horse::findOrFail($id);
 
-        $pere = DB::table('chevaux_complet.pedigrees')
+        $pere = DB::table('pedigrees')
             ->where('cheval_id', $horse->id)
             ->where('type', 'pere')
             ->first();
 
-        $mere = DB::table('chevaux_complet.pedigrees')
+        $mere = DB::table('pedigrees')
             ->where('cheval_id', $horse->id)
             ->where('type', 'mere')
             ->first();
 
-        $naisseur = DB::table('chevaux_complet.cheval_naisseur as cn')
-            ->join('chevaux_complet.naisseurs as n', 'n.id', '=', 'cn.naisseur_id')
+        $naisseur = DB::table('cheval_naisseur as cn')
+            ->join('naisseurs as n', 'n.id', '=', 'cn.naisseur_id')
             ->where('cn.cheval_id', $horse->id)
             ->orderByDesc('cn.pourcentage')
             ->select('n.*', 'cn.pourcentage')
@@ -345,7 +345,7 @@ class HorseController extends Controller
                     return;
                 }
 
-                DB::table('chevaux_complet.pedigrees')->updateOrInsert(
+                DB::table('pedigrees')->updateOrInsert(
                     ['cheval_id' => $horse->id, 'type' => $type],
                     [
                         'nom' => $nom,
@@ -366,12 +366,12 @@ class HorseController extends Controller
             $naisseurTelephone = $validated['naisseur_telephone'] ?? null;
 
             if ($naisseurNom || $naisseurAdresse || $naisseurTelephone) {
-                $existingLink = DB::table('chevaux_complet.cheval_naisseur')
+                $existingLink = DB::table('cheval_naisseur')
                     ->where('cheval_id', $horse->id)
                     ->first();
 
                 if ($existingLink) {
-                    DB::table('chevaux_complet.naisseurs')
+                    DB::table('naisseurs')
                         ->where('id', $existingLink->naisseur_id)
                         ->update([
                             'nom' => $naisseurNom ?: 'Naisseur non renseigne',
@@ -379,13 +379,13 @@ class HorseController extends Controller
                             'telephone' => $naisseurTelephone,
                         ]);
                 } else {
-                    $naisseurId = DB::table('chevaux_complet.naisseurs')->insertGetId([
+                    $naisseurId = DB::table('naisseurs')->insertGetId([
                         'nom' => $naisseurNom ?: 'Naisseur non renseigne',
                         'adresse' => $naisseurAdresse,
                         'telephone' => $naisseurTelephone,
                     ]);
 
-                    DB::table('chevaux_complet.cheval_naisseur')->updateOrInsert(
+                    DB::table('cheval_naisseur')->updateOrInsert(
                         ['cheval_id' => $horse->id, 'naisseur_id' => $naisseurId],
                         ['pourcentage' => 100]
                     );
@@ -453,7 +453,7 @@ class HorseController extends Controller
 
     public function userShow($id)
     {
-        $qualifiedTable = 'chevaux_complet.chevaux';
+        $qualifiedTable = 'chevaux';
 
         $cheval = DB::table($qualifiedTable)->where('id', $id)->first();
 
@@ -465,21 +465,21 @@ class HorseController extends Controller
         }
 
         if (!$cheval) {
-            abort(404, 'Cheval introuvable dans la base chevaux_complet.');
+            abort(404, 'Cheval introuvable dans la base public.');
         }
 
-        $pere = DB::table('chevaux_complet.pedigrees')
+        $pere = DB::table('pedigrees')
             ->where('cheval_id', $cheval->id)
             ->where('type', 'pere')
             ->first();
 
-        $mere = DB::table('chevaux_complet.pedigrees')
+        $mere = DB::table('pedigrees')
             ->where('cheval_id', $cheval->id)
             ->where('type', 'mere')
             ->first();
 
-        $naisseur = DB::table('chevaux_complet.cheval_naisseur as cn')
-            ->join('chevaux_complet.naisseurs as n', 'n.id', '=', 'cn.naisseur_id')
+        $naisseur = DB::table('cheval_naisseur as cn')
+            ->join('naisseurs as n', 'n.id', '=', 'cn.naisseur_id')
             ->where('cn.cheval_id', $cheval->id)
             ->orderByDesc('cn.pourcentage')
             ->select('n.*', 'cn.pourcentage')
@@ -488,3 +488,5 @@ class HorseController extends Controller
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
+
+

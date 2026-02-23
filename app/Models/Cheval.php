@@ -10,7 +10,7 @@ class Cheval extends Model
     use HasFactory;
 
     // Postgres schema-qualified table.
-    protected $table = 'chevaux_complet.chevaux';
+    protected $table = 'chevaux';
     public $timestamps = false;
 
     // Colonnes modifiables.
@@ -31,3 +31,4 @@ class Cheval extends Model
         'date_pose_transpondeur',
     ];
 }
+
