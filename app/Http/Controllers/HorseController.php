@@ -3,30 +3,68 @@
 namespace App\Http\Controllers;
 
 use App\Models\Horse;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HorseController extends Controller
 {
+    private function resolveBirthYear(?int $anneeNaissance, $dateNaissance): ?int
+    {
+        if ($anneeNaissance !== null) {
+            return $anneeNaissance;
+        }
+
+        if (empty($dateNaissance)) {
+            return null;
+        }
+
+        return Carbon::parse($dateNaissance)->year;
+    }
+
+    private function resolveAge(?int $birthYear): ?int
+    {
+        if ($birthYear === null) {
+            return null;
+        }
+
+        return now()->year - $birthYear;
+    }
+
+    private function formatHorseListItem(object $horse): array
+    {
+        $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
+
+        return [
+            'name' => $horse->name,
+            'breed' => $horse->breed,
+            'coat' => $horse->coat,
+            'birth_year' => $birthYear,
+            'age' => $this->resolveAge($birthYear),
+            'height' => $horse->height,
+        ];
+    }
+
     private function horseListQuery()
     {
-        return Horse::query()->selectRaw("
-            nom as name,
-            race as breed,
-            robe as coat,
-            COALESCE(annee_naissance, YEAR(date_naissance)) as birth_year,
-            CASE
-                WHEN annee_naissance IS NOT NULL THEN YEAR(CURDATE()) - annee_naissance
-                WHEN date_naissance IS NOT NULL THEN TIMESTAMPDIFF(YEAR, date_naissance, CURDATE())
-                ELSE NULL
-            END as age,
-            taille as height
-        ");
+        return Horse::query()->select([
+            'nom as name',
+            'race as breed',
+            'robe as coat',
+            'annee_naissance',
+            'date_naissance',
+            'taille as height',
+        ]);
     }
 
     public function index()
     {
-        return response()->json($this->horseListQuery()->get());
+        $horses = $this->horseListQuery()
+            ->get()
+            ->map(fn ($horse) => $this->formatHorseListItem($horse))
+            ->values();
+
+        return response()->json($horses);
     }
 
     public function search(Request $request)
@@ -40,7 +78,9 @@ class HorseController extends Controller
             ->where('nom', 'LIKE', "%{$q}%")
             ->orWhere('race', 'LIKE', "%{$q}%")
             ->orWhere('robe', 'LIKE', "%{$q}%")
-            ->get();
+            ->get()
+            ->map(fn ($horse) => $this->formatHorseListItem($horse))
+            ->values();
 
         return response()->json($horses);
     }
@@ -364,21 +404,24 @@ class HorseController extends Controller
     public function userIndex()
     {
         $horses = Horse::query()
-            ->selectRaw("
-                id,
-                nom,
-                race,
-                robe,
-                sexe,
-                taille,
-                COALESCE(annee_naissance, YEAR(date_naissance)) as annee_naissance,
-                CASE
-                    WHEN annee_naissance IS NOT NULL THEN YEAR(CURDATE()) - annee_naissance
-                    WHEN date_naissance IS NOT NULL THEN TIMESTAMPDIFF(YEAR, date_naissance, CURDATE())
-                    ELSE NULL
-                END as age
-            ")
-            ->get();
+            ->select([
+                'id',
+                'nom',
+                'race',
+                'robe',
+                'sexe',
+                'taille',
+                'annee_naissance',
+                'date_naissance',
+            ])
+            ->get()
+            ->map(function ($horse) {
+                $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
+                $horse->annee_naissance = $birthYear;
+                $horse->age = $this->resolveAge($birthYear);
+
+                return $horse;
+            });
 
         return view('user.user', compact('horses'));
     }
@@ -386,21 +429,24 @@ class HorseController extends Controller
     public function userFavorites()
     {
         $horses = Horse::query()
-            ->selectRaw("
-                id,
-                nom,
-                race,
-                robe,
-                sexe,
-                taille,
-                COALESCE(annee_naissance, YEAR(date_naissance)) as annee_naissance,
-                CASE
-                    WHEN annee_naissance IS NOT NULL THEN YEAR(CURDATE()) - annee_naissance
-                    WHEN date_naissance IS NOT NULL THEN TIMESTAMPDIFF(YEAR, date_naissance, CURDATE())
-                    ELSE NULL
-                END as age
-            ")
-            ->get();
+            ->select([
+                'id',
+                'nom',
+                'race',
+                'robe',
+                'sexe',
+                'taille',
+                'annee_naissance',
+                'date_naissance',
+            ])
+            ->get()
+            ->map(function ($horse) {
+                $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
+                $horse->annee_naissance = $birthYear;
+                $horse->age = $this->resolveAge($birthYear);
+
+                return $horse;
+            });
 
         return view('user.favorites', compact('horses'));
     }

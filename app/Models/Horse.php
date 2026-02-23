@@ -9,10 +9,11 @@ class Horse extends Model
 {
     use HasFactory;
 
-    // Table source: base chevaux_complet
+    // Postgres schema-qualified table.
     protected $table = 'chevaux_complet.chevaux';
+    public $timestamps = false;
 
-    // Colonnes modifiables reelles de chevaux_complet.chevaux
+    // Colonnes modifiables.
     protected $fillable = [
         'nom',
         'race',
