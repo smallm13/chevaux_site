@@ -46,12 +46,10 @@ RUN npm run build
 FROM php:8.2-apache AS app
 WORKDIR /var/www/html
 
-# Render impose un port dynamique
 ENV PORT=10000
 ENV APACHE_RUN_PORT=10000
 ENV SESSION_DRIVER=file
 
-# Installer dépendances système
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
     libzip-dev \
@@ -62,25 +60,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && a2enconf servername \
     && rm -rf /var/lib/apt/lists/*
 
-# Configurer Apache pour écouter sur le bon port
 RUN sed -i "s/80/${PORT}/g" /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
 
-# Copier le projet
+# Copier le projet (inclut public/css et public/js statiques)
 COPY . .
 
-# Copier vendor et assets compilés
+# Écraser avec vendor et assets compilés
 COPY --from=vendor /app/vendor ./vendor
-COPY --from=assets /app/public/build ./public/build
+COPY --from=assets /app/public ./public
 
 # Permissions Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R ug+rwx storage bootstrap/cache
 
-# Pointer Apache vers le dossier public
 RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/000-default.conf
 
-# Exposer le port imposé par Render
 EXPOSE 10000
 
-# Commandes Laravel au demarrage (sans bloquer le boot sur la DB)
 CMD ["sh", "-lc", "export SESSION_DRIVER=file; php artisan config:clear && php artisan cache:clear && (php artisan migrate --force || true); apache2-foreground"]
