@@ -3,8 +3,10 @@
 ############################
 # 1️⃣ Composer dependencies
 ############################
-FROM composer:2 AS vendor
+FROM php:8.4-cli AS vendor
 WORKDIR /app
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 COPY composer.json composer.lock ./
 RUN composer install \
@@ -42,9 +44,10 @@ ENV APACHE_RUN_PORT=10000
 
 # Installer dépendances système
 RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
     libzip-dev \
     unzip \
-    && docker-php-ext-install pdo pdo_mysql zip \
+    && docker-php-ext-install pdo pdo_pgsql zip \
     && a2enmod rewrite \
     && rm -rf /var/lib/apt/lists/*
 
