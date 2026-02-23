@@ -49,6 +49,7 @@ WORKDIR /var/www/html
 # Render impose un port dynamique
 ENV PORT=10000
 ENV APACHE_RUN_PORT=10000
+ENV SESSION_DRIVER=file
 
 # Installer dépendances système
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -57,6 +58,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     unzip \
     && docker-php-ext-install pdo pdo_pgsql zip \
     && a2enmod rewrite \
+    && echo "ServerName localhost" > /etc/apache2/conf-available/servername.conf \
+    && a2enconf servername \
     && rm -rf /var/lib/apt/lists/*
 
 # Configurer Apache pour écouter sur le bon port
