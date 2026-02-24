@@ -98,16 +98,16 @@
 
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Chevaux au total</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Alezans</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Poneys</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                 </div>
 
@@ -131,24 +131,24 @@
                 <h2 class="card-title"><i class="fas fa-chart-bar"></i> Statistiques de l'élevage</h2>
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">24</div>
-                        <div class="stat-label">Chevaux au total</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">8</div>
-                        <div class="stat-label">Alezans</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">5</div>
-                        <div class="stat-label">Poneys</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Étalons</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">12</div>
-                        <div class="stat-label">Juments</div>
+                        <div class="stat-value">--</div>
+                        <div class="stat-label">Donnees dynamiques</div>
                     </div>
                 </div>
 
