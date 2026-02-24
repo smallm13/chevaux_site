@@ -98,16 +98,16 @@
 
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="search-total-value">--</div>
+                        <div class="stat-label">Chevaux au total</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="search-coat-1-value">--</div>
+                        <div class="stat-label" id="search-coat-1-label">Robe #1</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="search-coat-2-value">--</div>
+                        <div class="stat-label" id="search-coat-2-label">Robe #2</div>
                     </div>
                 </div>
 
@@ -131,24 +131,24 @@
                 <h2 class="card-title"><i class="fas fa-chart-bar"></i> Statistiques de l'élevage</h2>
                 <div class="stats-container">
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="stats-total-value">--</div>
+                        <div class="stat-label">Chevaux au total</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="stats-coat-1-value">--</div>
+                        <div class="stat-label" id="stats-coat-1-label">Robe #1</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="stats-coat-2-value">--</div>
+                        <div class="stat-label" id="stats-coat-2-label">Robe #2</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="stats-male-value">--</div>
+                        <div class="stat-label">Males</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-value">--</div>
-                        <div class="stat-label">Donnees dynamiques</div>
+                        <div class="stat-value" id="stats-female-value">--</div>
+                        <div class="stat-label">Femelles</div>
                     </div>
                 </div>
 

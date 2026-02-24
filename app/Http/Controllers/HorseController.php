@@ -75,6 +75,7 @@ class HorseController extends Controller
             'name' => $horse->name,
             'breed' => $horse->breed,
             'coat' => $horse->coat,
+            'sex' => $horse->sex ?? null,
             'birth_year' => $birthYear,
             'age' => $age,
             'height' => $horse->height,
@@ -89,6 +90,12 @@ class HorseController extends Controller
             'robe as coat',
             'taille as height',
         ]);
+
+        if ($this->hasHorseColumn('sexe')) {
+            $query->addSelect('sexe as sex');
+        } else {
+            $query->selectRaw('NULL as sex');
+        }
 
         if ($this->hasHorseColumn('annee_naissance')) {
             $query->addSelect('annee_naissance');

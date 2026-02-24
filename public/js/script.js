@@ -11,6 +11,20 @@ document.addEventListener('DOMContentLoaded', function () {
     const loader = document.getElementById('loader');
     const horsesGrid = document.getElementById('horses-grid');
     const loginMessage = document.getElementById('login-message');
+    const statsDom = {
+        searchTotal: document.getElementById('search-total-value'),
+        searchCoat1Value: document.getElementById('search-coat-1-value'),
+        searchCoat1Label: document.getElementById('search-coat-1-label'),
+        searchCoat2Value: document.getElementById('search-coat-2-value'),
+        searchCoat2Label: document.getElementById('search-coat-2-label'),
+        statsTotal: document.getElementById('stats-total-value'),
+        statsCoat1Value: document.getElementById('stats-coat-1-value'),
+        statsCoat1Label: document.getElementById('stats-coat-1-label'),
+        statsCoat2Value: document.getElementById('stats-coat-2-value'),
+        statsCoat2Label: document.getElementById('stats-coat-2-label'),
+        statsMale: document.getElementById('stats-male-value'),
+        statsFemale: document.getElementById('stats-female-value'),
+    };
 
     function getCsrfToken() {
         return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
@@ -328,6 +342,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function setText(el, value) {
+        if (!el) return;
+        el.textContent = value;
+    }
+
+    function updateStatsCards(horses, coatStats) {
+        const total = Array.isArray(horses) ? horses.length : 0;
+        const top1 = coatStats?.[0] || null;
+        const top2 = coatStats?.[1] || null;
+
+        const maleCount = (horses || []).filter(h => String(h?.sex || '').toLowerCase().startsWith('m')).length;
+        const femaleCount = (horses || []).filter(h => String(h?.sex || '').toLowerCase().startsWith('f')).length;
+
+        setText(statsDom.searchTotal, total);
+        setText(statsDom.searchCoat1Value, top1 ? top1.count : '--');
+        setText(statsDom.searchCoat1Label, top1 ? top1.coat : 'Robe #1');
+        setText(statsDom.searchCoat2Value, top2 ? top2.count : '--');
+        setText(statsDom.searchCoat2Label, top2 ? top2.coat : 'Robe #2');
+
+        setText(statsDom.statsTotal, total);
+        setText(statsDom.statsCoat1Value, top1 ? top1.count : '--');
+        setText(statsDom.statsCoat1Label, top1 ? top1.coat : 'Robe #1');
+        setText(statsDom.statsCoat2Value, top2 ? top2.count : '--');
+        setText(statsDom.statsCoat2Label, top2 ? top2.coat : 'Robe #2');
+        setText(statsDom.statsMale, maleCount);
+        setText(statsDom.statsFemale, femaleCount);
+    }
+
     // === Récupérer tous les chevaux ===
     async function fetchHorses() {
         loader.style.display = 'block';
@@ -367,11 +409,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const coatChart = document.getElementById('coatChart');
     async function loadStats() {
         try {
-            const response = await fetch('/horses/stats');
-            const stats = await response.json();
+            const [statsResponse, horsesResponse] = await Promise.all([
+                fetch('/horses/stats'),
+                fetch('/horses')
+            ]);
+
+            const stats = await statsResponse.json();
+            const horses = await horsesResponse.json();
 
             const labels = stats.map(s => s.coat);
             const data = stats.map(s => s.count);
+            updateStatsCards(horses, stats);
 
             if (coatChartInstance instanceof Chart) {
                 coatChartInstance.destroy();
