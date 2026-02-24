@@ -12,29 +12,18 @@
 
 <body>
     <div class="container">
-        <!-- Sidebar -->
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <h2>Ecuries</h2>
-                <button id="sidebar-toggle" class="toggle-btn">&#9776;</button>
-            </div>
-            <div class="profile-section">
-                <img src="https://picsum.photos/100" alt="Admin" class="profile-pic" />
-                <p class="admin-name">Administrateur</p>
-            </div>
-            <nav class="nav-links">
-                <a href="#" id="horses-btn">Chevaux</a>
-                <a href="#" id="users-btn">Utilisateurs</a>
-                <a href="#" id="stats-btn">Statistiques</a>
-            </nav>
-            <div class="logout-section">
-                <button class="logout-btn">-> Deconnexion</button>
-            </div>
-        </aside>
-
         <!-- Main Content -->
         <main class="main-content">
-            <h2>Bienvenue </h2>
+            <div class="top-bar">
+                <h2>Bienvenue</h2>
+                <button class="logout-btn">Deconnexion</button>
+            </div>
+
+            <nav class="tabs-nav">
+                <button type="button" class="tab-btn active" id="home-tab">Accueil</button>
+                <button type="button" class="tab-btn" id="favorites-tab">Mes favoris</button>
+                <button type="button" class="tab-btn" id="stats-tab">Statistiques</button>
+            </nav>
 
             <!-- Stats Cards -->
             <section class="stats-cards" id="stats-section">

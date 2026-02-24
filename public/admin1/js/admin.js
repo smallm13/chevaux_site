@@ -1,13 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
 
     // ======== Variables =========
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('sidebar-toggle');
-    const container = document.querySelector('.container');
-
-    const usersBtn = document.getElementById('users-btn');
-    const horsesBtn = document.getElementById('horses-btn');
-    const statsBtn = document.getElementById('stats-btn');
+    const homeTab = document.getElementById('home-tab');
+    const favoritesTab = document.getElementById('favorites-tab');
+    const statsTab = document.getElementById('stats-tab');
+    const tabButtons = [homeTab, favoritesTab, statsTab].filter(Boolean);
 
     const userSection = document.getElementById('user-section');
     const horseSection = document.getElementById('horse-section');
@@ -34,6 +31,36 @@
 
     let horseSelectionMode = false;
     let selectedHorseIds = new Set();
+
+    function setActiveTab(tab) {
+        tabButtons.forEach((btn) => {
+            btn.classList.toggle('active', btn === tab);
+        });
+    }
+
+    function showHomeSection() {
+        horseSection.style.display = 'block';
+        userSection.style.display = 'none';
+        statsSection.style.display = 'none';
+        setActiveTab(homeTab);
+        loadHorses();
+    }
+
+    function showFavoritesSection() {
+        userSection.style.display = 'block';
+        horseSection.style.display = 'none';
+        statsSection.style.display = 'none';
+        setActiveTab(favoritesTab);
+        loadUsers();
+    }
+
+    function showStatsSection() {
+        statsSection.style.display = 'flex';
+        userSection.style.display = 'none';
+        horseSection.style.display = 'none';
+        setActiveTab(statsTab);
+        updateStats();
+    }
 
     // ======== Fonctions ========
     async function updateStats() {
@@ -179,29 +206,17 @@
     }
 
     // ======== Evenements Sections ========
-    usersBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        userSection.style.display = 'block';
-        horseSection.style.display = 'none';
-        statsSection.style.display = 'none';
-        loadUsers();
-    });
+    if (homeTab) {
+        homeTab.addEventListener('click', showHomeSection);
+    }
 
-    horsesBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        horseSection.style.display = 'block';
-        userSection.style.display = 'none';
-        statsSection.style.display = 'none';
-        loadHorses();
-    });
+    if (favoritesTab) {
+        favoritesTab.addEventListener('click', showFavoritesSection);
+    }
 
-    statsBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        statsSection.style.display = 'flex';
-        userSection.style.display = 'none';
-        horseSection.style.display = 'none';
-        updateStats();
-    });
+    if (statsTab) {
+        statsTab.addEventListener('click', showStatsSection);
+    }
 
     // ======== Logout ========
     if (logoutBtn) {
@@ -481,6 +496,8 @@
         });
     }
 
+    showHomeSection();
+
 });
 function filterTable(inputId, tableId, columns) {
     const filter = document.getElementById(inputId).value.toLowerCase();
@@ -587,7 +604,7 @@ window.editUser = async function (id) {
                 timer: 1500,
                 showConfirmButton: false
             });
-            document.getElementById('users-btn').click();
+            document.getElementById('favorites-tab')?.click();
         } else {
             const err = await update.json();
             Swal.fire("Erreur", err.message || "Impossible de modifier", "error");
@@ -622,7 +639,7 @@ window.deleteUser = async function (id) {
 
         if (res.ok) {
             Swal.fire("Supprime", "Utilisateur supprime", "success");
-            document.getElementById('users-btn').click();
+            document.getElementById('favorites-tab')?.click();
         } else {
             const err = await res.json();
             Swal.fire("Erreur", err.message || "Suppression impossible", "error");
