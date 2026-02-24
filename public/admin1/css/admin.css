@@ -98,9 +98,12 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+  margin-right: -20px;
   margin-bottom: 1.25rem;
-  padding: 0.5rem;
-  border-radius: 10px;
+  padding: 0.6rem 20px;
+  border-radius: 0;
   background: #f0e4d8;
 }
 
@@ -434,6 +437,14 @@ body {
 @media (max-width: 768px) {
   .main-content {
     padding: 1rem;
+  }
+
+  .admin-navbar {
+    width: calc(100% + 2rem);
+    margin-left: -1rem;
+    margin-right: -1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .top-bar {
