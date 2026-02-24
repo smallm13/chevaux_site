@@ -104,9 +104,14 @@ class HorseController extends Controller
             'nom',
             'race',
             'robe',
-            'sexe',
             'taille',
         ]);
+
+        if ($this->hasHorseColumn('sexe')) {
+            $query->addSelect('sexe');
+        } else {
+            $query->selectRaw('NULL as sexe');
+        }
 
         if ($this->hasHorseColumn('annee_naissance')) {
             $query->addSelect('annee_naissance');
