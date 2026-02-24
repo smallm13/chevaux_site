@@ -375,7 +375,9 @@
                     method,
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': token
+                        'X-CSRF-TOKEN': token,
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
                     },
                     body: JSON.stringify(data)
                 });
@@ -390,8 +392,18 @@
                     setFormModeCreate();
                     loadHorses();
                 } else {
-                    const errorData = await response.json();
-                    Swal.fire('Erreur', errorData.message || 'Erreur lors de l enregistrement', 'error');
+                    let message = 'Erreur lors de l enregistrement';
+                    const contentType = response.headers.get('content-type') || '';
+                    if (contentType.includes('application/json')) {
+                        const errorData = await response.json();
+                        message = errorData.message || message;
+                    } else {
+                        const text = await response.text();
+                        if (text && !text.startsWith('<!DOCTYPE')) {
+                            message = text;
+                        }
+                    }
+                    Swal.fire('Erreur', message, 'error');
                 }
             } catch (err) {
                 console.error(err);
