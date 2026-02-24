@@ -6,9 +6,30 @@ use App\Models\Horse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class HorseController extends Controller
 {
+    private ?array $horseColumns = null;
+
+    private function horseColumns(): array
+    {
+        if ($this->horseColumns !== null) {
+            return $this->horseColumns;
+        }
+
+        $model = new Horse();
+        $this->horseColumns = Schema::connection($model->getConnectionName())
+            ->getColumnListing($model->getTable());
+
+        return $this->horseColumns;
+    }
+
+    private function hasHorseColumn(string $column): bool
+    {
+        return in_array($column, $this->horseColumns(), true);
+    }
+
     private function resolveBirthYear(?int $anneeNaissance, $dateNaissance): ?int
     {
         if ($anneeNaissance !== null) {
@@ -34,27 +55,78 @@ class HorseController extends Controller
     private function formatHorseListItem(object $horse): array
     {
         $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
+        $age = $birthYear !== null ? $this->resolveAge($birthYear) : ($horse->stored_age ?? null);
 
         return [
             'name' => $horse->name,
             'breed' => $horse->breed,
             'coat' => $horse->coat,
             'birth_year' => $birthYear,
-            'age' => $this->resolveAge($birthYear),
+            'age' => $age,
             'height' => $horse->height,
         ];
     }
 
     private function horseListQuery()
     {
-        return Horse::query()->select([
+        $query = Horse::query()->select([
             'nom as name',
             'race as breed',
             'robe as coat',
-            'annee_naissance',
-            'date_naissance',
             'taille as height',
         ]);
+
+        if ($this->hasHorseColumn('annee_naissance')) {
+            $query->addSelect('annee_naissance');
+        } else {
+            $query->selectRaw('NULL as annee_naissance');
+        }
+
+        if ($this->hasHorseColumn('date_naissance')) {
+            $query->addSelect('date_naissance');
+        } else {
+            $query->selectRaw('NULL as date_naissance');
+        }
+
+        if ($this->hasHorseColumn('age')) {
+            $query->addSelect('age as stored_age');
+        } else {
+            $query->selectRaw('NULL as stored_age');
+        }
+
+        return $query;
+    }
+
+    private function horseViewQuery()
+    {
+        $query = Horse::query()->select([
+            'id',
+            'nom',
+            'race',
+            'robe',
+            'sexe',
+            'taille',
+        ]);
+
+        if ($this->hasHorseColumn('annee_naissance')) {
+            $query->addSelect('annee_naissance');
+        } else {
+            $query->selectRaw('NULL as annee_naissance');
+        }
+
+        if ($this->hasHorseColumn('date_naissance')) {
+            $query->addSelect('date_naissance');
+        } else {
+            $query->selectRaw('NULL as date_naissance');
+        }
+
+        if ($this->hasHorseColumn('age')) {
+            $query->addSelect('age as stored_age');
+        } else {
+            $query->selectRaw('NULL as stored_age');
+        }
+
+        return $query;
     }
 
     public function index()
@@ -152,6 +224,7 @@ class HorseController extends Controller
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
             ];
+            $horseData = array_intersect_key($horseData, array_flip($this->horseColumns()));
 
             $horse = Horse::create($horseData);
 
@@ -316,7 +389,7 @@ class HorseController extends Controller
 
         $horse = DB::transaction(function () use ($validated, $id) {
             $horse = Horse::findOrFail($id);
-            $horse->update([
+            $horseData = [
                 'nom' => $validated['nom'],
                 'race' => $validated['race'] ?? null,
                 'sexe' => $validated['sexe'] ?? null,
@@ -331,7 +404,9 @@ class HorseController extends Controller
                 'numero_transpondeur' => $validated['numero_transpondeur'] ?? null,
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
-            ]);
+            ];
+            $horseData = array_intersect_key($horseData, array_flip($this->horseColumns()));
+            $horse->update($horseData);
 
             $upsertPedigree = function (string $type, string $prefix) use ($validated, $horse) {
                 $nom = $validated["{$prefix}_nom"] ?? null;
@@ -403,22 +478,12 @@ class HorseController extends Controller
 
     public function userIndex()
     {
-        $horses = Horse::query()
-            ->select([
-                'id',
-                'nom',
-                'race',
-                'robe',
-                'sexe',
-                'taille',
-                'annee_naissance',
-                'date_naissance',
-            ])
+        $horses = $this->horseViewQuery()
             ->get()
             ->map(function ($horse) {
                 $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
                 $horse->annee_naissance = $birthYear;
-                $horse->age = $this->resolveAge($birthYear);
+                $horse->age = $birthYear !== null ? $this->resolveAge($birthYear) : ($horse->stored_age ?? null);
 
                 return $horse;
             });
@@ -428,22 +493,12 @@ class HorseController extends Controller
 
     public function userFavorites()
     {
-        $horses = Horse::query()
-            ->select([
-                'id',
-                'nom',
-                'race',
-                'robe',
-                'sexe',
-                'taille',
-                'annee_naissance',
-                'date_naissance',
-            ])
+        $horses = $this->horseViewQuery()
             ->get()
             ->map(function ($horse) {
                 $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
                 $horse->annee_naissance = $birthYear;
-                $horse->age = $this->resolveAge($birthYear);
+                $horse->age = $birthYear !== null ? $this->resolveAge($birthYear) : ($horse->stored_age ?? null);
 
                 return $horse;
             });
