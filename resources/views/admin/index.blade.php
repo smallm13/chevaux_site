@@ -19,10 +19,10 @@
                 <button class="logout-btn">Deconnexion</button>
             </div>
 
-            <nav class="tabs-nav">
-                <button type="button" class="tab-btn active" id="home-tab">Accueil</button>
-                <button type="button" class="tab-btn" id="favorites-tab">Mes favoris</button>
-                <button type="button" class="tab-btn" id="stats-tab">Statistiques</button>
+            <nav class="admin-navbar">
+                <button type="button" class="nav-link active" id="chevaux-btn">Chevaux</button>
+                <button type="button" class="nav-link" id="utilisateurs-btn">Utilisateurs</button>
+                <button type="button" class="nav-link" id="statisques-btn">Statisques</button>
             </nav>
 
             <!-- Stats Cards -->

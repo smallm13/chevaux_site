@@ -94,29 +94,32 @@ body {
   margin-bottom: 1rem;
 }
 
-.tabs-nav {
+.admin-navbar {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  background: #f0e4d8;
 }
 
-.tab-btn {
+.nav-link {
   border: none;
-  border-radius: 999px;
+  border-radius: 8px;
   padding: 0.55rem 1rem;
   font-weight: 600;
   color: var(--primary);
-  background: #ead8c8;
+  background: transparent;
   cursor: pointer;
   transition: background 0.2s ease, color 0.2s ease;
 }
 
-.tab-btn:hover {
+.nav-link:hover {
   background: #ddc3ad;
 }
 
-.tab-btn.active {
+.nav-link.active {
   background: var(--primary);
   color: #fff;
 }

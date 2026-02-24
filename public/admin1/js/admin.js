@@ -1,10 +1,10 @@
 ﻿document.addEventListener('DOMContentLoaded', () => {
 
     // ======== Variables =========
-    const homeTab = document.getElementById('home-tab');
-    const favoritesTab = document.getElementById('favorites-tab');
-    const statsTab = document.getElementById('stats-tab');
-    const tabButtons = [homeTab, favoritesTab, statsTab].filter(Boolean);
+    const chevauxBtn = document.getElementById('chevaux-btn');
+    const utilisateursBtn = document.getElementById('utilisateurs-btn');
+    const statisquesBtn = document.getElementById('statisques-btn');
+    const navButtons = [chevauxBtn, utilisateursBtn, statisquesBtn].filter(Boolean);
 
     const userSection = document.getElementById('user-section');
     const horseSection = document.getElementById('horse-section');
@@ -33,7 +33,7 @@
     let selectedHorseIds = new Set();
 
     function setActiveTab(tab) {
-        tabButtons.forEach((btn) => {
+        navButtons.forEach((btn) => {
             btn.classList.toggle('active', btn === tab);
         });
     }
@@ -42,7 +42,7 @@
         horseSection.style.display = 'block';
         userSection.style.display = 'none';
         statsSection.style.display = 'none';
-        setActiveTab(homeTab);
+        setActiveTab(chevauxBtn);
         loadHorses();
     }
 
@@ -50,7 +50,7 @@
         userSection.style.display = 'block';
         horseSection.style.display = 'none';
         statsSection.style.display = 'none';
-        setActiveTab(favoritesTab);
+        setActiveTab(utilisateursBtn);
         loadUsers();
     }
 
@@ -58,7 +58,7 @@
         statsSection.style.display = 'flex';
         userSection.style.display = 'none';
         horseSection.style.display = 'none';
-        setActiveTab(statsTab);
+        setActiveTab(statisquesBtn);
         updateStats();
     }
 
@@ -206,16 +206,16 @@
     }
 
     // ======== Evenements Sections ========
-    if (homeTab) {
-        homeTab.addEventListener('click', showHomeSection);
+    if (chevauxBtn) {
+        chevauxBtn.addEventListener('click', showHomeSection);
     }
 
-    if (favoritesTab) {
-        favoritesTab.addEventListener('click', showFavoritesSection);
+    if (utilisateursBtn) {
+        utilisateursBtn.addEventListener('click', showFavoritesSection);
     }
 
-    if (statsTab) {
-        statsTab.addEventListener('click', showStatsSection);
+    if (statisquesBtn) {
+        statisquesBtn.addEventListener('click', showStatsSection);
     }
 
     // ======== Logout ========
@@ -604,7 +604,7 @@ window.editUser = async function (id) {
                 timer: 1500,
                 showConfirmButton: false
             });
-            document.getElementById('favorites-tab')?.click();
+            document.getElementById('utilisateurs-btn')?.click();
         } else {
             const err = await update.json();
             Swal.fire("Erreur", err.message || "Impossible de modifier", "error");
@@ -639,7 +639,7 @@ window.deleteUser = async function (id) {
 
         if (res.ok) {
             Swal.fire("Supprime", "Utilisateur supprime", "success");
-            document.getElementById('favorites-tab')?.click();
+            document.getElementById('utilisateurs-btn')?.click();
         } else {
             const err = await res.json();
             Swal.fire("Erreur", err.message || "Suppression impossible", "error");
