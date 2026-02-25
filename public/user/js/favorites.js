@@ -6,6 +6,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(id);
     }
 
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function getFavorites() {
         try {
             const raw = JSON.parse(localStorage.getItem('horse_favorites')) || [];
@@ -31,27 +40,27 @@ document.addEventListener('DOMContentLoaded', function () {
         card.className = 'horse-card';
         card.innerHTML = `
             <div class="horse-card-header">
-                <h3 class="horse-card-title">${horse.nom}</h3>
-                <p class="horse-card-subtitle">${horse.race ?? '-'}  ${horse.robe ?? '-'}</p>
+                <h3 class="horse-card-title">${escapeHtml(horse.nom)}</h3>
+                <p class="horse-card-subtitle">${escapeHtml(horse.race ?? '-')}  ${escapeHtml(horse.robe ?? '-')}</p>
                 <i class="fas fa-horse-head"></i>
             </div>
             <div class="horse-card-body">
                 <div class="horse-card-details">
                     <div class="horse-card-detail">
                         <span class="detail-label">Sexe</span>
-                        <span class="detail-value">${horse.sexe ?? '-'}</span>
+                        <span class="detail-value">${escapeHtml(horse.sexe ?? '-')}</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Annee de naissance</span>
-                        <span class="detail-value">${horse.annee_naissance ?? '-'}</span>
+                        <span class="detail-value">${escapeHtml(horse.annee_naissance ?? '-')}</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Taille</span>
-                        <span class="detail-value">${horse.taille ?? '-'} m</span>
+                        <span class="detail-value">${escapeHtml(horse.taille ?? '-')} m</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Robe</span>
-                        <span class="detail-value">${horse.robe ?? '-'}</span>
+                        <span class="detail-value">${escapeHtml(horse.robe ?? '-')}</span>
                     </div>
                 </div>
                 <div class="horse-card-actions">

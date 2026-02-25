@@ -22,6 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentFilteredHorses = [];
     let favorites = JSON.parse(localStorage.getItem('horse_favorites')) || [];
 
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     function normalizeHorseId(id) {
         return String(id);
     }
@@ -294,27 +303,27 @@ document.addEventListener('DOMContentLoaded', function() {
                 <button class="horse-card-fav ${isFavorite ? 'active' : ''}" data-id="${horse.id}">
                     <i class="${isFavorite ? 'fas' : 'far'} fa-heart"></i>
                 </button>
-                <h3 class="horse-card-title">${horse.nom}</h3>
-                <p class="horse-card-subtitle">${horse.race ?? '-'}</p>
+                <h3 class="horse-card-title">${escapeHtml(horse.nom)}</h3>
+                <p class="horse-card-subtitle">${escapeHtml(horse.race ?? '-')}</p>
                 <i class="fas ${genderIcon}"></i>
             </div>
             <div class="horse-card-body">
                 <div class="horse-card-details">
                     <div class="horse-card-detail">
                         <span class="detail-label">Sexe</span>
-                        <span class="detail-value">${horse.sexe}</span>
+                        <span class="detail-value">${escapeHtml(horse.sexe ?? '-')}</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Annee de naissance</span>
-                        <span class="detail-value">${horse.annee_naissance ?? '-'}</span>
+                        <span class="detail-value">${escapeHtml(horse.annee_naissance ?? '-')}</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Taille</span>
-                        <span class="detail-value">${horse.taille} m</span>
+                        <span class="detail-value">${escapeHtml(horse.taille ?? '-')} m</span>
                     </div>
                     <div class="horse-card-detail">
                         <span class="detail-label">Robe</span>
-                        <span class="detail-value">${horse.robe ?? '-'}</span>
+                        <span class="detail-value">${escapeHtml(horse.robe ?? '-')}</span>
                     </div>
                 </div>
                 <div class="horse-card-actions">
@@ -535,7 +544,7 @@ document.addEventListener('DOMContentLoaded', function() {
         notification.className = `notification notification-${type}`;
         notification.innerHTML = `
             <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}"></i>
-            <span>${message}</span>
+            <span>${escapeHtml(message)}</span>
         `;
 
         document.body.appendChild(notification);

@@ -1,5 +1,14 @@
 let coatChartInstance;
 
+function escapeHtml(value) {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     // === Gestion de la modale de connexion ===
     const modal = document.getElementById('login-modal');
@@ -319,10 +328,12 @@ document.addEventListener('DOMContentLoaded', function () {
             horseCard.className = 'horse-card';
 
             const highlightTerm = (text) => {
-                if (!text) return '';
-                if (!searchTerm) return text;
-                const regex = new RegExp(`(${searchTerm})`, 'gi');
-                return text.replace(regex, '<mark>$1</mark>');
+                const safeText = escapeHtml(text);
+                if (!searchTerm) return safeText;
+                const safeNeedle = escapeHtml(searchTerm).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                if (!safeNeedle) return safeText;
+                const regex = new RegExp(`(${safeNeedle})`, 'gi');
+                return safeText.replace(regex, '<mark>$1</mark>');
             };
 
             horseCard.innerHTML = `
@@ -331,9 +342,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h3 class="horse-name">${highlightTerm(horse.name)}</h3>
                     <div class="horse-details">
                         <div class="detail-item"><span class="detail-label">Race</span><span class="detail-value">${highlightTerm(horse.breed)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Taille</span><span class="detail-value">${horse.height} m</span></div>
+                        <div class="detail-item"><span class="detail-label">Taille</span><span class="detail-value">${escapeHtml(horse.height)} m</span></div>
                         <div class="detail-item"><span class="detail-label">Robe</span><span class="detail-value">${highlightTerm(horse.coat)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Annee de naissance</span><span class="detail-value">${horse.birth_year ?? '-'}</span></div>
+                        <div class="detail-item"><span class="detail-label">Annee de naissance</span><span class="detail-value">${escapeHtml(horse.birth_year ?? '-')}</span></div>
                     </div>
                 </div>
             `;

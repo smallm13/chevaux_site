@@ -1,4 +1,13 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+﻿
+document.addEventListener('DOMContentLoaded', () => {
+    function escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/\"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
     // ======== Variables =========
     const chevauxBtn = document.getElementById('chevaux-btn');
@@ -102,11 +111,11 @@
             utilisateurs.forEach(u => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${u.id}</td>
-                    <td>${u.nom}</td>
-                    <td>${u.prenom}</td>
-                    <td>${u.email}</td>
-                    <td>${u.role}</td>
+                    <td>${escapeHtml(u.id)}</td>
+                    <td>${escapeHtml(u.nom)}</td>
+                    <td>${escapeHtml(u.prenom)}</td>
+                    <td>${escapeHtml(u.email)}</td>
+                    <td>${escapeHtml(u.role)}</td>
                     <td>
                         <button class="edit-btn" onclick="editUser(${u.id})">Modifier</button>
                         <button class="delete-btn" onclick="deleteUser(${u.id})">Supprimer</button>
@@ -144,12 +153,12 @@
                     <td class="selection-col" style="${horseSelectionMode ? '' : 'display:none;'}">
                         <input type="checkbox" class="horse-select-checkbox" data-id="${c.id}" ${selectedHorseIds.has(String(c.id)) ? 'checked' : ''}>
                     </td>
-                    <td>${c.id}</td>
-                    <td>${c.nom}</td>
-                    <td>${c.race ?? '-'}</td>
-                    <td>${c.robe ?? '-'}</td>
-                    <td>${c.annee_naissance ?? '-'}</td>
-                    <td>${c.taille ?? '-'}</td>
+                    <td>${escapeHtml(c.id)}</td>
+                    <td>${escapeHtml(c.nom)}</td>
+                    <td>${escapeHtml(c.race ?? '-')}</td>
+                    <td>${escapeHtml(c.robe ?? '-')}</td>
+                    <td>${escapeHtml(c.annee_naissance ?? '-')}</td>
+                    <td>${escapeHtml(c.taille ?? '-')}</td>
                     <td>
                         <button class="edit-btn" onclick="editHorse(${c.id})">Modifier</button>
                     </td>
@@ -548,17 +557,17 @@ window.editUser = async function (id) {
                 <form id="swal-user-form" class="horse-form-horizontal">
                     <div class="form-group">
                         <label for="swal-nom">Nom</label>
-                        <input id="swal-nom" type="text" placeholder="Nom" value="${user.nom ?? ''}">
+                        <input id="swal-nom" type="text" placeholder="Nom" value="${escapeHtml(user.nom ?? '')}">
                     </div>
 
                     <div class="form-group">
                         <label for="swal-prenom">Prenom</label>
-                        <input id="swal-prenom" type="text" placeholder="Prenom" value="${user.prenom ?? ''}">
+                        <input id="swal-prenom" type="text" placeholder="Prenom" value="${escapeHtml(user.prenom ?? '')}">
                     </div>
 
                     <div class="form-group">
                         <label for="swal-email">Email</label>
-                        <input id="swal-email" type="email" placeholder="Email" value="${user.email ?? ''}">
+                        <input id="swal-email" type="email" placeholder="Email" value="${escapeHtml(user.email ?? '')}">
                     </div>
 
                     <div class="form-group">
@@ -649,6 +658,9 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
+
+
+
 
 
 
