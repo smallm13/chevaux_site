@@ -98,6 +98,7 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  justify-content: space-between;
   width: calc(100% + 40px);
   margin-left: -20px;
   margin-right: -20px;
@@ -108,9 +109,11 @@ body {
 }
 
 .nav-link {
+  flex: 1 1 0;
   border: none;
   border-radius: 8px;
   padding: 0.55rem 1rem;
+  text-align: center;
   font-weight: 600;
   color: var(--primary);
   background: transparent;
