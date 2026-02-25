@@ -86,48 +86,78 @@ body {
   color: #8b4513;
 }
 
-.top-bar {
+.admin-header {
+  background-color: #8b4513;
+  color: #fff;
+}
+
+.header-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  padding: 15px 20px;
 }
 
-.admin-navbar {
+.logo h1 {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.user-menu {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  justify-content: space-between;
-  width: calc(100% + 40px);
-  margin-left: -20px;
-  margin-right: -20px;
-  margin-bottom: 1.25rem;
-  padding: 0.6rem 20px;
-  border-radius: 0;
-  background: #f0e4d8;
+  align-items: center;
+  gap: 12px;
 }
 
-.nav-link {
-  flex: 1 1 0;
+.btn-logout-user {
+  background-color: #c0392b;
+  color: #fff;
   border: none;
   border-radius: 8px;
-  padding: 0.55rem 1rem;
-  text-align: center;
+  padding: 8px 12px;
   font-weight: 600;
-  color: var(--primary);
-  background: transparent;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
 }
 
-.nav-link:hover {
-  background: #ddc3ad;
+.btn-logout-user:hover {
+  background-color: #922b21;
 }
 
-.nav-link.active {
-  background: var(--primary);
+.main-nav {
+  background-color: #5d2c0f;
+}
+
+.main-nav .nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav .nav-links li {
+  flex: 1;
+}
+
+.main-nav .nav-link {
+  width: 100%;
+  border: none;
+  background: transparent;
   color: #fff;
+  padding: 15px 20px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: background-color 0.2s ease, border-bottom-color 0.2s ease;
+}
+
+.main-nav .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-bottom-color: #d4a86a;
+}
+
+.main-nav .nav-link.active {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-bottom-color: #d4a86a;
 }
 
 .main-header {
@@ -442,17 +472,14 @@ body {
     padding: 1rem;
   }
 
-  .admin-navbar {
-    width: calc(100% + 2rem);
-    margin-left: -1rem;
-    margin-right: -1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .top-bar {
+  .header-content {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
+  }
+
+  .main-nav .nav-links {
+    flex-direction: column;
   }
 }
 
