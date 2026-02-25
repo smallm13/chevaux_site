@@ -11,33 +11,20 @@
 </head>
 
 <body>
-    @php
-        $user = auth()->user();
-        $firstName = $user->prenom ?? $user->name ?? 'Administrateur';
-    @endphp
     <div class="container">
-        <header class="admin-header">
-            <div class="header-content">
-                <div class="logo">
-                    <h1>Ecuries Royales</h1>
-                </div>
-                <div class="user-menu">
-                    <span>Bienvenue, {{ $firstName }}</span>
-                    <button class="btn-logout-user logout-btn" type="button">Deconnexion</button>
-                </div>
-            </div>
-
-            <nav class="main-nav">
-                <ul class="nav-links">
-                    <li><button type="button" class="nav-link active" id="chevaux-btn">Chevaux</button></li>
-                    <li><button type="button" class="nav-link" id="utilisateurs-btn">Utilisateurs</button></li>
-                    <li><button type="button" class="nav-link" id="statisques-btn">Statisques</button></li>
-                </ul>
-            </nav>
-        </header>
-
         <!-- Main Content -->
         <main class="main-content">
+            <div class="top-bar">
+                <h2>Bienvenue</h2>
+                <button class="logout-btn">Deconnexion</button>
+            </div>
+
+            <nav class="admin-navbar">
+                <button type="button" class="nav-link active" id="chevaux-btn">Chevaux</button>
+                <button type="button" class="nav-link" id="utilisateurs-btn">Utilisateurs</button>
+                <button type="button" class="nav-link" id="statisques-btn">Statisques</button>
+            </nav>
+
             <!-- Stats Cards -->
             <section class="stats-cards" id="stats-section">
                 <div class="card" id="user-card">
