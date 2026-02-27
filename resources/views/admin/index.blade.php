@@ -43,6 +43,22 @@
                     <h3>Utilisateurs actifs (24h)</h3>
                     <p id="active-count"></p>
                 </div>
+                <div class="card" id="new-users-24h-card">
+                    <h3>Nouveaux utilisateurs (24h)</h3>
+                    <p id="new-users-24h"></p>
+                </div>
+                <div class="card" id="new-users-7d-card">
+                    <h3>Nouveaux utilisateurs (7j)</h3>
+                    <p id="new-users-7d"></p>
+                </div>
+                <div class="card" id="new-horses-24h-card">
+                    <h3>Nouveaux chevaux (24h)</h3>
+                    <p id="new-horses-24h"></p>
+                </div>
+                <div class="card" id="new-horses-7d-card">
+                    <h3>Nouveaux chevaux (7j)</h3>
+                    <p id="new-horses-7d"></p>
+                </div>
             </section>
 
             <!-- Section Utilisateurs -->
@@ -278,6 +294,5 @@
 </body>
 
 </html>
-
 
 

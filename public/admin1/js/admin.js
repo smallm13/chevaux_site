@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const horseCountEl = document.getElementById('horse-count');
     const onlineCountEl = document.getElementById('online-count');
     const activeCountEl = document.getElementById('active-count');
+    const newUsers24hEl = document.getElementById('new-users-24h');
+    const newUsers7dEl = document.getElementById('new-users-7d');
+    const newHorses24hEl = document.getElementById('new-horses-24h');
+    const newHorses7dEl = document.getElementById('new-horses-7d');
 
     const logoutBtn = document.querySelector('.logout-btn');
 
@@ -76,16 +80,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======== Fonctions ========
     async function updateStats() {
         try {
-            const resUsers = await fetch('/utilisateurs/count');
-            const usersData = await resUsers.json();
-            userCountEl.textContent = usersData.count;
+            const [resKpis, resRealtime] = await Promise.all([
+                fetch('/admin/kpis'),
+                fetch('/admin/realtime-stats')
+            ]);
 
-            const resHorses = await fetch('/admin/chevaux/count');
-            const horsesData = await resHorses.json();
-            horseCountEl.textContent = horsesData.count;
-
-            const resRealtime = await fetch('/admin/realtime-stats');
+            const kpis = await resKpis.json();
             const realtimeData = await resRealtime.json();
+
+            if (userCountEl) userCountEl.textContent = kpis.users_total ?? 0;
+            if (horseCountEl) horseCountEl.textContent = kpis.horses_total ?? 0;
+            if (newUsers24hEl) newUsers24hEl.textContent = kpis.users_new_24h ?? 0;
+            if (newUsers7dEl) newUsers7dEl.textContent = kpis.users_new_7d ?? 0;
+            if (newHorses24hEl) newHorses24hEl.textContent = kpis.horses_new_24h ?? 0;
+            if (newHorses7dEl) newHorses7dEl.textContent = kpis.horses_new_7d ?? 0;
+
             if (onlineCountEl) onlineCountEl.textContent = realtimeData.online ?? 0;
             if (activeCountEl) activeCountEl.textContent = realtimeData.active ?? 0;
         } catch (err) {
