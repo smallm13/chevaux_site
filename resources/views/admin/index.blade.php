@@ -35,6 +35,14 @@
                     <h3>Nombre de Chevaux</h3>
                     <p id="horse-count"></p>
                 </div>
+                <div class="card" id="online-card">
+                    <h3>Utilisateurs connectes</h3>
+                    <p id="online-count"></p>
+                </div>
+                <div class="card" id="active-card">
+                    <h3>Utilisateurs actifs (24h)</h3>
+                    <p id="active-count"></p>
+                </div>
             </section>
 
             <!-- Section Utilisateurs -->
@@ -270,7 +278,6 @@
 </body>
 
 </html>
-
 
 
 

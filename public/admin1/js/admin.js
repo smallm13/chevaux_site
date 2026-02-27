@@ -24,6 +24,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const userCountEl = document.getElementById('user-count');
     const horseCountEl = document.getElementById('horse-count');
+    const onlineCountEl = document.getElementById('online-count');
+    const activeCountEl = document.getElementById('active-count');
 
     const logoutBtn = document.querySelector('.logout-btn');
 
@@ -81,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const resHorses = await fetch('/admin/chevaux/count');
             const horsesData = await resHorses.json();
             horseCountEl.textContent = horsesData.count;
+
+            const resRealtime = await fetch('/admin/realtime-stats');
+            const realtimeData = await resRealtime.json();
+            if (onlineCountEl) onlineCountEl.textContent = realtimeData.online ?? 0;
+            if (activeCountEl) activeCountEl.textContent = realtimeData.active ?? 0;
         } catch (err) {
             console.error("Erreur lors de la recuperation des stats :", err);
         }
@@ -226,6 +233,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (statisquesBtn) {
         statisquesBtn.addEventListener('click', showStatsSection);
     }
+
+    setInterval(updateStats, 30000);
 
     // ======== Logout ========
     if (logoutBtn) {

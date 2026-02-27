@@ -20,15 +20,19 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Récupération du rôle de l'utilisateur connecté
+            // RÃ©cupÃ©ration du rÃ´le de l'utilisateur connectÃ©
             $user = Auth::user();
+            $user->forceFill([
+                'last_login_at' => now(),
+                'last_seen_at' => now(),
+            ])->save();
 
-            // Redirection en fonction du rôle
+            // Redirection en fonction du rÃ´le
             $redirectTo = $user->role === 'admin'
-                ? '/admin'   // 🔹 ton espace admin
-                : '/utilisateur';   // 🔹 espace utilisateur simple (change si besoin)
+                ? '/admin'   // ðŸ”¹ ton espace admin
+                : '/utilisateur';   // ðŸ”¹ espace utilisateur simple (change si besoin)
 
-            // 🔹 Si la requête vient d'AJAX (fetch), on renvoie JSON
+            // ðŸ”¹ Si la requÃªte vient d'AJAX (fetch), on renvoie JSON
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
@@ -36,11 +40,11 @@ class LoginController extends Controller
                 ]);
             }
 
-            // 🔹 Sinon redirection classique
+            // ðŸ”¹ Sinon redirection classique
             return redirect($redirectTo);
         }
 
-        // Connexion échouée
+        // Connexion Ã©chouÃ©e
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => false,
@@ -70,3 +74,4 @@ class LoginController extends Controller
         return redirect('/utilisateur');
     }
 }
+

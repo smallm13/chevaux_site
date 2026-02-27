@@ -48,6 +48,7 @@ Route::put('/admin/chevaux/{id}', [HorseController::class, 'update'])->middlewar
 Route::middleware(['auth', 'is_admin'])->prefix('admin')->group(function () {
     Route::get('/chevaux', [AdminChevalController::class, 'index'])->name('admin.chevaux.index');
     Route::get('/chevaux/list', [AdminChevalController::class, 'getChevaux']);
+    Route::get('/realtime-stats', [AdminUserController::class, 'realtimeStats']);
 
     Route::get('/utilisateurs', [UserController::class, 'index']);
     Route::get('/utilisateurs/{id}', [UserController::class, 'show']);
