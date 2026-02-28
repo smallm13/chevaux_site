@@ -27,37 +27,80 @@
 
             <!-- Stats Cards -->
             <section class="stats-cards" id="stats-section">
-                <div class="card" id="user-card">
-                    <h3>Utilisateurs inscrits</h3>
-                    <p id="user-count"></p>
-                </div>
-                <div class="card" id="horse-card">
-                    <h3>Nombre de Chevaux</h3>
-                    <p id="horse-count"></p>
-                </div>
-                <div class="card" id="online-card">
-                    <h3>Utilisateurs connectes</h3>
-                    <p id="online-count"></p>
-                </div>
-                <div class="card" id="active-card">
-                    <h3>Utilisateurs actifs (24h)</h3>
-                    <p id="active-count"></p>
-                </div>
-                <div class="card" id="new-users-24h-card">
-                    <h3>Nouveaux utilisateurs (24h)</h3>
-                    <p id="new-users-24h"></p>
-                </div>
-                <div class="card" id="new-users-7d-card">
-                    <h3>Nouveaux utilisateurs (7j)</h3>
-                    <p id="new-users-7d"></p>
-                </div>
-                <div class="card" id="new-horses-24h-card">
-                    <h3>Nouveaux chevaux (24h)</h3>
-                    <p id="new-horses-24h"></p>
-                </div>
-                <div class="card" id="new-horses-7d-card">
-                    <h3>Nouveaux chevaux (7j)</h3>
-                    <p id="new-horses-7d"></p>
+                <div class="dashboard-admin">
+                    <div class="dashboard-header">
+                        <h2>Dashboard Haras</h2>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="stat-card">
+                            <div class="label">Utilisateurs inscrits</div>
+                            <div class="value" id="user-count">0</div>
+                            <div class="sub">total membres</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Nombre de chevaux</div>
+                            <div class="value" id="horse-count">0</div>
+                            <div class="sub">equides</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Connectes</div>
+                            <div class="value" id="online-count">0</div>
+                            <div class="sub">en ce moment</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="label">Actifs (24h)</div>
+                            <div class="value" id="active-count">0</div>
+                            <div class="sub">derniere journee</div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-middle">
+                        <div class="panel">
+                            <h3>Utilisateurs</h3>
+                            <div class="stats-mini">
+                                <div class="mini-item">
+                                    <div class="period">Nouveaux (24h)</div>
+                                    <div class="number" id="new-users-24h">0</div>
+                                    <div class="note">vs hier : stable</div>
+                                </div>
+                                <div class="mini-item">
+                                    <div class="period">Nouveaux (7j)</div>
+                                    <div class="number" id="new-users-7d">0</div>
+                                    <div class="note">moyenne 7j</div>
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <span>Inscrits: <strong id="user-count-inline">0</strong></span>
+                                <span>Connectes: <strong id="online-count-inline">0</strong></span>
+                                <span>Actifs: <strong id="active-count-inline">0</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="panel">
+                            <h3>Chevaux</h3>
+                            <div class="stats-mini">
+                                <div class="mini-item">
+                                    <div class="period">Nouveaux (24h)</div>
+                                    <div class="number" id="new-horses-24h">0</div>
+                                    <div class="note">aucun ajout</div>
+                                </div>
+                                <div class="mini-item">
+                                    <div class="period">Nouveaux (7j)</div>
+                                    <div class="number" id="new-horses-7d">0</div>
+                                    <div class="note">periode calme</div>
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <span>Chevaux: <strong id="horse-count-inline">0</strong></span>
+                                <span class="badge">croissance 0%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-footer">
+                        <span>mise a jour en continu · <span id="admin-date"></span></span>
+                    </div>
                 </div>
             </section>
 
@@ -294,5 +337,4 @@
 </body>
 
 </html>
-
 

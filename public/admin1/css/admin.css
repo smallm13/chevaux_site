@@ -318,6 +318,145 @@ body {
     color: #2b2b2b;
 }
 
+/* Dashboard admin epure */
+.stats-cards {
+    padding: 0;
+}
+
+.dashboard-admin {
+    width: 100%;
+    max-width: 1200px;
+}
+
+.dashboard-header {
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-header h2 {
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #3e3527;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-admin .stat-card {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 1.2rem;
+    border: 1px solid #e8e0d7;
+}
+
+.dashboard-admin .stat-card .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: #7b6b5a;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-admin .stat-card .value {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #2b4b3a;
+}
+
+.dashboard-admin .stat-card .sub {
+    font-size: 0.75rem;
+    color: #9a8b7c;
+    margin-top: 0.4rem;
+}
+
+.dashboard-middle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-admin .panel {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1.2rem;
+    border: 1px solid #e8e0d7;
+}
+
+.dashboard-admin .panel h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3e3527;
+    margin-bottom: 1rem;
+}
+
+.dashboard-admin .stats-mini {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.dashboard-admin .mini-item {
+    border-bottom: 1px solid #f0e9e2;
+    padding-bottom: 0.6rem;
+}
+
+.dashboard-admin .mini-item .period {
+    font-size: 0.75rem;
+    color: #7b6b5a;
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-admin .mini-item .number {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #2b4b3a;
+}
+
+.dashboard-admin .mini-item .note {
+    font-size: 0.7rem;
+    color: #9a8b7c;
+    margin-top: 0.25rem;
+}
+
+.dashboard-admin .info-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.8rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid #f0e9e2;
+    color: #5f5345;
+    font-size: 0.85rem;
+}
+
+.dashboard-admin .badge {
+    background: #f0e9e2;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    color: #5f5345;
+}
+
+.dashboard-footer {
+    text-align: right;
+    color: #9a8b7c;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-middle {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Table Chevaux */
 #horse-table {
   width: 100%;

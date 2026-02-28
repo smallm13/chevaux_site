@@ -30,6 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const newUsers7dEl = document.getElementById('new-users-7d');
     const newHorses24hEl = document.getElementById('new-horses-24h');
     const newHorses7dEl = document.getElementById('new-horses-7d');
+    const userCountInlineEl = document.getElementById('user-count-inline');
+    const horseCountInlineEl = document.getElementById('horse-count-inline');
+    const onlineCountInlineEl = document.getElementById('online-count-inline');
+    const activeCountInlineEl = document.getElementById('active-count-inline');
+    const adminDateEl = document.getElementById('admin-date');
 
     const logoutBtn = document.querySelector('.logout-btn');
 
@@ -78,6 +83,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ======== Fonctions ========
+    function setText(el, value) {
+        if (!el) return;
+        el.textContent = value ?? 0;
+    }
+
     async function updateStats() {
         try {
             const [resKpis, resRealtime] = await Promise.all([
@@ -88,15 +98,20 @@ document.addEventListener('DOMContentLoaded', () => {
             const kpis = await resKpis.json();
             const realtimeData = await resRealtime.json();
 
-            if (userCountEl) userCountEl.textContent = kpis.users_total ?? 0;
-            if (horseCountEl) horseCountEl.textContent = kpis.horses_total ?? 0;
-            if (newUsers24hEl) newUsers24hEl.textContent = kpis.users_new_24h ?? 0;
-            if (newUsers7dEl) newUsers7dEl.textContent = kpis.users_new_7d ?? 0;
-            if (newHorses24hEl) newHorses24hEl.textContent = kpis.horses_new_24h ?? 0;
-            if (newHorses7dEl) newHorses7dEl.textContent = kpis.horses_new_7d ?? 0;
+            setText(userCountEl, kpis.users_total);
+            setText(horseCountEl, kpis.horses_total);
+            setText(newUsers24hEl, kpis.users_new_24h);
+            setText(newUsers7dEl, kpis.users_new_7d);
+            setText(newHorses24hEl, kpis.horses_new_24h);
+            setText(newHorses7dEl, kpis.horses_new_7d);
 
-            if (onlineCountEl) onlineCountEl.textContent = realtimeData.online ?? 0;
-            if (activeCountEl) activeCountEl.textContent = realtimeData.active ?? 0;
+            setText(onlineCountEl, realtimeData.online);
+            setText(activeCountEl, realtimeData.active);
+
+            setText(userCountInlineEl, kpis.users_total);
+            setText(horseCountInlineEl, kpis.horses_total);
+            setText(onlineCountInlineEl, realtimeData.online);
+            setText(activeCountInlineEl, realtimeData.active);
         } catch (err) {
             console.error("Erreur lors de la recuperation des stats :", err);
         }
@@ -241,6 +256,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (statisquesBtn) {
         statisquesBtn.addEventListener('click', showStatsSection);
+    }
+
+    if (adminDateEl) {
+        adminDateEl.textContent = new Date().toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
     }
 
     setInterval(updateStats, 30000);
