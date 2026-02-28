@@ -516,32 +516,12 @@ class HorseController extends Controller
 
     public function userIndex()
     {
-        $horses = $this->horseViewQuery()
-            ->get()
-            ->map(function ($horse) {
-                $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
-                $horse->annee_naissance = $birthYear;
-                $horse->age = $birthYear !== null ? $this->resolveAge($birthYear) : ($horse->stored_age ?? null);
-
-                return $horse;
-            });
-
-        return view('user.user', compact('horses'));
+        return view('user.user');
     }
 
     public function userFavorites()
     {
-        $horses = $this->horseViewQuery()
-            ->get()
-            ->map(function ($horse) {
-                $birthYear = $this->resolveBirthYear($horse->annee_naissance, $horse->date_naissance);
-                $horse->annee_naissance = $birthYear;
-                $horse->age = $birthYear !== null ? $this->resolveAge($birthYear) : ($horse->stored_age ?? null);
-
-                return $horse;
-            });
-
-        return view('user.favorites', compact('horses'));
+        return view('user.favorites');
     }
 
     public function userShow($id)

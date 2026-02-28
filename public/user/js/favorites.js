@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     const favoritesList = document.getElementById('favorites-list');
     const favoritesCount = document.getElementById('favorites-count');
+    let allHorses = Array.isArray(window.allHorses) ? window.allHorses : [];
 
     function normalizeId(id) {
         return String(id);
@@ -73,7 +74,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return card;
     }
 
-    function init() {
+    async function init() {
+        if (!Array.isArray(allHorses) || allHorses.length === 0) {
+            try {
+                const res = await fetch('/horses');
+                allHorses = await res.json();
+            } catch (err) {
+                console.error('Erreur lors du chargement des chevaux :', err);
+                allHorses = [];
+            }
+        }
+
         const favorites = getFavorites();
         const favoriteHorses = allHorses.filter((horse) => favorites.includes(normalizeId(horse.id)));
 

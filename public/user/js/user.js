@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logout-btn-user');
 
     // Variables d etat
+    let allHorses = Array.isArray(window.allHorses) ? window.allHorses : [];
     let currentFilteredHorses = [];
     let favorites = JSON.parse(localStorage.getItem('horse_favorites')) || [];
 
@@ -67,7 +68,17 @@ document.addEventListener('DOMContentLoaded', function() {
     /**
      * Initialise la page
      */
-    function initPage() {
+    async function initPage() {
+        if (!Array.isArray(allHorses) || allHorses.length === 0) {
+            try {
+                const res = await fetch('/horses');
+                allHorses = await res.json();
+            } catch (err) {
+                console.error('Erreur lors du chargement des chevaux :', err);
+                allHorses = [];
+            }
+        }
+
         // Nettoie/migre les anciens formats de favoris et retire les IDs inexistants.
         favorites = sanitizeFavorites(favorites).filter((favoriteId) =>
             allHorses.some((horse) => normalizeHorseId(horse.id) === favoriteId)
