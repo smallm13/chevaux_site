@@ -72,6 +72,10 @@
             <p class="copyright">Ce systeme est destine a un usage interne exclusif.</p>
         </div>
     </footer>
+
+    <script>
+        const allHorses = @json($horses);
+    </script>
     <script src="{{ asset('user/js/favorites.js') }}"></script>
 </body>
 
