@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --primary: #8b4513;
   --light-bg: #f4f4f4;
   --white: #ffffff;
@@ -283,40 +283,39 @@ body {
 /* Section contenant les cartes */
 /* Conteneur des cartes statistiques */
 .stats-cards {
-    display: flex;
-    flex-wrap: wrap;      /* permet de passer à la ligne si l’écran est trop petit */
-    gap: 1rem;            /* espace entre les cartes */
-    justify-content: flex-start; /* alignement à gauche */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
     margin-top: 1rem;
 }
 
 /* Chaque carte */
 .stats-cards .card {
-    background-color: #f5f5f5;
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    transition: transform 0.2s ease;
-    flex: 1 1 200px;      /* prend de l’espace disponible, largeur min 200px */
-    max-width: 250px;     /* largeur maximale */
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 1rem;
+    border: 1px solid #e6e6e6;
+    box-shadow: none;
+    text-align: left;
 }
 
 .stats-cards .card:hover {
-    transform: translateY(-5px);
+    transform: none;
 }
 
 .stats-cards .card h3 {
     margin: 0;
-    font-size: 1.2rem;
-    color: #333;
+    font-size: 0.95rem;
+    color: #6b6b6b;
+    font-weight: 600;
+    letter-spacing: 0.2px;
 }
 
 .stats-cards .card p {
-    margin-top: 0.5rem;
-    font-size: 2rem;
-    font-weight: bold;
-    color: #007bff;
+    margin-top: 0.35rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #2b2b2b;
 }
 
 /* Table Chevaux */
@@ -355,7 +354,7 @@ body {
 }
 
 #horse-table tbody tr:hover {
-  background-color: #fff3e0; /* léger beige rappelant le cheval */
+  background-color: #fff3e0; /* lÃ©ger beige rappelant le cheval */
 }
 
 .horse-edit-btn, 
@@ -543,15 +542,15 @@ table th, table td {
     scrollbar-color: #8B4513 #f5f1e8; /* Marron pour Firefox */
 }
 
-/* Titre en marron foncé */
+/* Titre en marron foncÃ© */
 #add-horse-modal .modal-content h3 {
     margin: 0 0 20px 0;
-    color: #5D4037; /* Marron foncé */
+    color: #5D4037; /* Marron foncÃ© */
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
     padding-bottom: 12px;
-    border-bottom: 1px solid #D7CCC8; /* Ligne séparatrice marron clair */
+    border-bottom: 1px solid #D7CCC8; /* Ligne sÃ©paratrice marron clair */
 }
 
 /* Labels en marron */
@@ -571,9 +570,9 @@ table th, table td {
     border: 1.5px solid #D7CCC8; /* Bordure marron clair */
     border-radius: 8px;
     font-size: 0.95rem;
-    color: #5D4037; /* Texte marron foncé */
+    color: #5D4037; /* Texte marron foncÃ© */
     transition: all 0.2s ease;
-    background: #FFFFFF; /* Fond crème très clair */
+    background: #FFFFFF; /* Fond crÃ¨me trÃ¨s clair */
     box-sizing: border-box;
     outline: none;
     font-family: inherit;
@@ -646,40 +645,40 @@ table th, table td {
     grid-column: 1 / -1;
 }
 
-/* Boutons avec thème marron */
+/* Boutons avec thÃ¨me marron */
 .modal-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 10px; /* Réduit de 12px */
-    margin-top: 20px; /* Réduit de 24px */
-    padding-top: 16px; /* Réduit de 20px */
+    gap: 10px; /* RÃ©duit de 12px */
+    margin-top: 20px; /* RÃ©duit de 24px */
+    padding-top: 16px; /* RÃ©duit de 20px */
     border-top: 1px solid #e9ecef;
 }
 
 .btn-cancel, .btn-submit {
-    padding: 10px 20px; /* Réduit de 14px 28px */
-    border-radius: 8px; /* Réduit de 12px */
+    padding: 10px 20px; /* RÃ©duit de 14px 28px */
+    border-radius: 8px; /* RÃ©duit de 12px */
     cursor: pointer;
     font-weight: 600;
-    font-size: 0.95rem; /* Réduit de 1rem */
+    font-size: 0.95rem; /* RÃ©duit de 1rem */
     transition: all 0.2s ease;
     border: none;
     outline: none;
     position: relative;
     overflow: hidden;
     font-family: inherit;
-    letter-spacing: 0.3px; /* Réduit de 0.5px */
+    letter-spacing: 0.3px; /* RÃ©duit de 0.5px */
 }
 
 .btn-cancel {
     background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: white;
-    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.15); /* Réduit l'ombre */
+    box-shadow: 0 3px 10px rgba(231, 76, 60, 0.15); /* RÃ©duit l'ombre */
 }
 
 .btn-cancel:hover {
-    transform: translateY(-2px); /* Réduit de -3px */
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2); /* Réduit l'ombre */
+    transform: translateY(-2px); /* RÃ©duit de -3px */
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2); /* RÃ©duit l'ombre */
 }
 
 .btn-cancel:active {
@@ -689,12 +688,12 @@ table th, table td {
 .btn-submit {
     background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
     color: white;
-    box-shadow: 0 3px 10px rgba(46, 204, 113, 0.15); /* Réduit l'ombre */
+    box-shadow: 0 3px 10px rgba(46, 204, 113, 0.15); /* RÃ©duit l'ombre */
 }
 
 .btn-submit:hover {
-    transform: translateY(-2px); /* Réduit de -3px */
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2); /* Réduit l'ombre */
+    transform: translateY(-2px); /* RÃ©duit de -3px */
+    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.2); /* RÃ©duit l'ombre */
 }
 
 .btn-submit:active {
@@ -716,8 +715,8 @@ table th, table td {
 }
 
 .btn-cancel:active::after, .btn-submit:active::after {
-    width: 150px; /* Réduit de 200px */
-    height: 150px; /* Réduit de 200px */
+    width: 150px; /* RÃ©duit de 200px */
+    height: 150px; /* RÃ©duit de 200px */
 }
 
 /* Scrollbar en marron */
@@ -726,33 +725,33 @@ table th, table td {
 }
 
 #add-horse-modal .modal-content::-webkit-scrollbar-track {
-    background: #F5F1E8; /* Fond crème */
+    background: #F5F1E8; /* Fond crÃ¨me */
     border-radius: 2px;
     margin: 8px 0;
 }
 
 #add-horse-modal .modal-content::-webkit-scrollbar-thumb {
-    background: #BCAAA4; /* Marron rosé */
+    background: #BCAAA4; /* Marron rosÃ© */
     border-radius: 2px;
     min-height: 30px;
 }
 
 #add-horse-modal .modal-content::-webkit-scrollbar-thumb:hover {
-    background: #A1887F; /* Marron plus foncé au survol */
+    background: #A1887F; /* Marron plus foncÃ© au survol */
 }
 
 /* Animation pour les labels au focus */
 #add-horse-form input:focus + label {
-    color: #8D6E63; /* Marron plus foncé quand l'input est focus */
+    color: #8D6E63; /* Marron plus foncÃ© quand l'input est focus */
 }
 
 /* Style pour les champs requis */
 #add-horse-form input:required + label::after {
     content: " *";
-    color: #D84315; /* Rouge brique pour l'astérisque */
+    color: #D84315; /* Rouge brique pour l'astÃ©risque */
 }
 
-/* États de validation */
+/* Ã‰tats de validation */
 #add-horse-form input.valid {
     border-color: #689F38; /* Vert pour valide (contraste avec le marron) */
     background-color: rgba(104, 159, 56, 0.05);
@@ -798,7 +797,7 @@ table th, table td {
     }
 }
 
-/* Pour les petits écrans en hauteur */
+/* Pour les petits Ã©crans en hauteur */
 @media (max-height: 600px) {
     #add-horse-modal .modal-content {
         max-height: 90vh;
@@ -906,7 +905,7 @@ table th, table td {
     outline: none;
 }
 
-/* Select flèche */
+/* Select flÃ¨che */
 #swal-user-form select {
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg fill='%236D4C41' viewBox='0 0 24 24'%3E%3Cpath d='M7 10l5 5 5-5'%3E%3C/path%3E%3C/svg%3E");
@@ -936,16 +935,16 @@ table th, table td {
     padding-top: 10px;
 }
 
-/* Alignement Label + Input sur la même ligne */
+/* Alignement Label + Input sur la mÃªme ligne */
 #swal-user-form.horse-form-horizontal .form-group {
     display: flex;
     align-items: center; /* Centre verticalement le label avec l'input */
     text-align: left;
 }
 
-/* Largeur fixe pour les labels pour qu'ils soient alignés */
+/* Largeur fixe pour les labels pour qu'ils soient alignÃ©s */
 #swal-user-form.horse-form-horizontal label {
-    flex: 0 0 100px; /* Largeur du label à gauche */
+    flex: 0 0 100px; /* Largeur du label Ã  gauche */
     margin-bottom: 0; /* On retire la marge du bas */
     font-size: 0.85rem;
     color: #6D4C41;
@@ -955,7 +954,7 @@ table th, table td {
 /* L'input prend le reste de la place */
 #swal-user-form.horse-form-horizontal input {
     flex: 1;
-    margin-bottom: 0; /* On retire la marge du bas car le gap gère l'espacement */
+    margin-bottom: 0; /* On retire la marge du bas car le gap gÃ¨re l'espacement */
     padding: 8px 12px;
 }
 /* Conteneur pour l'alignement horizontal */
@@ -972,7 +971,7 @@ table th, table td {
     text-align: left;
 }
 
-/* Largeur fixe des labels pour l'alignement à gauche */
+/* Largeur fixe des labels pour l'alignement Ã  gauche */
 #swal-user-form.horse-form-horizontal label {
     flex: 0 0 100px; /* Ajustez cette valeur selon la longueur de vos textes */
     margin-bottom: 0 !important;
@@ -987,3 +986,4 @@ table th, table td {
     flex: 1;
     margin-bottom: 0 !important;
 }
+
