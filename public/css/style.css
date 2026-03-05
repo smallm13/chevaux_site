@@ -1,4 +1,4 @@
-/* style.css */
+﻿/* style.css */
 :root {
     --primary: #8B4513;
     --primary-light: #a56b3a;
@@ -509,7 +509,7 @@ footer {
     }
 }
 
-/* Styles pour les statistiques et autres éléments */
+/* Styles pour les statistiques et autres Ã©lÃ©ments */
 .search-section {
     display: flex;
     gap: 10px;
@@ -891,4 +891,179 @@ mark {
     background-color: #e8f5e9;
     color: #4CAF50;
     display: block;
+}\n\n/* Horse cards - nouveau design */
+.horses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+}
+
+.horse-card {
+    background: #fff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(59, 42, 26, 0.10), 0 1px 4px rgba(59, 42, 26, 0.06);
+    transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.horse-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 16px 48px rgba(59,42,26,0.18), 0 4px 12px rgba(59,42,26,0.08);
+}
+
+.card-header {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.card-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--card-gradient);
+    z-index: 0;
+}
+
+.card-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    background-size: 150px;
+    opacity: 0.5;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.horse-initials {
+    position: relative;
+    z-index: 2;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.18);
+    border: 2px solid rgba(255,255,255,0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.95);
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(4px);
+}
+
+.horse-card-fav {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.35);
+    color: #fff;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.horse-card-fav.active {
+    color: #e74c3c;
+    background: rgba(255,255,255,0.85);
+}
+
+.card-body {
+    padding: 20px 22px 24px;
+}
+
+.horse-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #3B2A1A;
+    letter-spacing: 0.02em;
+    margin-bottom: 4px;
+}
+
+.horse-breed-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--card-accent);
+    background: var(--card-accent-light);
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(to right, #E8DDD4, transparent);
+    margin-bottom: 16px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #B0A090;
+    margin-bottom: 3px;
+}
+
+.info-item span {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: #3B2A1A;
+}
+
+.card-bay { --card-gradient: linear-gradient(135deg, #C47C3A 0%, #8B4513 100%); --card-accent: #C47C3A; --card-accent-light: #FDF0E6; }
+.card-grey { --card-gradient: linear-gradient(135deg, #7A8A9A 0%, #4A5568 100%); --card-accent: #5A7A9A; --card-accent-light: #EEF4FA; }
+.card-black { --card-gradient: linear-gradient(135deg, #4A4A4A 0%, #1A1A1A 100%); --card-accent: #5A5A5A; --card-accent-light: #F0F0F0; }
+.card-chestnut { --card-gradient: linear-gradient(135deg, #B85C2A 0%, #7A3010 100%); --card-accent: #B85C2A; --card-accent-light: #FAF0EA; }
+
+.gender-symbol {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+}
+
+.gender-male { background: #DDEEFF; color: #2A6FBB; }
+.gender-female { background: #FFE0EE; color: #C0306A; }
+
+.robe-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--card-accent);
+    margin-right: 6px;
+    vertical-align: middle;
 }

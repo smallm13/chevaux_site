@@ -1,6 +1,30 @@
-let coatChartInstance;
+﻿let coatChartInstance;
 
-function escapeHtml(value) {
+
+function cardClassFromCoat(value) {
+    const v = String(value || '').toLowerCase();
+    if (v.includes('gris') || v.includes('grey')) return 'card-grey';
+    if (v.includes('noir') || v.includes('black')) return 'card-black';
+    if (v.includes('alezan') || v.includes('chestnut')) return 'card-chestnut';
+    if (v.includes('bai') || v.includes('bay')) return 'card-bay';
+    return 'card-bay';
+}
+
+function initialsFromName(name) {
+    const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return '•';
+    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
+function genderSymbol(value) {
+    const v = String(value || '').toLowerCase();
+    if (v.includes('fem')) return { symbol: '♀', className: 'gender-female' };
+    if (v.includes('male') || v.includes('mâ') || v.includes('mal') || v.includes('hongre')) {
+        return { symbol: '♂', className: 'gender-male' };
+    }
+    return { symbol: '', className: '' };
+}function escapeHtml(value) {
     return String(value ?? '')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
@@ -128,14 +152,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
 
             if (data.success) {
-                loginMessage.textContent = 'Connexion réussie !';
+                loginMessage.textContent = 'Connexion rÃ©ussie !';
                 loginMessage.classList.add('success');
                 loginMessage.style.display = 'block';
 
                 const logoutBtn = document.createElement('button');
                 logoutBtn.id = 'logout-btn';
                 logoutBtn.className = 'btn btn-logout';
-                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
+                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> DÃ©connexion';
                 //userControls.insertBefore(logoutBtn, loginBtn);
                 //modal.style.display = 'none';
                   setTimeout(() => {
@@ -143,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 10);
 
 
-                // === Déconnexion ===
+                // === DÃ©connexion ===
                 logoutBtn.addEventListener('click', async () => {
                     try {
                         const res = await postWithCsrf('/logout', {});
@@ -157,14 +181,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             const logoutMessage = document.createElement('div');
                             logoutMessage.className = 'user-greeting animate-pop';
-                            logoutMessage.innerHTML = `<i class="fas fa-check-circle"></i> Déconnecté avec succès.`;
+                            logoutMessage.innerHTML = `<i class="fas fa-check-circle"></i> DÃ©connectÃ© avec succÃ¨s.`;
                             document.body.prepend(logoutMessage);
 
                             setTimeout(() => {
                                 window.location.href = '/';
                             }, 1000);
                         } else {
-                            alert('Erreur lors de la déconnexion');
+                            alert('Erreur lors de la dÃ©connexion');
                         }
                     } catch (err) {
                         console.error("Erreur logout :", err);
@@ -172,7 +196,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
             } else {
-                loginMessage.textContent = data.message || 'Échec de connexion';
+                loginMessage.textContent = data.message || 'Ã‰chec de connexion';
                 loginMessage.classList.add('error');
                 loginMessage.style.display = 'block';
             }
@@ -270,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Erreur lors de l'inscription");
 
-            showSignupMessage('Inscription réussie ! Redirection en cours...', 'success');
+            showSignupMessage('Inscription rÃ©ussie ! Redirection en cours...', 'success');
             setTimeout(() => {
                 signupForm.reset();
                 signupModal.style.display = 'none';
@@ -319,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayHorses(horses, searchTerm = '') {
         horsesGrid.innerHTML = '';
         if (!horses || horses.length === 0) {
-            horsesGrid.innerHTML = '<p class="no-results">Aucun cheval trouvé pour votre recherche.</p>';
+            horsesGrid.innerHTML = '<p class="no-results">Aucun cheval trouvÃ© pour votre recherche.</p>';
             return;
         }
 
@@ -381,7 +405,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setText(statsDom.statsFemale, femaleCount);
     }
 
-    // === Récupérer tous les chevaux ===
+    // === RÃ©cupÃ©rer tous les chevaux ===
     async function fetchHorses() {
         loader.style.display = 'block';
         try {
@@ -389,7 +413,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const horses = await response.json();
             displayHorses(horses);
         } catch (error) {
-            console.error("Erreur de récupération des chevaux :", error);
+            console.error("Erreur de rÃ©cupÃ©ration des chevaux :", error);
             horsesGrid.innerHTML = '<p class="no-results">Impossible de charger les chevaux.</p>';
         } finally {
             loader.style.display = 'none';
@@ -441,7 +465,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'Répartition par robe',
+                        label: 'RÃ©partition par robe',
                         data: data,
                         backgroundColor: ['#8B4513', '#A0522D', '#000000', '#808080', '#FFD700', '#FFF8DC', '#F0E68C', '#D2B48C'],
                         borderWidth: 1
@@ -469,11 +493,12 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const platform = btn.classList.contains('google') ? 'Google' :
                              btn.classList.contains('facebook') ? 'Facebook' : 'Twitter';
-            alert(`Connexion via ${platform} sera implémentée dans une version future`);
+            alert(`Connexion via ${platform} sera implÃ©mentÃ©e dans une version future`);
         });
     });
 
-    // Charger automatiquement les données au démarrage
+    // Charger automatiquement les donnÃ©es au dÃ©marrage
     setTimeout(fetchHorses, 500);
     setTimeout(loadStats, 1000);
 });
+

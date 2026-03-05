@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     const favoritesList = document.getElementById('favorites-list');
     const favoritesCount = document.getElementById('favorites-count');
 
@@ -6,7 +6,31 @@ document.addEventListener('DOMContentLoaded', function () {
         return String(id);
     }
 
-    function escapeHtml(value) {
+
+    function cardClassFromCoat(value) {
+        const v = String(value || '').toLowerCase();
+        if (v.includes('gris') || v.includes('grey')) return 'card-grey';
+        if (v.includes('noir') || v.includes('black')) return 'card-black';
+        if (v.includes('alezan') || v.includes('chestnut')) return 'card-chestnut';
+        if (v.includes('bai') || v.includes('bay')) return 'card-bay';
+        return 'card-bay';
+    }
+
+    function initialsFromName(name) {
+        const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+        if (parts.length === 0) return '•';
+        if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+        return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+
+    function genderSymbol(value) {
+        const v = String(value || '').toLowerCase();
+        if (v.includes('fem')) return { symbol: '♀', className: 'gender-female' };
+        if (v.includes('male') || v.includes('mâ') || v.includes('mal') || v.includes('hongre')) {
+            return { symbol: '♂', className: 'gender-male' };
+        }
+        return { symbol: '', className: '' };
+    }    function escapeHtml(value) {
         return String(value ?? '')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -38,35 +62,38 @@ document.addEventListener('DOMContentLoaded', function () {
     function createCard(horse) {
         const card = document.createElement('div');
         card.className = 'horse-card';
+        const coatClass = cardClassFromCoat(horse.robe);
+        const initials = initialsFromName(horse.nom);
+        const gender = genderSymbol(horse.sexe);
+
+        card.classList.add(coatClass);
         card.innerHTML = `
-            <div class="horse-card-header">
-                <h3 class="horse-card-title">${escapeHtml(horse.nom)}</h3>
-                <p class="horse-card-subtitle">${escapeHtml(horse.race ?? '-')}  ${escapeHtml(horse.robe ?? '-')}</p>
-                <i class="fas fa-horse-head"></i>
+            <div class="card-header">
+                <div class="horse-initials">${escapeHtml(initials)}</div>
             </div>
-            <div class="horse-card-body">
-                <div class="horse-card-details">
-                    <div class="horse-card-detail">
-                        <span class="detail-label">Sexe</span>
-                        <span class="detail-value">${escapeHtml(horse.sexe ?? '-')}</span>
-                    </div>
-                    <div class="horse-card-detail">
-                        <span class="detail-label">Annee de naissance</span>
-                        <span class="detail-value">${escapeHtml(horse.annee_naissance ?? '-')}</span>
-                    </div>
-                    <div class="horse-card-detail">
-                        <span class="detail-label">Taille</span>
-                        <span class="detail-value">${escapeHtml(horse.taille ?? '-')} m</span>
-                    </div>
-                    <div class="horse-card-detail">
-                        <span class="detail-label">Robe</span>
-                        <span class="detail-value">${escapeHtml(horse.robe ?? '-')}</span>
-                    </div>
+            <div class="card-body">
+                <div class="horse-name">${escapeHtml(horse.nom)}
+                    ${gender.symbol ? `<span class="gender-symbol ${gender.className}">${gender.symbol}</span>` : ''}
                 </div>
-                <div class="horse-card-actions">
-                    <a href="/utilisateur/chevaux/${horse.id}" class="btn-small btn-view" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-eye"></i> Voir profil
-                    </a>
+                <div class="horse-breed-tag">${escapeHtml(horse.race ?? '-')}</div>
+                <div class="divider"></div>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Robe</label>
+                        <span><span class="robe-dot"></span>${escapeHtml(horse.robe ?? '-')}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Taille</label>
+                        <span>${escapeHtml(horse.taille ?? '-')} m</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Naissance</label>
+                        <span>${escapeHtml(horse.annee_naissance ?? '-')}</span>
+                    </div>
+                    <div class="info-item">
+                        <label>Sexe</label>
+                        <span>${escapeHtml(horse.sexe ?? '-')}</span>
+                    </div>
                 </div>
             </div>
         `;
@@ -90,3 +117,4 @@ document.addEventListener('DOMContentLoaded', function () {
 
     init();
 });
+
