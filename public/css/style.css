@@ -20,7 +20,7 @@
 }
 
 body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Lato', sans-serif;
     background: linear-gradient(135deg, #f9f5eb 0%, #eaddca 100%);
     color: var(--dark);
     min-height: 100vh;
@@ -1067,3 +1067,4 @@ mark {
     margin-right: 6px;
     vertical-align: middle;
 }
+
