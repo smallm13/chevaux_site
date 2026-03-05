@@ -358,6 +358,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span>${escapeHtml(horse.sexe ?? '-')}</span>
                     </div>
                 </div>
+                <div class="horse-card-actions">
+                    <a href="/utilisateur/chevaux/${horse.id}" class="btn-small btn-view" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-eye"></i> Voir profil
+                    </a>
+                </div>
             </div>
         `;
 
