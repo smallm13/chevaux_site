@@ -360,15 +360,38 @@ document.addEventListener('DOMContentLoaded', function () {
                 return safeText.replace(regex, '<mark>$1</mark>');
             };
 
+            const coatClass = cardClassFromCoat(horse.coat);
+            const initials = initialsFromName(horse.name);
+            const gender = genderSymbol(horse.sex);
+
+            horseCard.classList.add(coatClass);
             horseCard.innerHTML = `
-                <div class="horse-image"><i class="fas fa-horse"></i></div>
-                <div class="horse-info">
-                    <h3 class="horse-name">${highlightTerm(horse.name)}</h3>
-                    <div class="horse-details">
-                        <div class="detail-item"><span class="detail-label">Race</span><span class="detail-value">${highlightTerm(horse.breed)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Taille</span><span class="detail-value">${escapeHtml(horse.height)} m</span></div>
-                        <div class="detail-item"><span class="detail-label">Robe</span><span class="detail-value">${highlightTerm(horse.coat)}</span></div>
-                        <div class="detail-item"><span class="detail-label">Annee de naissance</span><span class="detail-value">${escapeHtml(horse.birth_year ?? '-')}</span></div>
+                <div class="card-header">
+                    <div class="horse-initials">${escapeHtml(initials)}</div>
+                </div>
+                <div class="card-body">
+                    <div class="horse-name">${highlightTerm(horse.name)}
+                        ${gender.symbol ? `<span class="gender-symbol ${gender.className}">${gender.symbol}</span>` : ''}
+                    </div>
+                    <div class="horse-breed-tag">${highlightTerm(horse.breed)}</div>
+                    <div class="divider"></div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Robe</label>
+                            <span><span class="robe-dot"></span>${highlightTerm(horse.coat)}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Taille</label>
+                            <span>${escapeHtml(horse.height)} m</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Naissance</label>
+                            <span>${escapeHtml(horse.birth_year ?? '-')}</span>
+                        </div>
+                        <div class="info-item">
+                            <label>Sexe</label>
+                            <span>${escapeHtml(horse.sex ?? '-')}</span>
+                        </div>
                     </div>
                 </div>
             `;
