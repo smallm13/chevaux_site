@@ -111,8 +111,10 @@
             </div>
         </div>
     </section>
-    <div class="horses-grid" id="horses-list">
-        <!-- Les chevaux seront generes par JavaScript -->
+    <div class="container">
+        <div class="horses-grid" id="horses-list">
+            <!-- Les chevaux seront generes par JavaScript -->
+        </div>
     </div>
     <!-- Statistiques rapides -->
     <section class="stats-section">
@@ -177,5 +179,4 @@
 </body>
 
 </html>
-
 

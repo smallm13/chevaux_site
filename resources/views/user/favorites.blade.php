@@ -60,7 +60,9 @@
         </div>
     </section>
 
-    <div class="horses-grid" id="favorites-list"></div>
+    <div class="container">
+        <div class="horses-grid" id="favorites-list"></div>
+    </div>
 
     <footer>
         <div class="container footer-content">
