@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Mes favoris - Ecuries Royales</title>
+    <title>Statistiques - Ecuries Royales</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('user/css/user.css') }}">
 </head>
@@ -27,7 +27,6 @@
         }
         $initials = $initials !== '' ? $initials : 'U';
     @endphp
-
     <header>
         <div class="container header-content">
             <div class="logo">
@@ -37,6 +36,9 @@
             <div class="user-menu">
                 <span>Bienvenue, {{ $firstName }}</span>
                 <div class="user-avatar">{{ $initials }}</div>
+                <button id="logout-btn-user" class="btn-logout-user" type="button">
+                    <i class="fas fa-sign-out-alt"></i> Deconnexion
+                </button>
             </div>
         </div>
 
@@ -44,26 +46,38 @@
             <div class="container">
                 <ul class="nav-links">
                     <li><a href="{{ route('user.horses') }}" class="{{ request()->routeIs('user.horses') ? 'active' : '' }}"><i class="fas fa-home"></i> Accueil</a></li>
-                    <li><a href="{{ route('user.favorites') }}" class="{{ request()->routeIs('user.favorites') ? 'active' : '' }}"><i class="fas fa-heart"></i> Mes favoris <span
-                                id="favorites-count" class="badge">0</span></a></li>
+                    <li><a href="{{ route('user.favorites') }}" id="favorites-link" class="{{ request()->routeIs('user.favorites') ? 'active' : '' }}"><i class="fas fa-heart"></i> Mes favoris <span id="favorites-count" class="badge">0</span></a></li>
                     <li><a href="{{ route('user.stats') }}" class="{{ request()->routeIs('user.stats') ? 'active' : '' }}"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <section class="search-section">
+    <section class="stats-page">
         <div class="container">
-            <div class="search-header">
-                <h2><i class="fas fa-heart"></i> Mes chevaux favoris</h2>
-                <p class="subtitle">Retrouvez rapidement les chevaux que vous avez ajoutes en favoris</p>
+            <div class="stats-page-header">
+                <h2><i class="fas fa-chart-bar"></i> Statistiques</h2>
+                <p class="subtitle">Choisissez une repartition pour afficher les graphiques.</p>
             </div>
+
+            <div class="stats-controls">
+                <button class="stats-toggle" data-chart="sex"><i class="fas fa-venus-mars"></i> Par sexe</button>
+                <button class="stats-toggle" data-chart="coat"><i class="fas fa-palette"></i> Par robe</button>
+                <button class="stats-toggle" data-chart="height"><i class="fas fa-ruler-vertical"></i> Par taille</button>
+                <button class="stats-toggle" data-chart="age"><i class="fas fa-hourglass-half"></i> Par age</button>
+                <div class="stats-color">
+                    <label for="stats-color-input"><i class="fas fa-droplet"></i> Couleur graphique</label>
+                    <input type="color" id="stats-color-input" value="#8B4513" aria-label="Couleur du graphique">
+                </div>
+            </div>
+
+            <div class="stats-chart-card">
+                <canvas id="stats-chart" height="120"></canvas>
+            </div>
+
+            <div class="stats-summary" id="stats-summary"></div>
         </div>
     </section>
-
-    <div class="container">
-        <div class="horses-grid" id="favorites-list"></div>
-    </div>
 
     <footer>
         <div class="container footer-content">
@@ -76,11 +90,8 @@
         </div>
     </footer>
 
-    <script>
-        const allHorses = @json($horses);
-    </script>
-    <script src="{{ asset('user/js/favorites.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="{{ asset('user/js/stats.js') }}"></script>
 </body>
 
 </html>
-

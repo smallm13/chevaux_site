@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -62,5 +62,7 @@ Route::get('/utilisateur', [HorseController::class, 'userIndex'])
     ->name('user.horses');
 Route::get('/utilisateur/favoris', [HorseController::class, 'userFavorites'])
     ->name('user.favorites');
+Route::get('/utilisateur/statistiques', [HorseController::class, 'userStats'])->name('user.stats');
 Route::get('/utilisateur/chevaux/{id}', [HorseController::class, 'userShow'])
     ->name('user.horse.profile');
+

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -50,7 +50,7 @@
                     <li><a href="{{ route('user.horses') }}" class="{{ request()->routeIs('user.horses') ? 'active' : '' }}"><i class="fas fa-home"></i> Accueil</a></li>
                     <li><a href="{{ route('user.favorites') }}" id="favorites-link" class="{{ request()->routeIs('user.favorites') ? 'active' : '' }}"><i class="fas fa-heart"></i> Mes favoris <span
                                 id="favorites-count" class="badge">0</span></a></li>
-                    <li><a href="#"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
+                    <li><a href="{{ route('user.stats') }}" class="{{ request()->routeIs('user.stats') ? 'active' : '' }}"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
                 </ul>
             </div>
         </nav>
@@ -179,3 +179,4 @@
 </body>
 
 </html>
+

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Http\Controllers;
 
@@ -544,7 +544,12 @@ class HorseController extends Controller
         return view('user.favorites', compact('horses'));
     }
 
-    public function userShow($id)
+    public function userStats()
+    {
+        return view('user.stats');
+    }
+
+public function userShow()
     {
         $qualifiedTable = 'chevaux';
 
@@ -589,5 +594,10 @@ class HorseController extends Controller
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
+
+
+
+
+
 
 
