@@ -46,6 +46,7 @@
                     <li><a href="{{ route('user.horses') }}" class="{{ request()->routeIs('user.horses') ? 'active' : '' }}"><i class="fas fa-home"></i> Accueil</a></li>
                     <li><a href="{{ route('user.favorites') }}" class="{{ request()->routeIs('user.favorites') ? 'active' : '' }}"><i class="fas fa-heart"></i> Mes favoris <span
                                 id="favorites-count" class="badge">0</span></a></li>
+                    <li><a href="#" class="{{ request()->routeIs('user.horses') ? '' : '' }}"><i class="fas fa-chart-bar"></i> Statistiques</a></li>
                 </ul>
             </div>
         </nav>
