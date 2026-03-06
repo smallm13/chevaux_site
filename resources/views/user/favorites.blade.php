@@ -43,8 +43,8 @@
         <nav class="main-nav">
             <div class="container">
                 <ul class="nav-links">
-                    <li><a href="{{ route('user.horses') }}"><i class="fas fa-home"></i> Accueil</a></li>
-                    <li><a href="{{ route('user.favorites') }}" class="active"><i class="fas fa-heart"></i> Mes favoris <span
+                    <li><a href="{{ route('user.horses') }}" class="{{ request()->routeIs('user.horses') ? 'active' : '' }}"><i class="fas fa-home"></i> Accueil</a></li>
+                    <li><a href="{{ route('user.favorites') }}" class="{{ request()->routeIs('user.favorites') ? 'active' : '' }}"><i class="fas fa-heart"></i> Mes favoris <span
                                 id="favorites-count" class="badge">0</span></a></li>
                 </ul>
             </div>
