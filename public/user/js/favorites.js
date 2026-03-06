@@ -7,12 +7,10 @@
     }
 
 
-    function cardClassFromCoat(value) {
+    function cardClassFromSex(value) {
         const v = String(value || '').toLowerCase();
-        if (v.includes('gris') || v.includes('grey')) return 'card-grey';
-        if (v.includes('noir') || v.includes('black')) return 'card-black';
-        if (v.includes('alezan') || v.includes('chestnut')) return 'card-chestnut';
-        if (v.includes('bai') || v.includes('bay')) return 'card-bay';
+        if (v.includes('fem')) return 'card-grey';
+        if (v.includes('male') || v.includes('mâ') || v.includes('mal') || v.includes('hongre')) return 'card-bay';
         return 'card-bay';
     }
 
@@ -62,11 +60,11 @@
     function createCard(horse) {
         const card = document.createElement('div');
         card.className = 'horse-card';
-        const coatClass = cardClassFromCoat(horse.robe);
+        const sexClass = cardClassFromSex(horse.sexe);
         const initials = initialsFromName(horse.nom);
         const gender = genderSymbol(horse.sexe);
 
-        card.classList.add(coatClass);
+        card.classList.add(sexClass);
         card.innerHTML = `
             <div class="card-header">
                 <div class="horse-initials">${escapeHtml(initials)}</div>
@@ -122,4 +120,6 @@
 
     init();
 });
+
+
 

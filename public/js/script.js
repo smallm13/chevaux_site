@@ -1,12 +1,10 @@
 ﻿let coatChartInstance;
 
 
-function cardClassFromCoat(value) {
+function cardClassFromSex(value) {
     const v = String(value || '').toLowerCase();
-    if (v.includes('gris') || v.includes('grey')) return 'card-grey';
-    if (v.includes('noir') || v.includes('black')) return 'card-black';
-    if (v.includes('alezan') || v.includes('chestnut')) return 'card-chestnut';
-    if (v.includes('bai') || v.includes('bay')) return 'card-bay';
+    if (v.includes('fem')) return 'card-grey';
+    if (v.includes('male') || v.includes('mâ') || v.includes('mal') || v.includes('hongre')) return 'card-bay';
     return 'card-bay';
 }
 
@@ -360,11 +358,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return safeText.replace(regex, '<mark>$1</mark>');
             };
 
-            const coatClass = cardClassFromCoat(horse.coat);
+            const sexClass = cardClassFromSex(horse.sex);
             const initials = initialsFromName(horse.name);
             const gender = genderSymbol(horse.sex);
 
-            horseCard.classList.add(coatClass);
+            horseCard.classList.add(sexClass);
             horseCard.innerHTML = `
                 <div class="card-header">
                     <div class="horse-initials">${escapeHtml(initials)}</div>
@@ -524,4 +522,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(fetchHorses, 500);
     setTimeout(loadStats, 1000);
 });
+
+
 

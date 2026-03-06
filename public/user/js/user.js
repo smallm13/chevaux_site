@@ -23,12 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let favorites = JSON.parse(localStorage.getItem('horse_favorites')) || [];
 
 
-    function cardClassFromCoat(value) {
+    function cardClassFromSex(value) {
         const v = String(value || '').toLowerCase();
-        if (v.includes('gris') || v.includes('grey')) return 'card-grey';
-        if (v.includes('noir') || v.includes('black')) return 'card-black';
-        if (v.includes('alezan') || v.includes('chestnut')) return 'card-chestnut';
-        if (v.includes('bai') || v.includes('bay')) return 'card-bay';
+        if (v.includes('fem')) return 'card-grey';
+        if (v.includes('male') || v.includes('mâ') || v.includes('mal') || v.includes('hongre')) return 'card-bay';
         return 'card-bay';
     }
 
@@ -46,7 +44,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return { symbol: '♂', className: 'gender-male' };
         }
         return { symbol: '', className: '' };
-    }    function escapeHtml(value) {
+    }
+
+    function escapeHtml(value) {
         return String(value ?? '')
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -322,11 +322,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Icone selon le sexe.
         const genderIcon = isFemaleSex(horse.sexe) ? 'fa-venus' : 'fa-mars';
 
-        const coatClass = cardClassFromCoat(horse.robe);
+        const sexClass = cardClassFromSex(horse.sexe);
         const initials = initialsFromName(horse.nom);
         const gender = genderSymbol(horse.sexe);
 
-        card.classList.add(coatClass);
+        card.classList.add(sexClass);
         card.innerHTML = `
             <div class="card-header">
                 <button class="horse-card-fav ${isFavorite ? 'active' : ''}" data-id="${horse.id}">
@@ -696,5 +696,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lancement
     initPage();
 });
+
+
+
+
+
 
 
