@@ -10,6 +10,60 @@ document.addEventListener('DOMContentLoaded', () => {
             .replace(/'/g, '&#39;');
     }
 
+    function getCsrfToken() {
+        return document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+    }
+
+    function setCsrfToken(token) {
+        const meta = document.querySelector('meta[name="csrf-token"]');
+        if (meta && token) meta.setAttribute('content', token);
+    }
+
+    async function refreshCsrfToken() {
+        const response = await fetch('/csrf-token', {
+            method: 'GET',
+            credentials: 'same-origin',
+            headers: { 'Accept': 'application/json' }
+        });
+        if (!response.ok) throw new Error('Impossible de rafraichir le token CSRF');
+        const data = await response.json();
+        if (!data?.csrf_token) throw new Error('Token CSRF invalide');
+        setCsrfToken(data.csrf_token);
+        return data.csrf_token;
+    }
+
+    async function postWithCsrf(url, payload, retry = true) {
+        const token = getCsrfToken();
+        const response = await fetch(url, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ ...payload, _token: token })
+        });
+
+        if (response.status === 419 && retry) {
+            const newToken = await refreshCsrfToken();
+            return fetch(url, {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': newToken
+                },
+                body: JSON.stringify({ ...payload, _token: newToken })
+            });
+        }
+
+        return response;
+    }
+
     // ======== Variables =========
     const chevauxBtn = document.getElementById('chevaux-btn');
     const utilisateursBtn = document.getElementById('utilisateurs-btn');
@@ -272,35 +326,171 @@ document.addEventListener('DOMContentLoaded', () => {
     // ======== Logout ========
     if (logoutBtn) {
         logoutBtn.addEventListener('click', async () => {
+            const confirmed = await showLogoutConfirmationModal();
+            if (!confirmed) return;
+
             try {
-                const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
-                const response = await fetch('/logout', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest',
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    body: JSON.stringify({})
-                });
+                await refreshCsrfToken();
+                const response = await postWithCsrf('/logout', {});
 
                 if (response.ok) {
-                    Swal.fire({
-                        title: "Deconnexion reussie ",
-                        text: "Vous allez etre redirige.",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => window.location.href = '/');
+                    window.location.href = '/';
                 } else {
-                    Swal.fire("Erreur ", "Impossible de vous deconnecter.", "error");
+                    throw new Error(`Echec de la deconnexion (${response.status})`);
                 }
             } catch (err) {
                 console.error("Erreur logout :", err);
-                Swal.fire("Oups !", "Une erreur s'est produite.", "warning");
+                submitLogoutFormFallback();
             }
         });
+    }
+
+    function submitLogoutFormFallback() {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/logout';
+        form.style.display = 'none';
+
+        const tokenInput = document.createElement('input');
+        tokenInput.type = 'hidden';
+        tokenInput.name = '_token';
+        tokenInput.value = getCsrfToken();
+
+        form.appendChild(tokenInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function showLogoutConfirmationModal() {
+        return new Promise((resolve) => {
+            const overlay = document.createElement('div');
+            overlay.className = 'logout-modal-overlay';
+            overlay.innerHTML = `
+                <div class="logout-modal" role="dialog" aria-modal="true" aria-labelledby="logout-modal-title">
+                    <div class="logout-modal-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <h3 id="logout-modal-title">Confirmer la deconnexion</h3>
+                    <p>Souhaitez-vous vraiment vous deconnecter maintenant ?</p>
+                    <div class="logout-modal-actions">
+                        <button type="button" class="logout-modal-btn cancel-btn">Annuler</button>
+                        <button type="button" class="logout-modal-btn confirm-btn">Se deconnecter</button>
+                    </div>
+                </div>
+            `;
+
+            const modal = overlay.querySelector('.logout-modal');
+            const cancelBtn = overlay.querySelector('.cancel-btn');
+            const confirmBtn = overlay.querySelector('.confirm-btn');
+            const previousOverflow = document.body.style.overflow;
+
+            const cleanup = (result) => {
+                document.removeEventListener('keydown', onKeyDown);
+                document.body.style.overflow = previousOverflow;
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                    resolve(result);
+                }, 150);
+            };
+
+            const onKeyDown = (event) => {
+                if (event.key === 'Escape') cleanup(false);
+            };
+
+            cancelBtn.addEventListener('click', () => cleanup(false));
+            confirmBtn.addEventListener('click', () => cleanup(true));
+            overlay.addEventListener('click', (event) => {
+                if (!modal.contains(event.target)) cleanup(false);
+            });
+            document.addEventListener('keydown', onKeyDown);
+
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => overlay.classList.add('show'));
+            confirmBtn.focus();
+        });
+    }
+
+    const logoutModalStyleId = 'logout-modal-style';
+    if (!document.getElementById(logoutModalStyleId)) {
+        const style = document.createElement('style');
+        style.id = logoutModalStyleId;
+        style.textContent = `
+        .logout-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            padding: 16px;
+        }
+        .logout-modal-overlay.show { opacity: 1; }
+        .logout-modal {
+            width: min(420px, 100%);
+            background: #fff;
+            border-radius: 14px;
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.2);
+            padding: 24px;
+            transform: translateY(10px) scale(0.98);
+            transition: transform 0.15s ease;
+            text-align: center;
+        }
+        .logout-modal-overlay.show .logout-modal { transform: translateY(0) scale(1); }
+        .logout-modal-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fdecea;
+            color: #c0392b;
+            font-size: 1.4rem;
+        }
+        .logout-modal h3 {
+            margin: 0 0 8px;
+            color: #2c3e50;
+        }
+        .logout-modal p {
+            margin: 0 0 18px;
+            color: #7f8c8d;
+        }
+        .logout-modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        .logout-modal-btn {
+            border: none;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+            min-width: 130px;
+        }
+        .logout-modal-btn.cancel-btn {
+            background: #ecf0f1;
+            color: #2c3e50;
+        }
+        .logout-modal-btn.cancel-btn:hover {
+            background: #dce3e6;
+        }
+        .logout-modal-btn.confirm-btn {
+            background: #c0392b;
+            color: #fff;
+        }
+        .logout-modal-btn.confirm-btn:hover {
+            background: #922b21;
+        }
+        `;
+        document.head.appendChild(style);
     }
 
     // ======== Recherche ========
@@ -706,6 +896,5 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
-
 
 
