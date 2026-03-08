@@ -38,7 +38,7 @@
                 <span>Bienvenue, {{ $firstName }}</span>
                 <div class="user-avatar">{{ $initials }}</div>
                 <button id="logout-btn-user" class="btn-logout-user" type="button">
-                    <i class="fas fa-sign-out-alt"></i> Deconnexion
+                    <i class="fas fa-sign-out-alt"></i> Déconnexion
                 </button>
             </div>
         </div>
@@ -179,5 +179,4 @@
 </body>
 
 </html>
-
 

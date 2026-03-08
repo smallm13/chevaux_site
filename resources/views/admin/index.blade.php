@@ -16,7 +16,7 @@
         <main class="main-content">
             <div class="top-bar">
                 <h2>Bienvenue</h2>
-                <button class="logout-btn">Deconnexion</button>
+                <button class="logout-btn">Déconnexion</button>
             </div>
 
             <nav class="admin-navbar">
