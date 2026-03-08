@@ -48,7 +48,7 @@ WORKDIR /var/www/html
 
 ENV PORT=10000
 ENV APACHE_RUN_PORT=10000
-ENV SESSION_DRIVER=file
+ENV SESSION_DRIVER=database
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libpq-dev \
