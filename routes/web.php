@@ -15,6 +15,14 @@ Route::get('/', function () {
 Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 })->name('csrf.token');
+Route::get('/debug-session', function () {
+    try {
+        \DB::table('sessions')->count();
+        return response()->json(['status' => 'TABLE sessions OK']);
+    } catch (\Exception $e) {
+        return response()->json(['status' => 'ERREUR', 'message' => $e->getMessage()]);
+    }
+});
 
 Route::post('/users', [UserController::class, 'store']);
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
