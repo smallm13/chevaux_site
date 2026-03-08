@@ -1,4 +1,5 @@
-﻿let coatChartInstance;
+﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+let coatChartInstance;
 
 
 function cardClassFromSex(value) {
@@ -522,6 +523,9 @@ document.addEventListener('DOMContentLoaded', function () {
     setTimeout(fetchHorses, 500);
     setTimeout(loadStats, 1000);
 });
+
+
+
 
 
 

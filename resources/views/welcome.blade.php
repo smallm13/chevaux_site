@@ -177,6 +177,7 @@
             <h2 class="login-title">Connexion aux Écuries</h2>
 
             <form id="login-form">
+                @csrf
                 <div class="form-group">
                     <label for="email">Adresse email</label>
                     <input type="email" id="email" class="form-control" placeholder="votre@email.com" required>

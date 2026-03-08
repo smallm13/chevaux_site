@@ -1,3 +1,4 @@
+﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 /**
  * Script pour la page de profil de cheval - Ecuries Royales
  * Gere le bouton favori et quelques interactions UI.
@@ -128,3 +129,4 @@ document.addEventListener('DOMContentLoaded', function () {
     favoriteBtn.addEventListener('click', handleFavoriteClick);
     initPageState();
 });
+

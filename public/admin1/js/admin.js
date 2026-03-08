@@ -1,5 +1,6 @@
 ﻿
 document.addEventListener('DOMContentLoaded', () => {
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     function escapeHtml(value) {
         return String(value ?? '')
             .replace(/&/g, '&amp;')
@@ -278,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
                         'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({})
@@ -525,7 +527,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     const response = await fetch(`/admin/chevaux/${horseId}`, {
                         method: 'DELETE',
                         headers: {
+                            'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': token,
+                            'X-Requested-With': 'XMLHttpRequest',
                             'Accept': 'application/json'
                         }
                     });
@@ -641,6 +645,7 @@ window.editUser = async function (id) {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
                 'X-CSRF-TOKEN': token
             },
             body: JSON.stringify(formValues)
@@ -682,7 +687,9 @@ window.deleteUser = async function (id) {
         const res = await fetch(`/admin/utilisateurs/${id}`, {
             method: 'DELETE',
             headers: {
+                'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': token,
+                'X-Requested-With': 'XMLHttpRequest',
                 'Accept': 'application/json'
             }
         });
@@ -699,8 +706,6 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
-
-
 
 
 

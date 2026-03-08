@@ -1,3 +1,5 @@
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
 class UserManager {
     constructor() {
         this.currentPage = 1;
@@ -99,7 +101,8 @@ class UserManager {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': csrfToken
                 },
                 body: JSON.stringify({ role: newRole })
             });

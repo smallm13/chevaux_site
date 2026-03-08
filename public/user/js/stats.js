@@ -1,4 +1,5 @@
-﻿document.addEventListener('DOMContentLoaded', () => {
+﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+document.addEventListener('DOMContentLoaded', () => {
     const buttons = Array.from(document.querySelectorAll('.stats-toggle'));
     const chartCanvas = document.getElementById('stats-chart');
     const summary = document.getElementById('stats-summary');
@@ -272,3 +273,4 @@
 
     init();
 });
+

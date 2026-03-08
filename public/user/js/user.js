@@ -1,4 +1,5 @@
-﻿/**
+﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+/**
  * Script pour la page d'accueil - Ecuries Royales
  * Gere la liste des chevaux, la recherche, les filtres et les favoris.
  */
@@ -696,6 +697,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lancement
     initPage();
 });
+
 
 
 

@@ -177,6 +177,7 @@
         <div class="modal-content">
             <h3>Ajouter un cheval</h3>
             <form id="add-horse-form">
+                @csrf
                 <div class="horse-form-section">
                     <h4>Identite du cheval</h4>
                     <div class="horse-form-grid">
@@ -337,4 +338,3 @@
 </body>
 
 </html>
-
