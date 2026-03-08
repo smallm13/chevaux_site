@@ -1,4 +1,4 @@
-const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 let coatChartInstance;
 
 
@@ -151,14 +151,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
 
             if (data.success) {
-                loginMessage.textContent = 'Connexion rÃ©ussie !';
+                loginMessage.textContent = 'Connexion réussie !';
                 loginMessage.classList.add('success');
                 loginMessage.style.display = 'block';
 
                 const logoutBtn = document.createElement('button');
                 logoutBtn.id = 'logout-btn';
                 logoutBtn.className = 'btn btn-logout';
-                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> DÃ©connexion';
+                logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Déconnexion';
                 //userControls.insertBefore(logoutBtn, loginBtn);
                 //modal.style.display = 'none';
                   setTimeout(() => {
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }, 10);
 
 
-                // === DÃ©connexion ===
+                // === Déconnexion ===
                 logoutBtn.addEventListener('click', async () => {
                     try {
                         const res = await postWithCsrf('/logout', {});
@@ -180,14 +180,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             const logoutMessage = document.createElement('div');
                             logoutMessage.className = 'user-greeting animate-pop';
-                            logoutMessage.innerHTML = `<i class="fas fa-check-circle"></i> DÃ©connectÃ© avec succÃ¨s.`;
+                            logoutMessage.innerHTML = `<i class="fas fa-check-circle"></i> Déconnecté avec succès.`;
                             document.body.prepend(logoutMessage);
 
                             setTimeout(() => {
                                 window.location.href = '/';
                             }, 1000);
                         } else {
-                            alert('Erreur lors de la dÃ©connexion');
+                            alert('Erreur lors de la déconnexion');
                         }
                     } catch (err) {
                         console.error("Erreur logout :", err);
@@ -195,7 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
             } else {
-                loginMessage.textContent = data.message || 'Ã‰chec de connexion';
+                loginMessage.textContent = data.message || 'Échec de connexion';
                 loginMessage.classList.add('error');
                 loginMessage.style.display = 'block';
             }
@@ -293,7 +293,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Erreur lors de l'inscription");
 
-            showSignupMessage('Inscription rÃ©ussie ! Redirection en cours...', 'success');
+            showSignupMessage('Inscription réussie ! Redirection en cours...', 'success');
             setTimeout(() => {
                 signupForm.reset();
                 signupModal.style.display = 'none';
@@ -342,7 +342,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function displayHorses(horses, searchTerm = '') {
         horsesGrid.innerHTML = '';
         if (!horses || horses.length === 0) {
-            horsesGrid.innerHTML = '<p class="no-results">Aucun cheval trouvÃ© pour votre recherche.</p>';
+            horsesGrid.innerHTML = '<p class="no-results">Aucun cheval trouvé pour votre recherche.</p>';
             return;
         }
 
@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function () {
         setText(statsDom.statsFemale, femaleCount);
     }
 
-    // === RÃ©cupÃ©rer tous les chevaux ===
+    // === Récupérer tous les chevaux ===
     async function fetchHorses() {
         loader.style.display = 'block';
         try {
@@ -435,7 +435,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const horses = await response.json();
             displayHorses(horses);
         } catch (error) {
-            console.error("Erreur de rÃ©cupÃ©ration des chevaux :", error);
+            console.error("Erreur de récupération des chevaux :", error);
             horsesGrid.innerHTML = '<p class="no-results">Impossible de charger les chevaux.</p>';
         } finally {
             loader.style.display = 'none';
@@ -487,7 +487,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: {
                     labels: labels,
                     datasets: [{
-                        label: 'RÃ©partition par robe',
+                        label: 'Répartition par robe',
                         data: data,
                         backgroundColor: ['#8B4513', '#A0522D', '#000000', '#808080', '#FFD700', '#FFF8DC', '#F0E68C', '#D2B48C'],
                         borderWidth: 1
@@ -515,14 +515,15 @@ document.addEventListener('DOMContentLoaded', function () {
             e.preventDefault();
             const platform = btn.classList.contains('google') ? 'Google' :
                              btn.classList.contains('facebook') ? 'Facebook' : 'Twitter';
-            alert(`Connexion via ${platform} sera implÃ©mentÃ©e dans une version future`);
+            alert(`Connexion via ${platform} sera implémentée dans une version future`);
         });
     });
 
-    // Charger automatiquement les donnÃ©es au dÃ©marrage
+    // Charger automatiquement les données au démarrage
     setTimeout(fetchHorses, 500);
     setTimeout(loadStats, 1000);
 });
+
 
 
 
