@@ -1,7 +1,6 @@
 ﻿<?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminUserController;
@@ -13,8 +12,7 @@ use App\Http\Controllers\HorseController;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/csrf-token', function (Request $request) {
-    $request->session()->regenerateToken();
+Route::get('/csrf-token', function () {
     return response()->json(['csrf_token' => csrf_token()]);
 })->name('csrf.token');
 
