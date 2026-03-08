@@ -243,11 +243,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="logout-modal-icon">
                         <i class="fas fa-sign-out-alt"></i>
                     </div>
-                    <h3 id="logout-modal-title">Confirmer la deconnexion</h3>
-                    <p>Souhaitez-vous vraiment vous deconnecter maintenant ?</p>
+                    <h3 id="logout-modal-title">Confirmer la déconnexion</h3>
+                    <p>Souhaitez-vous vraiment vous déconnecter maintenant ?</p>
                     <div class="logout-modal-actions">
                         <button type="button" class="logout-modal-btn cancel-btn">Annuler</button>
-                        <button type="button" class="logout-modal-btn confirm-btn">Se deconnecter</button>
+                        <button type="button" class="logout-modal-btn confirm-btn">Se déconnecter</button>
                     </div>
                 </div>
             `;
@@ -697,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lancement
     initPage();
 });
-
 
 
 
