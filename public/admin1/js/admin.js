@@ -1,6 +1,6 @@
-﻿
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
 document.addEventListener('DOMContentLoaded', () => {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
     function escapeHtml(value) {
         return String(value ?? '')
             .replace(/&/g, '&amp;')
@@ -706,7 +706,6 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
-
 
 
 

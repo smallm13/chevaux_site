@@ -1,4 +1,4 @@
-﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 /**
  * Script pour la page de profil de cheval - Ecuries Royales
  * Gere le bouton favori et quelques interactions UI.

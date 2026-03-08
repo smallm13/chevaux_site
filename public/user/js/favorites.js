@@ -1,4 +1,4 @@
-﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 document.addEventListener('DOMContentLoaded', function () {
     const favoritesList = document.getElementById('favorites-list');
     const favoritesCount = document.getElementById('favorites-count');

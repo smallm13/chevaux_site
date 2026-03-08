@@ -1,4 +1,4 @@
-﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = Array.from(document.querySelectorAll('.stats-toggle'));
     const chartCanvas = document.getElementById('stats-chart');

@@ -1,4 +1,4 @@
-﻿const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
+const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")?.getAttribute("content");
 let coatChartInstance;
 
 
