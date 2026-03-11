@@ -71,4 +71,6 @@ Route::get('/utilisateur/favoris', [HorseController::class, 'userFavorites'])
 Route::get('/utilisateur/statistiques', [HorseController::class, 'userStats'])->name('user.stats');
 Route::get('/utilisateur/chevaux/{id}', [HorseController::class, 'userShow'])
     ->name('user.horse.profile');
-
+Route::get('/utilisateur/chevaux/{id}/carnet', [HorseController::class, 'userCarnet'])
+    ->middleware(['auth'])
+    ->name('user.horse.carnet');

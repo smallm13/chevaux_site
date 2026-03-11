@@ -164,8 +164,8 @@
             <h3><i class="fas fa-notes-medical"></i> CARNET DE SANTE</h3>
             @if ($carnetExists)
                 <div class="health-card">
-                    <img src="{{ asset('storage/' . $carnetPath) }}" alt="Carnet de sante - {{ $cheval->nom ?? 'Cheval' }}">
-                    <a class="health-download" href="{{ asset('storage/' . $carnetPath) }}" target="_blank" rel="noopener">
+                    <img src="{{ route('user.horse.carnet', ['id' => $cheval->id]) }}" alt="Carnet de sante - {{ $cheval->nom ?? 'Cheval' }}">
+                    <a class="health-download" href="{{ route('user.horse.carnet', ['id' => $cheval->id]) }}" target="_blank" rel="noopener">
                         Voir en taille reelle
                     </a>
                 </div>
@@ -247,4 +247,3 @@
 </body>
 
 </html>
-

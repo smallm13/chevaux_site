@@ -575,7 +575,18 @@ class HorseController extends Controller
         return view('user.stats');
     }
 
-public function userShow($id)
+    public function userCarnet($id)
+    {
+        $cheval = Horse::findOrFail($id);
+        $path = $cheval->carnet_sante_photo ?? null;
+        if (!$path || !Storage::disk('public')->exists($path)) {
+            abort(404);
+        }
+
+        return Storage::disk('public')->response($path);
+    }
+
+    public function userShow($id)
     {
         $qualifiedTable = 'chevaux';
 
@@ -620,7 +631,6 @@ public function userShow($id)
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 
 
 
