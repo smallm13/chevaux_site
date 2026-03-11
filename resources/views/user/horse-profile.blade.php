@@ -13,6 +13,8 @@
 <body>
     @php
         $dateCourte = fn($d) => $d ? \Carbon\Carbon::parse($d)->format('d/m/Y') : '-';
+        $carnetPath = $cheval->carnet_sante_photo ?? null;
+        $carnetExists = $carnetPath ? \Illuminate\Support\Facades\Storage::disk('public')->exists($carnetPath) : false;
         $user = auth()->user();
         $firstName = $user->prenom ?? $user->name ?? 'Utilisateur';
         $lastName = $user->nom ?? '';
@@ -160,10 +162,10 @@
 
         <section class="health-section">
             <h3><i class="fas fa-notes-medical"></i> CARNET DE SANTE</h3>
-            @if (!empty($cheval->carnet_sante_photo))
+            @if ($carnetExists)
                 <div class="health-card">
-                    <img src="{{ asset('storage/' . $cheval->carnet_sante_photo) }}" alt="Carnet de sante - {{ $cheval->nom ?? 'Cheval' }}">
-                    <a class="health-download" href="{{ asset('storage/' . $cheval->carnet_sante_photo) }}" target="_blank" rel="noopener">
+                    <img src="{{ asset('storage/' . $carnetPath) }}" alt="Carnet de sante - {{ $cheval->nom ?? 'Cheval' }}">
+                    <a class="health-download" href="{{ asset('storage/' . $carnetPath) }}" target="_blank" rel="noopener">
                         Voir en taille reelle
                     </a>
                 </div>
@@ -245,5 +247,4 @@
 </body>
 
 </html>
-
 
