@@ -575,7 +575,7 @@ class HorseController extends Controller
         return view('user.stats');
     }
 
-public function userShow()
+public function userShow($id)
     {
         $qualifiedTable = 'chevaux';
 
@@ -620,7 +620,6 @@ public function userShow()
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 
 
 
