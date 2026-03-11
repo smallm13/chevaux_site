@@ -483,6 +483,20 @@ body {
   text-align: left;
 }
 
+.carnet-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e6d8cc;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  background: #fff;
+}
+
+.carnet-empty {
+  color: #9a8b7c;
+}
+
 #horse-table tbody tr {
   border-bottom: 1px solid #eee;
   transition: background-color 0.3s ease;
@@ -1125,4 +1139,3 @@ table th, table td {
     flex: 1;
     margin-bottom: 0 !important;
 }
-

@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
             horseList.innerHTML = '';
 
             if (chevaux.length === 0) {
-                horseList.innerHTML = `<tr><td colspan="8" style="text-align:center;">Aucun cheval trouve.</td></tr>`;
+                horseList.innerHTML = `<tr><td colspan="9" style="text-align:center;">Aucun cheval trouve.</td></tr>`;
                 horseCountEl.textContent = 0;
                 return;
             }
@@ -234,6 +234,9 @@ document.addEventListener('DOMContentLoaded', () => {
             horseCountEl.textContent = chevaux.length;
 
             chevaux.forEach(c => {
+                const carnet = c.carnet_sante_photo
+                    ? `<img class="carnet-thumb" src="/storage/${encodeURI(c.carnet_sante_photo)}" alt="Carnet de sante">`
+                    : '<span class="carnet-empty">--</span>';
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td class="selection-col" style="${horseSelectionMode ? '' : 'display:none;'}">
@@ -243,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${escapeHtml(c.nom)}</td>
                     <td>${escapeHtml(c.race ?? '-')}</td>
                     <td>${escapeHtml(c.robe ?? '-')}</td>
+                    <td>${carnet}</td>
                     <td>${escapeHtml(c.annee_naissance ?? '-')}</td>
                     <td>${escapeHtml(c.taille ?? '-')}</td>
                     <td>

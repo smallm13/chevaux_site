@@ -159,6 +159,7 @@
                             <th>Nom</th>
                             <th>Race</th>
                             <th>Robe</th>
+                            <th>Carnet</th>
                             <th>Annee de naissance</th>
                             <th>Taille</th>
 <th>Actions</th>

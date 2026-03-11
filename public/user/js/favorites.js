@@ -66,9 +66,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const gender = genderSymbol(horse.sexe);
 
         card.classList.add(sexClass);
+        const photoHtml = horse.carnet_sante_photo
+            ? `<img class="horse-photo" src="/storage/${encodeURI(horse.carnet_sante_photo)}" alt="Carnet de sante - ${escapeHtml(horse.nom ?? 'Cheval')}">`
+            : `<div class="horse-initials">${escapeHtml(initials)}</div>`;
         card.innerHTML = `
             <div class="card-header">
-                <div class="horse-initials">${escapeHtml(initials)}</div>
+                ${photoHtml}
             </div>
             <div class="card-body">
                 <div class="horse-name">${escapeHtml(horse.nom)}
@@ -121,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     init();
 });
-
 
 
 
