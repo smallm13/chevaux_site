@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Horse;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -588,26 +589,13 @@ class HorseController extends Controller
 
     public function userShow($id)
     {
-        $qualifiedTable = 'chevaux';
-
-        $cheval = DB::table($qualifiedTable)->where('id', $id)->first();
-
-        if (!$cheval) {
-            $sourceHorse = Horse::find($id);
-            if ($sourceHorse && !empty($sourceHorse->nom)) {
-                $cheval = DB::table($qualifiedTable)->where('nom', $sourceHorse->nom)->first();
-            }
-        }
-
-        if (!$cheval) {
-            abort(404, 'Cheval introuvable dans la base public.');
-        }
+        $cheval = Horse::findOrFail($id);
 
         $pere = null;
         $mere = null;
         $naisseur = null;
 
-        if ($this->hasTable('pedigrees')) {
+        try {
             $pere = DB::table('pedigrees')
                 ->where('cheval_id', $cheval->id)
                 ->where('type', 'pere')
@@ -617,21 +605,25 @@ class HorseController extends Controller
                 ->where('cheval_id', $cheval->id)
                 ->where('type', 'mere')
                 ->first();
+        } catch (QueryException $e) {
+            $pere = null;
+            $mere = null;
         }
 
-        if ($this->hasTable('cheval_naisseur') && $this->hasTable('naisseurs')) {
+        try {
             $naisseur = DB::table('cheval_naisseur as cn')
                 ->join('naisseurs as n', 'n.id', '=', 'cn.naisseur_id')
                 ->where('cn.cheval_id', $cheval->id)
                 ->orderByDesc('cn.pourcentage')
                 ->select('n.*', 'cn.pourcentage')
                 ->first();
+        } catch (QueryException $e) {
+            $naisseur = null;
         }
 
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 
 
 
