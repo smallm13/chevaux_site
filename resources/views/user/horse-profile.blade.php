@@ -158,6 +158,20 @@
             </div>
         </div>
 
+        <section class="health-section">
+            <h3><i class="fas fa-notes-medical"></i> CARNET DE SANTE</h3>
+            @if (!empty($cheval->carnet_sante_photo))
+                <div class="health-card">
+                    <img src="{{ asset('storage/' . $cheval->carnet_sante_photo) }}" alt="Carnet de sante - {{ $cheval->nom ?? 'Cheval' }}">
+                    <a class="health-download" href="{{ asset('storage/' . $cheval->carnet_sante_photo) }}" target="_blank" rel="noopener">
+                        Voir en taille reelle
+                    </a>
+                </div>
+            @else
+                <p class="health-empty">Aucune photo du carnet de sante disponible.</p>
+            @endif
+        </section>
+
         <section class="pedigree-section">
             <h3><i class="fas fa-sitemap"></i> PEDIGREE</h3>
             <div class="pedigree-cards">
@@ -231,6 +245,5 @@
 </body>
 
 </html>
-
 
 

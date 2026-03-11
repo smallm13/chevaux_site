@@ -585,6 +585,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 'naisseur_nom', 'naisseur_telephone', 'naisseur_adresse'
             ].forEach((key) => setValue(key, horseData[key]));
 
+            const carnetInput = addHorseForm.querySelector('input[name="carnet_sante_photo"]');
+            if (carnetInput) {
+                carnetInput.value = '';
+            }
+
             toggleTranspondeurFields();
         }
 
@@ -617,26 +622,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
         addHorseForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const formData = new FormData(addHorseForm);
-            const data = Object.fromEntries(formData.entries());
-
             const mode = addHorseForm.dataset.mode || 'create';
             const horseId = addHorseForm.dataset.horseId;
             const isEdit = mode === 'edit' && horseId;
             const url = isEdit ? `/admin/chevaux/${horseId}` : '/horses';
-            const method = isEdit ? 'PUT' : 'POST';
+            const method = 'POST';
+
+            const formData = new FormData(addHorseForm);
+            if (isEdit) {
+                formData.append('_method', 'PUT');
+            }
 
             try {
                 const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 const response = await fetch(url, {
                     method,
                     headers: {
-                        'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': token,
                         'Accept': 'application/json',
                         'X-Requested-With': 'XMLHttpRequest'
                     },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -896,4 +902,3 @@ window.deleteUser = async function (id) {
         Swal.fire("Erreur", "Une erreur est survenue", "error");
     }
 };
-

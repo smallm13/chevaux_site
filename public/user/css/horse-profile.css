@@ -264,6 +264,51 @@ header {
     margin-bottom: 40px;
 }
 
+.health-section {
+    background-color: white;
+    border-radius: var(--radius);
+    padding: 25px;
+    box-shadow: var(--shadow);
+    margin-bottom: 40px;
+}
+
+.health-section h3 {
+    color: var(--primary);
+    border-bottom: 2px solid var(--secondary);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.health-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.health-card img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    background: var(--light);
+}
+
+.health-download {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.health-download:hover {
+    text-decoration: underline;
+}
+
+.health-empty {
+    color: var(--text-light);
+}
+
 .pedigree-section h3 {
     color: var(--primary);
     border-bottom: 2px solid var(--secondary);

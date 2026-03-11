@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
 class HorseController extends Controller
 {
@@ -152,6 +153,12 @@ class HorseController extends Controller
             $query->selectRaw('NULL as stored_age');
         }
 
+        if ($this->hasHorseColumn('carnet_sante_photo')) {
+            $query->addSelect('carnet_sante_photo');
+        } else {
+            $query->selectRaw('NULL as carnet_sante_photo');
+        }
+
         return $query;
     }
 
@@ -211,6 +218,7 @@ class HorseController extends Controller
             'numero_transpondeur' => 'nullable|string|max:30',
             'date_pose_transpondeur' => 'nullable|date',
             'taille' => 'nullable|numeric',
+            'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
 
             // Pedigree
             'pere_nom' => 'nullable|string|max:150',
@@ -233,7 +241,7 @@ class HorseController extends Controller
             'naisseur_telephone' => 'nullable|string|max:30',
         ]);
 
-        $horse = DB::transaction(function () use ($validated) {
+        $horse = DB::transaction(function () use ($validated, $request) {
             $horseData = [
                 'nom' => $validated['nom'],
                 'race' => $validated['race'] ?? null,
@@ -250,6 +258,12 @@ class HorseController extends Controller
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
             ];
+
+            if ($request->hasFile('carnet_sante_photo') && $this->hasHorseColumn('carnet_sante_photo')) {
+                $horseData['carnet_sante_photo'] = $request->file('carnet_sante_photo')
+                    ->store('chevaux/carnets', 'public');
+            }
+
             $horseData = array_intersect_key($horseData, array_flip($this->horseColumns()));
 
             $horse = Horse::create($horseData);
@@ -362,6 +376,7 @@ class HorseController extends Controller
             'numero_transpondeur' => $horse->numero_transpondeur,
             'date_pose_transpondeur' => $horse->date_pose_transpondeur,
             'taille' => $horse->taille,
+            'carnet_sante_photo' => $horse->carnet_sante_photo ?? null,
 
             'pere_nom' => $pere->nom ?? null,
             'pere_sire_numero' => $pere->sire_numero ?? null,
@@ -401,6 +416,7 @@ class HorseController extends Controller
             'numero_transpondeur' => 'nullable|string|max:30',
             'date_pose_transpondeur' => 'nullable|date',
             'taille' => 'nullable|numeric',
+            'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
 
             // Pedigree
             'pere_nom' => 'nullable|string|max:150',
@@ -423,7 +439,7 @@ class HorseController extends Controller
             'naisseur_telephone' => 'nullable|string|max:30',
         ]);
 
-        $horse = DB::transaction(function () use ($validated, $id) {
+        $horse = DB::transaction(function () use ($validated, $id, $request) {
             $horse = Horse::findOrFail($id);
             $horseData = [
                 'nom' => $validated['nom'],
@@ -441,6 +457,16 @@ class HorseController extends Controller
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
             ];
+
+            if ($request->hasFile('carnet_sante_photo') && $this->hasHorseColumn('carnet_sante_photo')) {
+                $newPath = $request->file('carnet_sante_photo')->store('chevaux/carnets', 'public');
+                $oldPath = $horse->carnet_sante_photo ?? null;
+                $horseData['carnet_sante_photo'] = $newPath;
+                if ($oldPath) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
             $horseData = array_intersect_key($horseData, array_flip($this->horseColumns()));
             $horse->update($horseData);
 
@@ -594,7 +620,6 @@ public function userShow()
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 
 
 

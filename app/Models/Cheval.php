@@ -29,6 +29,7 @@ class Cheval extends Model
         'transpondeur',
         'numero_transpondeur',
         'date_pose_transpondeur',
+        'carnet_sante_photo',
     ];
 }
 

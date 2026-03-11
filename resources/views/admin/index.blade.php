@@ -176,7 +176,7 @@
     <div id="add-horse-modal">
         <div class="modal-content">
             <h3>Ajouter un cheval</h3>
-            <form id="add-horse-form">
+            <form id="add-horse-form" enctype="multipart/form-data">
                 @csrf
                 <div class="horse-form-section">
                     <h4>Identite du cheval</h4>
@@ -250,6 +250,16 @@
                         <div class="field">
                             <label>Date pose transpondeur</label>
                             <input type="date" name="date_pose_transpondeur" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="horse-form-section">
+                    <h4>Carnet de sante</h4>
+                    <div class="horse-form-grid">
+                        <div class="field field-wide">
+                            <label>Photo du carnet de sante</label>
+                            <input type="file" name="carnet_sante_photo" accept="image/*" />
                         </div>
                     </div>
                 </div>
