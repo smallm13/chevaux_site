@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('race')->nullable();
             $table->string('robe')->nullable();
             $table->integer('age')->nullable();
-            $table->decimal('taille', 5, 2)->nullable(); // ex: 1.65 m
+            $table->string('discipline')->nullable();
             $table->integer('proprietaire')->nullable();
             $table->timestamps();
         });

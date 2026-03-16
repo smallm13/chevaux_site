@@ -80,7 +80,7 @@ class HorseController extends Controller
             'sex' => $horse->sex ?? null,
             'birth_year' => $birthYear,
             'age' => $age,
-            'height' => $horse->height,
+            'discipline' => $horse->discipline ?? null,
         ];
     }
 
@@ -90,7 +90,7 @@ class HorseController extends Controller
             'nom as name',
             'race as breed',
             'robe as coat',
-            'taille as height',
+            'discipline',
         ]);
 
         if ($this->hasHorseColumn('sexe')) {
@@ -127,7 +127,7 @@ class HorseController extends Controller
             'nom',
             'race',
             'robe',
-            'taille',
+            'discipline',
         ]);
 
         if ($this->hasHorseColumn('sexe')) {
@@ -218,7 +218,7 @@ class HorseController extends Controller
             'transpondeur' => 'nullable|in:0,1',
             'numero_transpondeur' => 'nullable|string|max:30',
             'date_pose_transpondeur' => 'nullable|date',
-            'taille' => 'nullable|numeric',
+            'discipline' => 'nullable|string|max:100',
             'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'signalement_tete' => 'nullable|string',
             'signalement_anterieur_gauche' => 'nullable|string',
@@ -264,7 +264,7 @@ class HorseController extends Controller
                 'transpondeur' => isset($validated['transpondeur']) ? (int) $validated['transpondeur'] : null,
                 'numero_transpondeur' => $validated['numero_transpondeur'] ?? null,
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
-                'taille' => $validated['taille'] ?? null,
+                'discipline' => $validated['discipline'] ?? null,
                 'signalement_tete' => $validated['signalement_tete'] ?? null,
                 'signalement_anterieur_gauche' => $validated['signalement_anterieur_gauche'] ?? null,
                 'signalement_anterieur_droite' => $validated['signalement_anterieur_droite'] ?? null,
@@ -390,7 +390,7 @@ class HorseController extends Controller
             'transpondeur' => $horse->transpondeur,
             'numero_transpondeur' => $horse->numero_transpondeur,
             'date_pose_transpondeur' => $horse->date_pose_transpondeur,
-            'taille' => $horse->taille,
+            'discipline' => $horse->discipline,
             'carnet_sante_photo' => $horse->carnet_sante_photo ?? null,
             'signalement_tete' => $horse->signalement_tete ?? null,
             'signalement_anterieur_gauche' => $horse->signalement_anterieur_gauche ?? null,
@@ -437,7 +437,7 @@ class HorseController extends Controller
             'transpondeur' => 'nullable|in:0,1',
             'numero_transpondeur' => 'nullable|string|max:30',
             'date_pose_transpondeur' => 'nullable|date',
-            'taille' => 'nullable|numeric',
+            'discipline' => 'nullable|string|max:100',
             'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
             'signalement_tete' => 'nullable|string',
             'signalement_anterieur_gauche' => 'nullable|string',
@@ -484,7 +484,7 @@ class HorseController extends Controller
                 'transpondeur' => isset($validated['transpondeur']) ? (int) $validated['transpondeur'] : null,
                 'numero_transpondeur' => $validated['numero_transpondeur'] ?? null,
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
-                'taille' => $validated['taille'] ?? null,
+                'discipline' => $validated['discipline'] ?? null,
                 'signalement_tete' => $validated['signalement_tete'] ?? null,
                 'signalement_anterieur_gauche' => $validated['signalement_anterieur_gauche'] ?? null,
                 'signalement_anterieur_droite' => $validated['signalement_anterieur_droite'] ?? null,
@@ -659,5 +659,4 @@ class HorseController extends Controller
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 

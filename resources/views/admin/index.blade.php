@@ -22,7 +22,7 @@
             <nav class="admin-navbar">
                 <button type="button" class="nav-link active" id="chevaux-btn">Chevaux</button>
                 <button type="button" class="nav-link" id="utilisateurs-btn">Utilisateurs</button>
-                <button type="button" class="nav-link" id="statisques-btn">Statisques</button>
+                <button type="button" class="nav-link" id="statisques-btn">Dashboard</button>
             </nav>
 
             <!-- Stats Cards -->
@@ -160,7 +160,7 @@
                             <th>Race</th>
                             <th>Robe</th>
                             <th>Annee de naissance</th>
-                            <th>Taille</th>
+                            <th>Discipline</th>
 <th>Actions</th>
                         </tr>
                     </thead>
@@ -217,8 +217,8 @@
                             </div>
                         </div>
                         <div class="field">
-                            <label>Taille (m)</label>
-                            <input type="number" name="taille" step="0.01" />
+                            <label>Discipline</label>
+                            <input type="text" name="discipline" />
                         </div>
                         <div class="field">
                             <label>Lieu de naissance</label>

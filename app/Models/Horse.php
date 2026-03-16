@@ -21,7 +21,7 @@ class Horse extends Model
         'robe',
         'annee_naissance',
         'date_naissance',
-        'taille',
+        'discipline',
         'lieu_naissance',
         'sire_numero',
         'ueln_numero',

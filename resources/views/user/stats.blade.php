@@ -63,7 +63,7 @@
             <div class="stats-controls">
                 <button class="stats-toggle" data-chart="sex"><i class="fas fa-venus-mars"></i> Par sexe</button>
                 <button class="stats-toggle" data-chart="coat"><i class="fas fa-palette"></i> Par robe</button>
-                <button class="stats-toggle" data-chart="height"><i class="fas fa-ruler-vertical"></i> Par taille</button>
+                <button class="stats-toggle" data-chart="discipline"><i class="fas fa-medal"></i> Par discipline</button>
                 <button class="stats-toggle" data-chart="age"><i class="fas fa-hourglass-half"></i> Par âge</button>
                 <div class="stats-color">
                     <label for="stats-color-input"><i class="fas fa-droplet"></i> Couleur graphique</label>

@@ -244,7 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${escapeHtml(c.race ?? '-')}</td>
                     <td>${escapeHtml(c.robe ?? '-')}</td>
                     <td>${escapeHtml(c.annee_naissance ?? '-')}</td>
-                    <td>${escapeHtml(c.taille ?? '-')}</td>
+                    <td>${escapeHtml(c.discipline ?? '-')}</td>
                     <td>
                         <button class="edit-btn" onclick="editHorse(${c.id})">Modifier</button>
                     </td>
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', () => {
             [
                 'nom', 'race', 'sexe', 'robe', 'annee_naissance', 'date_naissance', 'lieu_naissance',
                 'sire_numero', 'ueln_numero', 'studbook_naissance', 'transpondeur',
-                'numero_transpondeur', 'date_pose_transpondeur', 'taille',
+                'numero_transpondeur', 'date_pose_transpondeur', 'discipline',
                 'pere_nom', 'pere_sire_numero', 'pere_ueln_numero', 'pere_date_naissance',
                 'pere_pays_naissance', 'pere_studbook',
                 'mere_nom', 'mere_sire_numero', 'mere_ueln_numero', 'mere_date_naissance',

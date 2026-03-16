@@ -347,8 +347,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <span><span class="robe-dot"></span>${escapeHtml(horse.robe ?? '-')}</span>
                     </div>
                     <div class="info-item">
-                        <label>Taille</label>
-                        <span>${escapeHtml(horse.taille ?? '-')} m</span>
+                        <label>Discipline</label>
+                        <span>${escapeHtml(horse.discipline ?? '-')}</span>
                     </div>
                     <div class="info-item">
                         <label>Naissance</label>
@@ -697,7 +697,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lancement
     initPage();
 });
-
 
 
 

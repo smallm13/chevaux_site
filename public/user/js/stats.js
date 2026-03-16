@@ -45,18 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
         return v !== '' ? v : 'Non renseigne';
     }
 
-    function parseHeight(value) {
-        if (value === null || value === undefined || value === '') return null;
-        const num = Number(String(value).replace(',', '.'));
-        return Number.isFinite(num) ? num : null;
-    }
-
-    function heightBucket(height) {
-        if (height === null) return 'Non renseigne';
-        if (height < 1.55) return '< 1.55 m';
-        if (height < 1.65) return '1.55 - 1.64 m';
-        if (height < 1.75) return '1.65 - 1.74 m';
-        return '>= 1.75 m';
+    function getDisciplineLabel(value) {
+        const v = String(value || '').trim();
+        return v !== '' ? v : 'Non renseigne';
     }
 
     function parseAge(horse) {
@@ -142,10 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
             dataset = buildCounts((horse) => getCoatLabel(horse.coat ?? horse.robe));
             chartType = 'bar';
             title = 'Repartition par robe';
-        } else if (kind === 'height') {
-            dataset = buildCounts((horse) => heightBucket(parseHeight(horse.height ?? horse.taille)));
+        } else if (kind === 'discipline') {
+            dataset = buildCounts((horse) => getDisciplineLabel(horse.discipline));
             chartType = 'bar';
-            title = 'Repartition par taille';
+            title = 'Repartition par discipline';
         } else {
             dataset = buildCounts((horse) => ageBucket(parseAge(horse)));
             chartType = 'bar';
@@ -273,4 +264,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     init();
 });
-
