@@ -209,7 +209,6 @@
                             <label>Date de naissance</label>
                             <div class="year-only-group">
                                 <input type="date" name="date_naissance" />
-                                <input type="number" name="date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">

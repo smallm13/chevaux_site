@@ -537,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const anneeNaissanceInput = addHorseForm.querySelector('input[name="annee_naissance"]');
         const dateNaissanceInput = addHorseForm.querySelector('input[name="date_naissance"]');
         const yearOnlyFields = [
-            'date_naissance',
             'date_pose_transpondeur',
             'pere_date_naissance',
             'mere_date_naissance'
