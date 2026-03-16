@@ -752,6 +752,8 @@ table th, table td {
 .signalement-textarea {
     resize: none;
     appearance: none;
+    overflow: hidden;
+    scrollbar-width: none;
 }
 
 .signalement-textarea::-webkit-resizer {
@@ -762,6 +764,11 @@ table th, table td {
 .signalement-textarea::-webkit-outer-spin-button {
     -webkit-appearance: none;
     margin: 0;
+}
+
+.signalement-textarea::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 /* Placeholder en marron clair */
