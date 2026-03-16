@@ -731,6 +731,21 @@ table th, table td {
     font-family: inherit;
 }
 
+#add-horse-form textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #D7CCC8;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    color: #5D4037;
+    background: #FFFFFF;
+    box-sizing: border-box;
+    outline: none;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 70px;
+}
+
 /* Placeholder en marron clair */
 #add-horse-form input::placeholder {
     color: #A1887F; /* Marron clair pour placeholder */
@@ -746,8 +761,19 @@ table th, table td {
     background: #FFFFFF;
 }
 
+#add-horse-form textarea:focus {
+    border-color: #8D6E63;
+    box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.15);
+    background: #FFFFFF;
+}
+
 #add-horse-form input:hover {
     border-color: #A1887F; /* Marron clair au survol */
+    background: #FFF8F0;
+}
+
+#add-horse-form textarea:hover {
+    border-color: #A1887F;
     background: #FFF8F0;
 }
 
@@ -783,6 +809,30 @@ table th, table td {
 
 .field-wide {
     grid-column: 1 / -1;
+}
+
+.year-only-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.year-only-group input[type="date"] {
+    flex: 1 1 180px;
+}
+
+.year-only-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: #6D4C41;
+    white-space: nowrap;
+}
+
+.year-only-input {
+    width: 110px;
 }
 
 /* Boutons avec thÃ¨me marron */

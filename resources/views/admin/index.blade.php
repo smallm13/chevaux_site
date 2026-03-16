@@ -207,7 +207,14 @@
                         </div>
                         <div class="field">
                             <label>Date de naissance</label>
-                            <input type="date" name="date_naissance" />
+                            <div class="year-only-group">
+                                <input type="date" name="date_naissance" />
+                                <label class="year-only-toggle">
+                                    <input type="checkbox" data-year-only-for="date_naissance">
+                                    Année seulement
+                                </label>
+                                <input type="number" name="date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                            </div>
                         </div>
                         <div class="field">
                             <label>Taille (m)</label>
@@ -249,7 +256,14 @@
                         </div>
                         <div class="field">
                             <label>Date pose transpondeur</label>
-                            <input type="date" name="date_pose_transpondeur" />
+                            <div class="year-only-group">
+                                <input type="date" name="date_pose_transpondeur" />
+                                <label class="year-only-toggle">
+                                    <input type="checkbox" data-year-only-for="date_pose_transpondeur">
+                                    Année seulement
+                                </label>
+                                <input type="number" name="date_pose_transpondeur_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -281,7 +295,14 @@
                         </div>
                         <div class="field">
                             <label>Date naissance pere</label>
-                            <input type="date" name="pere_date_naissance" />
+                            <div class="year-only-group">
+                                <input type="date" name="pere_date_naissance" />
+                                <label class="year-only-toggle">
+                                    <input type="checkbox" data-year-only-for="pere_date_naissance">
+                                    Année seulement
+                                </label>
+                                <input type="number" name="pere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                            </div>
                         </div>
                         <div class="field">
                             <label>Pays naissance pere</label>
@@ -305,7 +326,14 @@
                         </div>
                         <div class="field">
                             <label>Date naissance mere</label>
-                            <input type="date" name="mere_date_naissance" />
+                            <div class="year-only-group">
+                                <input type="date" name="mere_date_naissance" />
+                                <label class="year-only-toggle">
+                                    <input type="checkbox" data-year-only-for="mere_date_naissance">
+                                    Année seulement
+                                </label>
+                                <input type="number" name="mere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                            </div>
                         </div>
                         <div class="field">
                             <label>Pays naissance mere</label>
@@ -314,6 +342,40 @@
                         <div class="field">
                             <label>Stud-book mere</label>
                             <input type="text" name="mere_studbook" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="horse-form-section">
+                    <h4>Signalement</h4>
+                    <div class="horse-form-grid">
+                        <div class="field">
+                            <label>Tete</label>
+                            <textarea name="signalement_tete" rows="2"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Anterieur gauche</label>
+                            <textarea name="signalement_anterieur_gauche" rows="2"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Anterieur droite</label>
+                            <textarea name="signalement_anterieur_droite" rows="2"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Posterieur gauche</label>
+                            <textarea name="signalement_posterieur_gauche" rows="2"></textarea>
+                        </div>
+                        <div class="field">
+                            <label>Posterieur droite</label>
+                            <textarea name="signalement_posterieur_droite" rows="2"></textarea>
+                        </div>
+                        <div class="field field-wide">
+                            <label>Corps</label>
+                            <textarea name="signalement_corps" rows="3"></textarea>
+                        </div>
+                        <div class="field field-wide">
+                            <label>Marques particulieres</label>
+                            <textarea name="signalement_marques_particulieres" rows="3"></textarea>
                         </div>
                     </div>
                 </div>

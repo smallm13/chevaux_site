@@ -30,6 +30,13 @@ class Horse extends Model
         'numero_transpondeur',
         'date_pose_transpondeur',
         'carnet_sante_photo',
+        'signalement_tete',
+        'signalement_anterieur_gauche',
+        'signalement_anterieur_droite',
+        'signalement_posterieur_gauche',
+        'signalement_posterieur_droite',
+        'signalement_corps',
+        'signalement_marques_particulieres',
     ];
 }
 

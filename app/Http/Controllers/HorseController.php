@@ -220,6 +220,13 @@ class HorseController extends Controller
             'date_pose_transpondeur' => 'nullable|date',
             'taille' => 'nullable|numeric',
             'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'signalement_tete' => 'nullable|string',
+            'signalement_anterieur_gauche' => 'nullable|string',
+            'signalement_anterieur_droite' => 'nullable|string',
+            'signalement_posterieur_gauche' => 'nullable|string',
+            'signalement_posterieur_droite' => 'nullable|string',
+            'signalement_corps' => 'nullable|string',
+            'signalement_marques_particulieres' => 'nullable|string',
 
             // Pedigree
             'pere_nom' => 'nullable|string|max:150',
@@ -258,6 +265,13 @@ class HorseController extends Controller
                 'numero_transpondeur' => $validated['numero_transpondeur'] ?? null,
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
+                'signalement_tete' => $validated['signalement_tete'] ?? null,
+                'signalement_anterieur_gauche' => $validated['signalement_anterieur_gauche'] ?? null,
+                'signalement_anterieur_droite' => $validated['signalement_anterieur_droite'] ?? null,
+                'signalement_posterieur_gauche' => $validated['signalement_posterieur_gauche'] ?? null,
+                'signalement_posterieur_droite' => $validated['signalement_posterieur_droite'] ?? null,
+                'signalement_corps' => $validated['signalement_corps'] ?? null,
+                'signalement_marques_particulieres' => $validated['signalement_marques_particulieres'] ?? null,
             ];
 
             if ($request->hasFile('carnet_sante_photo') && $this->hasHorseColumn('carnet_sante_photo')) {
@@ -378,6 +392,13 @@ class HorseController extends Controller
             'date_pose_transpondeur' => $horse->date_pose_transpondeur,
             'taille' => $horse->taille,
             'carnet_sante_photo' => $horse->carnet_sante_photo ?? null,
+            'signalement_tete' => $horse->signalement_tete ?? null,
+            'signalement_anterieur_gauche' => $horse->signalement_anterieur_gauche ?? null,
+            'signalement_anterieur_droite' => $horse->signalement_anterieur_droite ?? null,
+            'signalement_posterieur_gauche' => $horse->signalement_posterieur_gauche ?? null,
+            'signalement_posterieur_droite' => $horse->signalement_posterieur_droite ?? null,
+            'signalement_corps' => $horse->signalement_corps ?? null,
+            'signalement_marques_particulieres' => $horse->signalement_marques_particulieres ?? null,
 
             'pere_nom' => $pere->nom ?? null,
             'pere_sire_numero' => $pere->sire_numero ?? null,
@@ -418,6 +439,13 @@ class HorseController extends Controller
             'date_pose_transpondeur' => 'nullable|date',
             'taille' => 'nullable|numeric',
             'carnet_sante_photo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:4096',
+            'signalement_tete' => 'nullable|string',
+            'signalement_anterieur_gauche' => 'nullable|string',
+            'signalement_anterieur_droite' => 'nullable|string',
+            'signalement_posterieur_gauche' => 'nullable|string',
+            'signalement_posterieur_droite' => 'nullable|string',
+            'signalement_corps' => 'nullable|string',
+            'signalement_marques_particulieres' => 'nullable|string',
 
             // Pedigree
             'pere_nom' => 'nullable|string|max:150',
@@ -457,6 +485,13 @@ class HorseController extends Controller
                 'numero_transpondeur' => $validated['numero_transpondeur'] ?? null,
                 'date_pose_transpondeur' => $validated['date_pose_transpondeur'] ?? null,
                 'taille' => $validated['taille'] ?? null,
+                'signalement_tete' => $validated['signalement_tete'] ?? null,
+                'signalement_anterieur_gauche' => $validated['signalement_anterieur_gauche'] ?? null,
+                'signalement_anterieur_droite' => $validated['signalement_anterieur_droite'] ?? null,
+                'signalement_posterieur_gauche' => $validated['signalement_posterieur_gauche'] ?? null,
+                'signalement_posterieur_droite' => $validated['signalement_posterieur_droite'] ?? null,
+                'signalement_corps' => $validated['signalement_corps'] ?? null,
+                'signalement_marques_particulieres' => $validated['signalement_marques_particulieres'] ?? null,
             ];
 
             if ($request->hasFile('carnet_sante_photo') && $this->hasHorseColumn('carnet_sante_photo')) {
@@ -624,6 +659,5 @@ class HorseController extends Controller
         return view('user.horse-profile', compact('cheval', 'pere', 'mere', 'naisseur'));
     }
 }
-
 
 

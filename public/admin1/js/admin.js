@@ -536,6 +536,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const datePoseInput = addHorseForm.querySelector('input[name="date_pose_transpondeur"]');
         const anneeNaissanceInput = addHorseForm.querySelector('input[name="annee_naissance"]');
         const dateNaissanceInput = addHorseForm.querySelector('input[name="date_naissance"]');
+        const yearOnlyToggles = Array.from(addHorseForm.querySelectorAll('[data-year-only-for]'));
+
+        function getYearOnlyInputs(fieldName) {
+            const checkbox = addHorseForm.querySelector(`[data-year-only-for="${fieldName}"]`);
+            const dateInput = addHorseForm.querySelector(`input[name="${fieldName}"]`);
+            const yearInput = addHorseForm.querySelector(`input[name="${fieldName}_year"]`);
+            return { checkbox, dateInput, yearInput };
+        }
 
         function toggleTranspondeurFields() {
             if (!transpondeurSelect || !numeroTranspondeurInput || !datePoseInput) return;
@@ -545,6 +553,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!enabled) {
                 numeroTranspondeurInput.value = '';
                 datePoseInput.value = '';
+            }
+        }
+
+        function applyYearOnlyState(fieldName) {
+            const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
+            if (!checkbox || !dateInput || !yearInput) return;
+            if (checkbox.checked) {
+                dateInput.disabled = true;
+                dateInput.value = '';
+                yearInput.disabled = false;
+            } else {
+                dateInput.disabled = false;
+                yearInput.disabled = true;
+                yearInput.value = '';
+            }
+        }
+
+        function syncYearOnlyPrefill(fieldName) {
+            const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
+            if (!checkbox || !dateInput || !yearInput) return;
+            if (!dateInput.value) return;
+            const match = /^(\d{4})-01-01$/.exec(dateInput.value);
+            if (match) {
+                checkbox.checked = true;
+                yearInput.value = match[1];
+                dateInput.value = '';
+                dateInput.disabled = true;
+                yearInput.disabled = false;
             }
         }
 
@@ -560,6 +596,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Ajouter';
             addHorseForm.reset();
             toggleTranspondeurFields();
+            yearOnlyToggles.forEach((toggle) => applyYearOnlyState(toggle.dataset.yearOnlyFor));
         }
 
         function setFormModeEdit(horseId, horseData) {
@@ -582,6 +619,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 'pere_pays_naissance', 'pere_studbook',
                 'mere_nom', 'mere_sire_numero', 'mere_ueln_numero', 'mere_date_naissance',
                 'mere_pays_naissance', 'mere_studbook',
+                'signalement_tete', 'signalement_anterieur_gauche', 'signalement_anterieur_droite',
+                'signalement_posterieur_gauche', 'signalement_posterieur_droite', 'signalement_corps',
+                'signalement_marques_particulieres',
                 'naisseur_nom', 'naisseur_telephone', 'naisseur_adresse'
             ].forEach((key) => setValue(key, horseData[key]));
 
@@ -591,6 +631,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             toggleTranspondeurFields();
+            yearOnlyToggles.forEach((toggle) => syncYearOnlyPrefill(toggle.dataset.yearOnlyFor));
         }
 
         function openModal() {
@@ -629,6 +670,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const method = 'POST';
 
             const formData = new FormData(addHorseForm);
+            yearOnlyToggles.forEach((toggle) => {
+                const fieldName = toggle.dataset.yearOnlyFor;
+                const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
+                if (!checkbox || !dateInput || !yearInput) return;
+                if (checkbox.checked && yearInput.value) {
+                    const year = yearInput.value.trim();
+                    dateInput.value = `${year}-01-01`;
+                    formData.set(fieldName, dateInput.value);
+                }
+            });
             if (isEdit) {
                 formData.append('_method', 'PUT');
             }
@@ -681,6 +732,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dateNaissanceInput) {
             dateNaissanceInput.addEventListener('change', syncBirthYearFromDate);
         }
+        yearOnlyToggles.forEach((toggle) => {
+            toggle.addEventListener('change', () => applyYearOnlyState(toggle.dataset.yearOnlyFor));
+            applyYearOnlyState(toggle.dataset.yearOnlyFor);
+        });
 
         window.editHorse = async function (id) {
             try {
