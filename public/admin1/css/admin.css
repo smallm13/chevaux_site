@@ -749,6 +749,10 @@ table th, table td {
     line-height: 1.4;
 }
 
+.signalement-textarea {
+    resize: none;
+}
+
 /* Placeholder en marron clair */
 #add-horse-form input::placeholder {
     color: #A1887F; /* Marron clair pour placeholder */

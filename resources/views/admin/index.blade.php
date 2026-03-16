@@ -351,31 +351,31 @@
                     <div class="horse-form-grid">
                         <div class="field">
                             <label>Tete</label>
-                            <textarea name="signalement_tete" rows="2"></textarea>
+                            <textarea name="signalement_tete" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
                             <label>Anterieur gauche</label>
-                            <textarea name="signalement_anterieur_gauche" rows="2"></textarea>
+                            <textarea name="signalement_anterieur_gauche" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
                             <label>Anterieur droite</label>
-                            <textarea name="signalement_anterieur_droite" rows="2"></textarea>
+                            <textarea name="signalement_anterieur_droite" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
                             <label>Posterieur gauche</label>
-                            <textarea name="signalement_posterieur_gauche" rows="2"></textarea>
+                            <textarea name="signalement_posterieur_gauche" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
                             <label>Posterieur droite</label>
-                            <textarea name="signalement_posterieur_droite" rows="2"></textarea>
+                            <textarea name="signalement_posterieur_droite" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field field-wide">
                             <label>Corps</label>
-                            <textarea name="signalement_corps" rows="3"></textarea>
+                            <textarea name="signalement_corps" rows="3" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field field-wide">
                             <label>Marques particulieres</label>
-                            <textarea name="signalement_marques_particulieres" rows="3"></textarea>
+                            <textarea name="signalement_marques_particulieres" rows="3" class="signalement-textarea"></textarea>
                         </div>
                     </div>
                 </div>
