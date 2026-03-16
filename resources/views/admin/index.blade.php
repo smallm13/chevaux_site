@@ -209,11 +209,7 @@
                             <label>Date de naissance</label>
                             <div class="year-only-group">
                                 <input type="date" name="date_naissance" />
-                                <label class="year-only-toggle">
-                                    <input type="checkbox" data-year-only-for="date_naissance">
-                                    Année seulement
-                                </label>
-                                <input type="number" name="date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                                <input type="number" name="date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">
@@ -258,11 +254,7 @@
                             <label>Date pose transpondeur</label>
                             <div class="year-only-group">
                                 <input type="date" name="date_pose_transpondeur" />
-                                <label class="year-only-toggle">
-                                    <input type="checkbox" data-year-only-for="date_pose_transpondeur">
-                                    Année seulement
-                                </label>
-                                <input type="number" name="date_pose_transpondeur_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                                <input type="number" name="date_pose_transpondeur_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                     </div>
@@ -297,11 +289,7 @@
                             <label>Date naissance pere</label>
                             <div class="year-only-group">
                                 <input type="date" name="pere_date_naissance" />
-                                <label class="year-only-toggle">
-                                    <input type="checkbox" data-year-only-for="pere_date_naissance">
-                                    Année seulement
-                                </label>
-                                <input type="number" name="pere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                                <input type="number" name="pere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">
@@ -328,11 +316,7 @@
                             <label>Date naissance mere</label>
                             <div class="year-only-group">
                                 <input type="date" name="mere_date_naissance" />
-                                <label class="year-only-toggle">
-                                    <input type="checkbox" data-year-only-for="mere_date_naissance">
-                                    Année seulement
-                                </label>
-                                <input type="number" name="mere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année" disabled>
+                                <input type="number" name="mere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">

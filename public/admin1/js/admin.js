@@ -536,13 +536,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const datePoseInput = addHorseForm.querySelector('input[name="date_pose_transpondeur"]');
         const anneeNaissanceInput = addHorseForm.querySelector('input[name="annee_naissance"]');
         const dateNaissanceInput = addHorseForm.querySelector('input[name="date_naissance"]');
-        const yearOnlyToggles = Array.from(addHorseForm.querySelectorAll('[data-year-only-for]'));
+        const yearOnlyFields = [
+            'date_naissance',
+            'date_pose_transpondeur',
+            'pere_date_naissance',
+            'mere_date_naissance'
+        ];
 
         function getYearOnlyInputs(fieldName) {
-            const checkbox = addHorseForm.querySelector(`[data-year-only-for="${fieldName}"]`);
             const dateInput = addHorseForm.querySelector(`input[name="${fieldName}"]`);
             const yearInput = addHorseForm.querySelector(`input[name="${fieldName}_year"]`);
-            return { checkbox, dateInput, yearInput };
+            return { dateInput, yearInput };
         }
 
         function toggleTranspondeurFields() {
@@ -556,31 +560,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        function applyYearOnlyState(fieldName) {
-            const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
-            if (!checkbox || !dateInput || !yearInput) return;
-            if (checkbox.checked) {
-                dateInput.disabled = true;
-                dateInput.value = '';
-                yearInput.disabled = false;
-            } else {
-                dateInput.disabled = false;
-                yearInput.disabled = true;
-                yearInput.value = '';
-            }
-        }
-
         function syncYearOnlyPrefill(fieldName) {
-            const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
-            if (!checkbox || !dateInput || !yearInput) return;
+            const { dateInput, yearInput } = getYearOnlyInputs(fieldName);
+            if (!dateInput || !yearInput) return;
             if (!dateInput.value) return;
             const match = /^(\d{4})-01-01$/.exec(dateInput.value);
             if (match) {
-                checkbox.checked = true;
                 yearInput.value = match[1];
-                dateInput.value = '';
-                dateInput.disabled = true;
-                yearInput.disabled = false;
             }
         }
 
@@ -596,7 +582,6 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Ajouter';
             addHorseForm.reset();
             toggleTranspondeurFields();
-            yearOnlyToggles.forEach((toggle) => applyYearOnlyState(toggle.dataset.yearOnlyFor));
         }
 
         function setFormModeEdit(horseId, horseData) {
@@ -631,7 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             toggleTranspondeurFields();
-            yearOnlyToggles.forEach((toggle) => syncYearOnlyPrefill(toggle.dataset.yearOnlyFor));
+            yearOnlyFields.forEach(syncYearOnlyPrefill);
         }
 
         function openModal() {
@@ -670,11 +655,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const method = 'POST';
 
             const formData = new FormData(addHorseForm);
-            yearOnlyToggles.forEach((toggle) => {
-                const fieldName = toggle.dataset.yearOnlyFor;
-                const { checkbox, dateInput, yearInput } = getYearOnlyInputs(fieldName);
-                if (!checkbox || !dateInput || !yearInput) return;
-                if (checkbox.checked && yearInput.value) {
+            yearOnlyFields.forEach((fieldName) => {
+                const { dateInput, yearInput } = getYearOnlyInputs(fieldName);
+                if (!dateInput || !yearInput) return;
+                if (yearInput.value) {
                     const year = yearInput.value.trim();
                     dateInput.value = `${year}-01-01`;
                     formData.set(fieldName, dateInput.value);
@@ -732,10 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (dateNaissanceInput) {
             dateNaissanceInput.addEventListener('change', syncBirthYearFromDate);
         }
-        yearOnlyToggles.forEach((toggle) => {
-            toggle.addEventListener('change', () => applyYearOnlyState(toggle.dataset.yearOnlyFor));
-            applyYearOnlyState(toggle.dataset.yearOnlyFor);
-        });
+        yearOnlyFields.forEach(syncYearOnlyPrefill);
 
         window.editHorse = async function (id) {
             try {
