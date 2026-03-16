@@ -743,8 +743,9 @@ table th, table td {
     outline: none;
     font-family: inherit;
     resize: vertical;
-    min-height: 56px;
-    max-height: 180px;
+    height: 42px;
+    min-height: 42px;
+    max-height: 120px;
     line-height: 1.4;
 }
 
