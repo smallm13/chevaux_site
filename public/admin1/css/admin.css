@@ -751,10 +751,17 @@ table th, table td {
 
 .signalement-textarea {
     resize: none;
+    appearance: none;
 }
 
 .signalement-textarea::-webkit-resizer {
     display: none;
+}
+
+.signalement-textarea::-webkit-inner-spin-button,
+.signalement-textarea::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* Placeholder en marron clair */
