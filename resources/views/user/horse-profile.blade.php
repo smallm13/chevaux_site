@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $cheval->nom ?? 'Cheval' }} - Profil detaille | Ecuries Royales</title>
+    <title>{{ $cheval->nom ?? 'Cheval' }} - Profil détaillé | Écuries Royales</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('user/css/horse-profile.css') }}">
 </head>
@@ -35,7 +35,7 @@
         <div class="container header-content">
             <div class="logo">
                 <i class="fas fa-horse-head"></i>
-                <h1>Ecuries Royales</h1>
+                <h1>Écuries Royales</h1>
             </div>
             <div class="user-menu">
                 <span>Bienvenue, {{ $firstName }}</span>
@@ -81,15 +81,15 @@
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-birthday-cake"></i>
-                            <span><strong>Annee de naissance:</strong> {{ $cheval->annee_naissance ?? '-' }}</span>
+            <span><strong>Année de naissance:</strong> {{ $cheval->annee_naissance ?? '-' }}</span>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-horse-head"></i>
-                            <span><strong>Pere:</strong> {{ $pere->nom ?? '-' }}</span>
+            <span><strong>Père:</strong> {{ $pere->nom ?? '-' }}</span>
                         </div>
                         <div class="detail-item">
                             <i class="fas fa-horse-head"></i>
-                            <span><strong>Mere:</strong> {{ $mere->nom ?? '-' }}</span>
+            <span><strong>Mère:</strong> {{ $mere->nom ?? '-' }}</span>
                         </div>
                     </div>
                 </div>
@@ -98,14 +98,14 @@
 
         <div class="info-sections">
             <div class="info-card">
-                <h3><i class="fas fa-id-card"></i> IDENTITE & STUD-BOOK</h3>
+            <h3><i class="fas fa-id-card"></i> IDENTITÉ & STUD-BOOK</h3>
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="info-label">Numero SIRE</span>
+                        <span class="info-label">Numéro SIRE</span>
                         <span>{{ $cheval->sire_numero ?? '-' }}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Numero UELN</span>
+                        <span class="info-label">Numéro UELN</span>
                         <span>{{ $cheval->ueln_numero ?? '-' }}</span>
                     </div>
                     <div class="info-item">
@@ -124,14 +124,14 @@
             </div>
 
             <div class="info-card">
-                <h3><i class="fas fa-microchip"></i> IDENTIFICATION ELECTRONIQUE</h3>
+            <h3><i class="fas fa-microchip"></i> IDENTIFICATION ÉLECTRONIQUE</h3>
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="info-label">Transpondeur electronique</span>
+                        <span class="info-label">Transpondeur électronique</span>
                         <span>{{ (int) ($cheval->transpondeur ?? 0) === 1 ? 'Oui' : 'Non' }}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Numero transpondeur</span>
+                        <span class="info-label">Numéro transpondeur</span>
                         <span>{{ $cheval->numero_transpondeur ?? '-' }}</span>
                     </div>
                     <div class="info-item">
@@ -142,7 +142,7 @@
             </div>
 
             <div class="info-card">
-                <h3><i class="fas fa-user-tie"></i> NAISSEUR</h3>
+            <h3><i class="fas fa-user-tie"></i> NAISSEUR</h3>
                 <div class="info-grid">
                     <div class="info-item">
                         <span class="info-label">Nom</span>
@@ -153,7 +153,7 @@
                         <span>{{ $naisseur->adresse ?? '-' }}</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Telephone</span>
+                        <span class="info-label">Téléphone</span>
                         <span>{{ $naisseur->telephone ?? '-' }}</span>
                     </div>
                 </div>
@@ -178,7 +178,7 @@
             <h3><i class="fas fa-sitemap"></i> PEDIGREE</h3>
             <div class="pedigree-cards">
                 <div class="pedigree-card">
-                    <h4><i class="fas fa-mars"></i> Pere : {{ $pere->nom ?? '-' }}</h4>
+                    <h4><i class="fas fa-mars"></i> Père : {{ $pere->nom ?? '-' }}</h4>
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="info-label">SIRE</span>
@@ -204,7 +204,7 @@
                 </div>
 
                 <div class="pedigree-card">
-                    <h4><i class="fas fa-venus"></i> Mere : {{ $mere->nom ?? '-' }}</h4>
+                    <h4><i class="fas fa-venus"></i> Mère : {{ $mere->nom ?? '-' }}</h4>
                     <div class="info-grid">
                         <div class="info-item">
                             <span class="info-label">SIRE</span>
@@ -236,10 +236,10 @@
         <div class="container footer-content">
             <div class="footer-logo">
                 <i class="fas fa-horse-head"></i>
-                <span>Ecuries Royales</span>
+            <span>Écuries Royales</span>
             </div>
-            <p>Gestion equestre professionnelle &copy; 2023 - Tous droits reserves</p>
-            <p class="copyright">Ce systeme est destine a un usage interne exclusif.</p>
+            <p>Gestion équestre professionnelle &copy; 2023 - Tous droits réservés</p>
+            <p class="copyright">Ce système est destiné à un usage interne exclusif.</p>
         </div>
     </footer>
 
