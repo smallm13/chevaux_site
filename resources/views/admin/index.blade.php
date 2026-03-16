@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -41,17 +41,17 @@
                         <div class="stat-card">
                             <div class="label">Nombre de chevaux</div>
                             <div class="value" id="horse-count">0</div>
-                            <div class="sub">equides</div>
+                            <div class="sub">équidés</div>
                         </div>
                         <div class="stat-card">
-                            <div class="label">Connectes</div>
+                            <div class="label">Connectés</div>
                             <div class="value" id="online-count">0</div>
                             <div class="sub">en ce moment</div>
                         </div>
                         <div class="stat-card">
                             <div class="label">Actifs (24h)</div>
                             <div class="value" id="active-count">0</div>
-                            <div class="sub">derniere journee</div>
+                            <div class="sub">dernière journée</div>
                         </div>
                     </div>
 
@@ -72,7 +72,7 @@
                             </div>
                             <div class="info-row">
                                 <span>Inscrits: <strong id="user-count-inline">0</strong></span>
-                                <span>Connectes: <strong id="online-count-inline">0</strong></span>
+                                <span>Connectés: <strong id="online-count-inline">0</strong></span>
                                 <span>Actifs: <strong id="active-count-inline">0</strong></span>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                 <div class="mini-item">
                                     <div class="period">Nouveaux (7j)</div>
                                     <div class="number" id="new-horses-7d">0</div>
-                                    <div class="note">periode calme</div>
+                                    <div class="note">période calme</div>
                                 </div>
                             </div>
                             <div class="info-row">
@@ -99,7 +99,7 @@
                     </div>
 
                     <div class="dashboard-footer">
-                        <span>mise a jour en continu · <span id="admin-date"></span></span>
+                        <span>mise à jour en continu · <span id="admin-date"></span></span>
                     </div>
                 </div>
             </section>
@@ -110,7 +110,7 @@
     <input
         type="text"
         id="user-search"
-        placeholder="Rechercher un utilisateur (nom, prenom, email...)">
+        placeholder="Rechercher un utilisateur (nom, prénom, email...)">
     <button id="user-search-btn">Rechercher</button>
 </div>
                 <h2>Liste des utilisateurs</h2>
@@ -120,9 +120,9 @@
                         <tr>
                             <th>ID</th>
                             <th>Nom</th>
-                            <th>Prenom</th>
+                            <th>Prénom</th>
                             <th>Email</th>
-                            <th>Role</th>
+                            <th>Rôle</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -146,7 +146,7 @@
                         <button id="add-horse-btn">+ Ajouter un cheval</button>
                         <button id="bulk-select-horses-btn" class="bulk-btn">Supprimer des chevaux</button>
                         <button id="bulk-delete-horses-btn" class="bulk-btn danger" style="display:none;" disabled>
-                            Supprimer la selection (0)
+                            Supprimer la sélection (0)
                         </button>
                     </div>
                 </div>
@@ -159,7 +159,7 @@
                             <th>Nom</th>
                             <th>Race</th>
                             <th>Robe</th>
-                            <th>Annee de naissance</th>
+                            <th>Année de naissance</th>
                             <th>Discipline</th>
 <th>Actions</th>
                         </tr>
@@ -179,7 +179,7 @@
             <form id="add-horse-form" enctype="multipart/form-data">
                 @csrf
                 <div class="horse-form-section">
-                    <h4>Identite du cheval</h4>
+                    <h4>Identité du cheval</h4>
                     <div class="horse-form-grid">
                         <div class="field">
                             <label>Nom *</label>
@@ -202,7 +202,7 @@
                             <input type="text" name="robe" />
                         </div>
                         <div class="field">
-                            <label>Annee de naissance</label>
+                            <label>Année de naissance</label>
                             <input type="number" name="annee_naissance" min="1900" max="2100" />
                         </div>
                         <div class="field">
@@ -227,11 +227,11 @@
                     <h4>Identifiants officiels</h4>
                     <div class="horse-form-grid">
                         <div class="field">
-                            <label>Numero SIRE</label>
+                            <label>Numéro SIRE</label>
                             <input type="text" name="sire_numero" />
                         </div>
                         <div class="field">
-                            <label>Numero UELN</label>
+                            <label>Numéro UELN</label>
                             <input type="text" name="ueln_numero" />
                         </div>
                         <div class="field">
@@ -247,7 +247,7 @@
                             </select>
                         </div>
                         <div class="field">
-                            <label>Numero transpondeur</label>
+                            <label>Numéro transpondeur</label>
                             <input type="text" name="numero_transpondeur" />
                         </div>
                         <div class="field">
@@ -261,70 +261,70 @@
                 </div>
 
                 <div class="horse-form-section">
-                    <h4>Carnet de sante</h4>
+                    <h4>Carnet de santé</h4>
                     <div class="horse-form-grid">
                         <div class="field field-wide">
-                            <label>Photo du carnet de sante</label>
+                            <label>Photo du carnet de santé</label>
                             <input type="file" name="carnet_sante_photo" accept="image/*" />
                         </div>
                     </div>
                 </div>
 
                 <div class="horse-form-section">
-                    <h4>Pedigree</h4>
+                    <h4>Pédigrée</h4>
                     <div class="horse-form-grid">
                         <div class="field">
-                            <label>Nom pere</label>
+                            <label>Nom père</label>
                             <input type="text" name="pere_nom" />
                         </div>
                         <div class="field">
-                            <label>SIRE pere</label>
+                            <label>SIRE père</label>
                             <input type="text" name="pere_sire_numero" />
                         </div>
                         <div class="field">
-                            <label>UELN pere</label>
+                            <label>UELN père</label>
                             <input type="text" name="pere_ueln_numero" />
                         </div>
                         <div class="field">
-                            <label>Date naissance pere</label>
+                            <label>Date naissance père</label>
                             <div class="year-only-group">
                                 <input type="date" name="pere_date_naissance" />
                                 <input type="number" name="pere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">
-                            <label>Pays naissance pere</label>
+                            <label>Pays naissance père</label>
                             <input type="text" name="pere_pays_naissance" />
                         </div>
                         <div class="field">
-                            <label>Stud-book pere</label>
+                            <label>Stud-book père</label>
                             <input type="text" name="pere_studbook" />
                         </div>
                         <div class="field">
-                            <label>Nom mere</label>
+                            <label>Nom mère</label>
                             <input type="text" name="mere_nom" />
                         </div>
                         <div class="field">
-                            <label>SIRE mere</label>
+                            <label>SIRE mère</label>
                             <input type="text" name="mere_sire_numero" />
                         </div>
                         <div class="field">
-                            <label>UELN mere</label>
+                            <label>UELN mère</label>
                             <input type="text" name="mere_ueln_numero" />
                         </div>
                         <div class="field">
-                            <label>Date naissance mere</label>
+                            <label>Date naissance mère</label>
                             <div class="year-only-group">
                                 <input type="date" name="mere_date_naissance" />
                                 <input type="number" name="mere_date_naissance_year" class="year-only-input" min="1900" max="2100" placeholder="Année">
                             </div>
                         </div>
                         <div class="field">
-                            <label>Pays naissance mere</label>
+                            <label>Pays naissance mère</label>
                             <input type="text" name="mere_pays_naissance" />
                         </div>
                         <div class="field">
-                            <label>Stud-book mere</label>
+                            <label>Stud-book mère</label>
                             <input type="text" name="mere_studbook" />
                         </div>
                     </div>
@@ -334,23 +334,23 @@
                     <h4>Signalement</h4>
                     <div class="horse-form-grid">
                         <div class="field">
-                            <label>Tete</label>
+                            <label>Tête</label>
                             <textarea name="signalement_tete" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
-                            <label>Anterieur gauche</label>
+                            <label>Antérieur gauche</label>
                             <textarea name="signalement_anterieur_gauche" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
-                            <label>Anterieur droite</label>
+                            <label>Antérieur droite</label>
                             <textarea name="signalement_anterieur_droite" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
-                            <label>Posterieur gauche</label>
+                            <label>Postérieur gauche</label>
                             <textarea name="signalement_posterieur_gauche" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field">
-                            <label>Posterieur droite</label>
+                            <label>Postérieur droite</label>
                             <textarea name="signalement_posterieur_droite" rows="2" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field field-wide">
@@ -358,7 +358,7 @@
                             <textarea name="signalement_corps" rows="3" class="signalement-textarea"></textarea>
                         </div>
                         <div class="field field-wide">
-                            <label>Marques particulieres</label>
+                            <label>Marques particulières</label>
                             <textarea name="signalement_marques_particulieres" rows="3" class="signalement-textarea"></textarea>
                         </div>
                     </div>
@@ -372,7 +372,7 @@
                             <input type="text" name="naisseur_nom" />
                         </div>
                         <div class="field">
-                            <label>Telephone</label>
+                            <label>Téléphone</label>
                             <input type="text" name="naisseur_telephone" />
                         </div>
                         <div class="field field-wide">
@@ -394,3 +394,4 @@
 </body>
 
 </html>
+
