@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&family=Lato:wght@300;400;700&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@500;700&family=Playfair+Display:wght@400;700&family=Source+Sans+3:wght@400;600;700&family=Lato:wght@300;400;700&display=swap");
 /* Variables CSS selon la charte graphique */
 :root {
     --primary: #8B4513;
@@ -600,7 +600,7 @@ footer {
     transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s ease;
     cursor: pointer;
     position: relative;
-    font-family: 'Source Sans 3', 'Lato', sans-serif;
+    font-family: 'Nunito', sans-serif;
 }
 
 .horse-name {
@@ -686,7 +686,7 @@ footer {
 }
 
 .horse-name {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: 'Nunito', sans-serif;
     font-size: 1.25rem;
     font-weight: 700;
     color: #3B2A1A;
@@ -887,5 +887,6 @@ footer {
         align-items: stretch;
     }
 }
+
 
 
