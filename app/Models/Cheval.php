@@ -11,7 +11,7 @@ class Cheval extends Model
 
     // Postgres schema-qualified table.
     protected $table = 'chevaux';
-    public $timestamps = false;
+    public $timestamps = true;
 
     // Colonnes modifiables.
     protected $fillable = [
