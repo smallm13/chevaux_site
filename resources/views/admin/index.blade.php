@@ -118,7 +118,7 @@
                 <table id="user-table">
                     <thead>
                         <tr>
-                            <th>Date d'ajout</th>
+                            <th>ID</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Email</th>
@@ -155,7 +155,7 @@
                     <thead>
                         <tr>
                             <th class="selection-col" style="display:none;">Sel.</th>
-                            <th>ID</th>
+                            <th>Date d'ajout</th>
                             <th>Nom</th>
                             <th>Race</th>
                             <th>Robe</th>
