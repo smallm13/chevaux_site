@@ -694,8 +694,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (response.ok) {
                     Swal.fire(
-                        'Succes',
-                        isEdit ? 'Cheval modifie avec succes !' : 'Cheval ajoute avec succes !',
+                        'Succès',
+                        isEdit ? 'Cheval modifié avec succès !' : 'Cheval ajouté avec succès !',
                         'success'
                     );
                     closeModal();
