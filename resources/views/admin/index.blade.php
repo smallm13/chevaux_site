@@ -118,7 +118,7 @@
                 <table id="user-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>Date d'ajout</th>
                             <th>Nom</th>
                             <th>Prénom</th>
                             <th>Email</th>

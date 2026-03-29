@@ -143,6 +143,19 @@ document.addEventListener('DOMContentLoaded', () => {
         el.textContent = value ?? 0;
     }
 
+    function formatHorseCreatedAt(value) {
+        if (!value) return '-';
+
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return '-';
+
+        return date.toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+    }
+
     async function updateStats() {
         try {
             const [resKpis, resRealtime] = await Promise.all([
@@ -239,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td class="selection-col" style="${horseSelectionMode ? '' : 'display:none;'}">
                         <input type="checkbox" class="horse-select-checkbox" data-id="${c.id}" ${selectedHorseIds.has(String(c.id)) ? 'checked' : ''}>
                     </td>
-                    <td>${escapeHtml(c.id)}</td>
+                    <td>${escapeHtml(formatHorseCreatedAt(c.created_at))}</td>
                     <td>${escapeHtml(c.nom)}</td>
                     <td>${escapeHtml(c.race ?? '-')}</td>
                     <td>${escapeHtml(c.robe ?? '-')}</td>
