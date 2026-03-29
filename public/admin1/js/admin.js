@@ -425,6 +425,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function showAdminNoticeModal({ title, message, buttonText = 'Fermer', iconClass = 'fas fa-check' }) {
+        return new Promise((resolve) => {
+            const overlay = document.createElement('div');
+            overlay.className = 'logout-modal-overlay';
+            overlay.innerHTML = `
+                <div class="logout-modal admin-notice-modal" role="dialog" aria-modal="true" aria-labelledby="admin-notice-title">
+                    <div class="logout-modal-icon admin-notice-icon">
+                        <i class="${iconClass}"></i>
+                    </div>
+                    <h3 id="admin-notice-title">${escapeHtml(title)}</h3>
+                    <p>${escapeHtml(message)}</p>
+                    <div class="logout-modal-actions admin-notice-actions">
+                        <button type="button" class="logout-modal-btn confirm-btn">${escapeHtml(buttonText)}</button>
+                    </div>
+                </div>
+            `;
+
+            const modal = overlay.querySelector('.admin-notice-modal');
+            const confirmBtn = overlay.querySelector('.confirm-btn');
+            const previousOverflow = document.body.style.overflow;
+
+            const cleanup = () => {
+                document.removeEventListener('keydown', onKeyDown);
+                document.body.style.overflow = previousOverflow;
+                overlay.classList.remove('show');
+                setTimeout(() => {
+                    overlay.remove();
+                    resolve(true);
+                }, 150);
+            };
+
+            const onKeyDown = (event) => {
+                if (event.key === 'Escape' || event.key === 'Enter') cleanup();
+            };
+
+            confirmBtn.addEventListener('click', cleanup);
+            overlay.addEventListener('click', (event) => {
+                if (!modal.contains(event.target)) cleanup();
+            });
+            document.addEventListener('keydown', onKeyDown);
+
+            document.body.appendChild(overlay);
+            document.body.style.overflow = 'hidden';
+            requestAnimationFrame(() => overlay.classList.add('show'));
+            confirmBtn.focus();
+        });
+    }
+
     const logoutModalStyleId = 'logout-modal-style';
     if (!document.getElementById(logoutModalStyleId)) {
         const style = document.createElement('style');
@@ -501,6 +549,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         .logout-modal-btn.confirm-btn:hover {
             background: #922b21;
+        }
+        .admin-notice-actions {
+            justify-content: center;
+        }
+        .admin-notice-icon {
+            background: #e8f8f0;
+            color: #1e8449;
         }
         `;
         document.head.appendChild(style);
@@ -693,14 +748,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
-                    Swal.fire(
-                        'Succès',
-                        isEdit ? 'Cheval modifié avec succès !' : 'Cheval ajouté avec succès !',
-                        'success'
-                    );
                     closeModal();
                     setFormModeCreate();
                     loadHorses();
+                    await showAdminNoticeModal({
+                        title: 'Succès',
+                        message: isEdit ? 'Cheval modifié avec succès.' : 'Cheval ajouté avec succès.',
+                        buttonText: 'Fermer'
+                    });
                 } else {
                     let message = 'Erreur lors de l enregistrement';
                     const contentType = response.headers.get('content-type') || '';
@@ -782,7 +837,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const failed = results.filter(r => !r.ok).length;
                 if (failed === 0) {
-                    Swal.fire("Supprime", "Les chevaux selectionnes ont ete supprimes.", "success");
+                    await showAdminNoticeModal({
+                        title: 'Supprimé',
+                        message: 'Les chevaux sélectionnés ont été supprimés avec succès.',
+                        buttonText: 'Fermer'
+                    });
                 } else {
                     Swal.fire("Partiel", `${results.length - failed} supprime(s), ${failed} echec(s).`, "warning");
                 }
